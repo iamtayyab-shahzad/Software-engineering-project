@@ -7,15 +7,14 @@
 \usepackage{background}
 \renewcommand{\familydefault}{\sfdefault}
 
-% --- Watermark setup ---
 \backgroundsetup{
-    scale=1.1, % slightly smaller for balance
+    scale=1.1,
     angle=0,
     opacity=0.08,
     contents={\includegraphics[width=0.45\paperwidth]{Namal.png}}
 }
 
-\setstretch{1.05} % Slightly condensed line spacing
+\setstretch{1.05}
 \titleformat{\section}{\bfseries\large\centering}{}{0pt}{}
 
 \begin{document}
@@ -26,7 +25,7 @@
     \vspace{0.4cm}
 \end{center}
 
-This Agreement is made on this day of \textbf{5 November 2025} between the Student Team of \textbf{Namal University, Mianwali}, enrolled in the \textbf{BS Computer Science} program, and the Requirement Provider (\textbf{RP}), \textbf{Faisal Shahzad}, to confirm collaboration for the semester software engineering project titled \textbf{“Upwork Proposal Assistant.”}
+This Agreement is made on this day of \textbf{5 November 2025} between the Student Team of \textbf{Namal University, Mianwali}, enrolled in the \textbf{BS Computer Science} program, and the Requirement Provider (\textbf{RP}), \textbf{Faisal Shahzad} a Software Engineer at TechFoot with expertise in ERP and fintech systems using Node.js, Angular, and MariaDB. He now works as a freelancer, providing reliable software solutions, confirm collaboration for the semester software engineering project titled \textbf{“Upwork Proposal Assistant.”}
 
 \vspace{0.8em}
 
@@ -37,9 +36,9 @@ The purpose of this Agreement is to establish a professional understanding betwe
 \begin{itemize}\itemsep0.2em
     \item The RP will provide project requirements, domain guidance, and timely feedback.
     \item The student team will maintain professionalism and effective communication.
-    \item Both parties will meet as needed for discussion and feedback sessions.
-    \item All shared information will remain confidential and used only for academic purposes.
-    \item The student team will sincerely work to meet project goals and deadlines.
+    \item Both parties will meet as needed for discussions and feedback sessions.
+    \item All shared information will remain confidential and will only be used for academic purposes.
+    \item The student team will work diligently to meet the project goals and deadlines.
 \end{itemize}
 
 \vspace{0.4em}
@@ -55,12 +54,19 @@ This Agreement remains valid for the duration of the current academic semester. 
 
 \vspace{0.4em}
 \noindent\textbf{Requirement Provider (RP):}\\
-Name: Faisal Shahzad\\
-Experience: 3 years in industry, currently working as a freelancer
+Faisal Shahzad\\
 
 \vspace{2em}
-\noindent\rule{5cm}{0.4pt}  \hfill \rule{5cm}{0.4pt}\\
-\textbf{Student Leader} \hfill \textbf{Requirement Provider (RP)} 
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.5cm]{tayyab.png}\\
+    \centering \textbf{Student Leader}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.5cm]{faisal.png}\\
+    \centering \textbf{Requirement Provider (RP)}
+\end{minipage}
+
 \vfill
 \begin{center}
     \footnotesize This document serves as an official record of mutual understanding between the student project team and the Requirement Provider.

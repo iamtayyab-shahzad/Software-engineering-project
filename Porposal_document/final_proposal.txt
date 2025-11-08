@@ -1,0 +1,179 @@
+\documentclass[14pt,a4paper]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{array}   
+\usepackage{graphicx} 
+\usepackage{setspace}
+\usepackage{background}
+\geometry{margin=1in}
+
+
+\backgroundsetup{contents={}}
+
+\begin{document}
+
+
+\begin{titlepage}
+    \centering
+    
+    {\Large \textbf{Namal University, Mianwali}}\\[0.2cm]
+    {\large Department of Computer Science}\\[1.5cm]
+
+    {\LARGE \textbf{CSC-225 – Software Engineering}}\\[0.5cm]
+    {\Large Complex Computing Problem – Milestone 1}\\[2cm]
+
+    {\huge \textbf{Upwork Proposal Assistant}}\\[0.5cm]
+    {\large \emph{Real-World Client Communication \& Proposal Automation System}}\\[2cm]
+
+    
+    {\large \textbf{Team Members}}\\[0.5cm]
+    \renewcommand{\arraystretch}{1.5} 
+    \begin{tabular}{|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{5cm}|}
+        \hline
+        Name & Roll Number & Email \\
+        \hline
+        Tayyab Shahzad & bscs24f77 & bscs24f77@namal.edu.pk \\
+        Najeeba       & bscs24f61 & bscs24f61@namal.edu.pk \\
+        Kashif Ali    & bscs24f29 & bscs24f29@namal.edu.pk \\
+        \hline
+    \end{tabular}\\[2cm]
+
+    
+    {\large \textbf{Submission Date:} 9 November 2025}\\[0.3cm]
+    {\large \textbf{Instructor:} Asiya Batool}\\[2cm]
+
+    {\large \textbf{Department of Computer Science}}\\
+    {\large \textbf{Namal University, Mianwali}}
+\end{titlepage}
+
+
+\newpage
+
+\backgroundsetup{
+    scale=1.1,
+    angle=0,
+    opacity=0.08,
+    contents={\includegraphics[width=0.45\paperwidth]{Namal.png}}
+}
+\BgThispage
+
+
+{\small
+\setstretch{0.95}
+
+\begin{center}
+    \vspace*{0.2cm}
+    {\Large \textbf{Software development agreement}}\\[0.15em]
+    \vspace{0.15cm}
+\end{center}
+
+\noindent This Agreement is made on this day of \textbf{5 November 2025} between the Student Team of \textbf{Namal University, Mianwali}, enrolled in the \textbf{BS Computer Science} program, and the Requirement Provider (\textbf{RP}), \textbf{Faisal Shahzad} a Software Engineer at TechFoot with expertise in ERP and fintech systems using Node.js, Angular, and MariaDB. He now works as a freelancer, providing reliable software solutions, confirm collaboration for the semester software engineering project titled \textbf{"Upwork Proposal Assistant."}
+
+\vspace{0.3em}
+
+\noindent The purpose of this Agreement is to establish a professional understanding between the Student Team and the RP for the successful design and development of the assigned software project.
+
+\vspace{0.25em}
+\noindent\textbf{Mutual Obligations:}
+\begin{itemize}\itemsep0em
+    \item The RP will provide project requirements, domain guidance, and timely feedback.
+    \item The student team will maintain professionalism and effective communication.
+    \item Both parties will meet as needed for discussions and feedback sessions.
+    \item All shared information will remain confidential and will only be used for academic purposes.
+    \item The student team will work diligently to meet the project goals and deadlines.
+\end{itemize}
+
+\vspace{0.25em}
+\noindent This Agreement remains valid for the duration of the current academic semester. Both parties acknowledge that they have read and understood the terms of this Agreement and agree to collaborate responsibly for the success of the project.
+
+\vspace{0.4em}
+\noindent\textbf{Student Team:}
+\begin{enumerate}\itemsep0em
+    \item Tayyab Shahzad
+    \item Najeeba
+    \item Kashif Ali
+\end{enumerate}
+
+\vspace{0.25em}
+\noindent\textbf{Requirement Provider (RP):}\\
+Faisal Shahzad\\
+
+\vspace{0.8em}
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.3cm]{tayyab.png}\\
+    \centering \textbf{Student Leader}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.3cm]{faisal.png}\\
+    \centering \textbf{Requirement Provider (RP)}
+\end{minipage}
+
+\vfill
+\begin{center}
+    \footnotesize This document serves as an official record of mutual understanding between the student project team and the Requirement Provider.
+\end{center}
+}
+
+
+\newpage
+
+\backgroundsetup{contents={}}
+
+\tableofcontents
+\thispagestyle{plain}
+\newpage
+
+
+\section{Introduction}
+\vspace*{2cm}
+
+In today's freelancing world, many online platforms such as Upwork have created new ways for freelancers to connect with Professionals clients. Success on such platforms depends on the proposal(A proposal is like a job application you send to a client who posted a project) writing, which is the first impression of freelancer on the client and client mainly select freelancer on the basis of his proposal; however, many freelancers find it difficult to write professional and attractive proposals which give them a job. And also writing a new proposal by hand takes a lot of time, effort, and experience. 
+
+Freelancers often spend hours researching how to structure their proposals, choosing the right tone, and highlighting their skills in a way that appeals to clients. This process can be frustrating, especially for beginners who lack experience or confidence in writing. In addition, each client has unique requirements and preferences, making it even more challenging to craft proposals that stand out. 
+
+The Upwork Proposal Assistant is a software that solves such kinds of problem. Automates the process of writing proposals using the smart template based on the user's previous history or client requirements and helps freelancers get their job. By analyzing past successful proposals and understanding client needs, the software can generate proposals quickly, ensuring consistency, professionalism, and a higher chance of success. 
+
+This tool is not only a time-saver but also a learning aid, allowing freelancers to understand what makes a proposal effective. Over time, users can improve their writing skills while relying on the software to handle repetitive tasks and tailor proposals for different projects and clients.
+\vfill 
+\newpage
+
+
+\section{Problem Statement}
+
+Freelancers on platforms like Upwork often struggle to write professional and attractive proposals. Writing proposals manually is time-consuming, requires skill and experience, and can reduce their chances of getting selected. If a freelancer writes a proposal by hand, it takes a lot of time, and during that period, hundreds of other freelancers may apply for the same job, reducing the likelihood of the proposal being noticed.
+
+Moreover, proposals need to address the client's specific pain points effectively; generic or poorly written proposals often fail to capture the client's attention. Freelancers frequently spend hours researching how to structure their proposals, deciding the right tone, and highlighting their skills in a way that appeals to clients. This process can be frustrating, especially for beginners who lack experience or confidence in writing proposals.
+
+Every client has unique requirements and preferences, making it even more challenging to craft proposals that stand out. A single poorly timed or poorly worded proposal can cost a freelancer a potential opportunity, even if they are highly skilled in their domain. Hence, there is a strong need for a fast, efficient, and intelligent solution that not only saves time but also ensures proposals are professional, personalized, and compelling.
+
+The Upwork Proposal Assistant addresses these problems by automating proposal writing using smart templates based on the user's previous history and client requirements. It quickly generates proposals that maintain consistency, professionalism, and focus on client needs, increasing the chances of getting selected. Additionally, this software serves as a learning tool, helping freelancers understand what makes a proposal effective, improving their writing skills over time while managing repetitive tasks and tailoring proposals for different projects and clients.
+\newpage
+
+
+\section{Objectives}
+The Upwork Proposal Assistant is a software which solves such kinds of problems. It automates the process of writing proposals by using the smart template based on the user's previous history or client requirements and helps freelancers to get their job. There are already softwares present in the market which are doing the same thing, but the thing which makes our software unique is this that it not only writes proposals, but before doing this, the software looks at the past history of the client and fetches all its important information such as location from which freelancer can apply, job success rate, job completion rate, client reviews, client country, average hourly paid rate, last activity, total number of job posts, and the most important thing, the format from which the post is written.
+
+After doing all this, the software shows a detailed summary to the freelancer, based on which the freelancer decides whether he needs to write a proposal or reject it. This feature gives freelancers a smarter way to decide which jobs are worth applying for, saving their time and increasing their chances of success. It also allows freelancers to focus more on quality work rather than wasting time applying for irrelevant jobs.
+
+After this, if a freelancer chooses to write a proposal, then the software suggests the best possible template, but also gives the freelancer full control to modify or customize it according to his own choice. The software then completes the proposal automatically in a professional format, ensuring that it matches the client's requirements, tone, and expectations. 
+
+In short, the main objective of this project is to help freelancers write proposals faster, smarter, and more effectively, using automation, intelligent analysis, and real-time client insights. This will not only improve the efficiency of freelancers but also increase their chances of getting hired by sending high-quality proposals in less time.
+\newpage
+
+\section{Stakeholders}
+Write about your project stakeholders here...
+\newpage
+
+\section{Software Development Methodology}
+Explain your chosen methodology here...
+\newpage
+
+\section{Tools and Technologies}
+List the tools and frameworks you plan to use...
+\newpage
+
+\section{References}
+Add your references here...
+
+\end{document}
