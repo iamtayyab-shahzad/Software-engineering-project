@@ -16,9 +16,10 @@
 **Role:** Requirement Provider  
 
 ## 🧾 Project Summary
-“Upwork Proposal Assistant” is a smart browser extension/app that helps freelancers automatically
+"Upwork Proposal Assistant" is a smart browser extension/app that helps freelancers automatically
 analyze Upwork client profiles, evaluate client reliability (hiring rate, feedback history, budget behavior), and generate personalized proposal templates based on past success data.  
-The system aims to save time and increase freelancers’ win rates through data-driven recommendations.
+
+The system aims to save time and increase freelancers' win rates through data-driven recommendations.
 
 ## 📅 Project Duration
 **Start Date:** 4 Nov 2025  
@@ -26,3 +27,18 @@ The system aims to save time and increase freelancers’ win rates through data-
 
 ## 📂 Repository Structure
 
+```
+Software-engineering-project/
+├── README.md
+├── Porposal_document/
+├── Meetingminutes/
+└── Meetingvideo/
+└── Documents/
+
+```
+
+## 🔗 Important Links
+
+**Meeting Video:** [View Meeting Video](https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingvideo)
+
+**Meeting Minutes:** [View Meeting Minutes](https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingminutes)
