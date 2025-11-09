@@ -5,8 +5,19 @@
 \usepackage{graphicx} 
 \usepackage{setspace}
 \usepackage{background}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{indentfirst}
 \geometry{margin=1in}
 
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=blue,
+    pdfborderstyle={/S/U/W 0}
+}
 
 \backgroundsetup{contents={}}
 
@@ -28,7 +39,7 @@
     
     {\large \textbf{Team Members}}\\[0.5cm]
     \renewcommand{\arraystretch}{1.5} 
-    \begin{tabular}{|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{4cm}|>{\centering\arraybackslash}m{5cm}|}
+    \begin{tabular}{|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{6cm}|}
         \hline
         Name & Roll Number & Email \\
         \hline
@@ -48,7 +59,6 @@
 
 
 \newpage
-
 \backgroundsetup{
     scale=1.1,
     angle=0,
@@ -56,7 +66,6 @@
     contents={\includegraphics[width=0.45\paperwidth]{Namal.png}}
 }
 \BgThispage
-
 
 {\small
 \setstretch{0.95}
@@ -117,7 +126,6 @@ Faisal Shahzad\\
 
 
 \newpage
-
 \backgroundsetup{contents={}}
 
 \tableofcontents
@@ -152,28 +160,166 @@ The Upwork Proposal Assistant addresses these problems by automating proposal wr
 
 
 \section{Objectives}
+
+The primary objective of the \textbf{Upwork Proposal Assistant} project is to design and develop an \textbf{intelligent application} that will help freelancers prepare more effective job proposals on the \textbf{Upwork platform}. The system will automatically \textbf{analyze client profiles}, assess client reliability based on parameters such as hiring rate and budget history, and generate personalized proposal templates using data from previous successful submissions.
+
 The Upwork Proposal Assistant is a software which solves such kinds of problems. It automates the process of writing proposals by using the smart template based on the user's previous history or client requirements and helps freelancers to get their job. There are already softwares present in the market which are doing the same thing, but the thing which makes our software unique is this that it not only writes proposals, but before doing this, the software looks at the past history of the client and fetches all its important information such as location from which freelancer can apply, job success rate, job completion rate, client reviews, client country, average hourly paid rate, last activity, total number of job posts, and the most important thing, the format from which the post is written.
 
 After doing all this, the software shows a detailed summary to the freelancer, based on which the freelancer decides whether he needs to write a proposal or reject it. This feature gives freelancers a smarter way to decide which jobs are worth applying for, saving their time and increasing their chances of success. It also allows freelancers to focus more on quality work rather than wasting time applying for irrelevant jobs.
 
-After this, if a freelancer chooses to write a proposal, then the software suggests the best possible template, but also gives the freelancer full control to modify or customize it according to his own choice. The software then completes the proposal automatically in a professional format, ensuring that it matches the client's requirements, tone, and expectations. 
+After this, if a freelancer chooses to write a proposal, then the software suggests the best possible template, but also gives the freelancer full control to modify or customize it according to his own choice. The software then completes the proposal automatically in a professional format, ensuring that it matches the client's requirements, tone, and expectations.
 
 In short, the main objective of this project is to help freelancers write proposals faster, smarter, and more effectively, using automation, intelligent analysis, and real-time client insights. This will not only improve the efficiency of freelancers but also increase their chances of getting hired by sending high-quality proposals in less time.
 \newpage
 
+
 \section{Stakeholders}
-Write about your project stakeholders here...
+
+\begin{itemize}
+    \item \textbf{Freelancer (End User):} As the project is about developing templates for the user specially for freelancers, its end user is a freelancer that may interact with this software to create proposals for their clients. This system will provide templates to end users so they could make proposals easily for their clients. The end user can also analyze their client profile and can also generate personalized proposals based on different templates provided by the software.
+    
+    \item \textbf{Administrator:} The system administrators are also stakeholders for this software as they will be responsible for managing the functionality of the software. They can also check the profiles of the system users. They are also responsible for the ethical use of the system; if there is any unethical activity being held, they can report to the legislative structure. In case of managing the system, the administrator is responsible to report bugs, updating and adding new features in the system to developers.
+    
+    \item \textbf{Developers:} Developers are also users for this software as they are responsible for the smooth functionality and can use it according to the constraints of the administrator in case of adding, removing and updating features. If there is any error that occurs in the system after the launching, they are responsible to check this bug and remove it. In this way, they are the salient users of the system.
+    
+    \item \textbf{Project Supervisors:} Project supervisors are also users of the software as they are responsible to provide a good featured software to the investors, system administrators and other key figures of the project. They work as a bridge between the developers team and administrative team. So they are also key users for the software.
+    
+    \item \textbf{Investors/External Platform:} External platforms such as Upwork can also use this software as part of their own platform to provide facilities to their users.
+\end{itemize}
+
+The system could have multiple users, so we can say that the system could be used publicly.
 \newpage
+
 
 \section{Software Development Methodology}
-Explain your chosen methodology here...
+
+The \textbf{Agile development methodology} will be adopted for this project. This methodology is chosen as it supports \textbf{incremental progress} with continuous iterations. The project is developed in various short sprints, with each sprint focused on a specific task such as proposal generation.
+
+This development methodology ensures \textbf{flexibility}, adaptability to changes, and helps maintain a high-quality product. It also promotes \textbf{collaboration with stakeholders} through regular meetings to verify and validate the system's performance and progress.
+
+\subsection*{Why Agile?}
+The Agile methodology is particularly suitable for this project due to the following reasons:
+
+\begin{itemize}
+    \item \textbf{Iterative Development:} The system can be developed incrementally, allowing for continuous improvement and feature additions based on feedback from the Requirement Provider.
+    
+    \item \textbf{Flexibility:} Requirements may evolve as we better understand user needs and Upwork's platform dynamics. Agile allows us to adapt to these changes efficiently.
+    
+    \item \textbf{Regular Feedback:} Through bi-weekly meetings with the Requirement Provider, we can ensure the system meets expectations and make necessary adjustments.
+    
+    \item \textbf{Risk Management:} By delivering working features in short sprints, we can identify and address potential issues early in the development process.
+\end{itemize}
+
+\subsection*{Tentative Development Schedule (One Year)}
+
+Assuming a one-year development timeline, the project will be divided into the following phases:
+
+\begin{itemize}
+    \item \textbf{Months 1-2: Requirements Gathering \& Planning}
+    \begin{itemize}
+        \item Meet with stakeholders to finalize requirements
+        \item Create detailed user stories and acceptance criteria
+        \item Set up development environment and tools
+        \item Design system architecture
+    \end{itemize}
+    
+    \item \textbf{Months 3-5: Sprint 1-3 (Core Features Development)}
+    \begin{itemize}
+        \item Develop user authentication and profile management
+        \item Implement client profile analysis feature
+        \item Create proposal template database
+        \item Build basic proposal generation engine
+    \end{itemize}
+    
+    \item \textbf{Months 6-8: Sprint 4-6 (Advanced Features)}
+    \begin{itemize}
+        \item Integrate AI-based proposal customization
+        \item Develop client history tracking and analysis
+        \item Implement success rate analytics
+        \item Create user dashboard and reporting features
+    \end{itemize}
+    
+    \item \textbf{Months 9-10: Sprint 7-8 (Testing \& Refinement)}
+    \begin{itemize}
+        \item Conduct comprehensive system testing
+        \item Perform user acceptance testing with freelancers
+        \item Fix bugs and optimize performance
+        \item Refine user interface based on feedback
+    \end{itemize}
+    
+    \item \textbf{Months 11-12: Deployment \& Maintenance}
+    \begin{itemize}
+        \item Deploy system to production environment
+        \item Provide user training and documentation
+        \item Monitor system performance
+        \item Plan for future enhancements
+    \end{itemize}
+\end{itemize}
+
+Throughout the development process, bi-weekly sprint reviews will be conducted with the Requirement Provider to ensure alignment with project goals and user expectations.
 \newpage
+
 
 \section{Tools and Technologies}
-List the tools and frameworks you plan to use...
+
+Developing software is not an easy process; it requires a lot of planning and the right set of tools. To implement the requirements of this project, we will use different tools for documentation, design, development, and collaboration. Some of the key tools and technologies are as follows:
+
+\subsection*{Documentation Tools}
+
+\textbf{LaTeX:} As LaTeX is a high-quality document preparation tool, we will be writing proposals and requirements from the RP using LaTeX. All types of documentation, including project reports and technical specifications, will be prepared through this tool to ensure professional formatting and presentation.
+
+\subsection*{Version Control and Collaboration}
+
+\textbf{GitHub:} We will be using GitHub for storing project files by creating repositories and for collaboration between project members. We will also be storing meeting minutes and videos that will be captured during meetings with the RP. GitHub will also be used for version control to track changes and maintain code integrity throughout the development process.
+
+\subsection*{Design and Prototyping Tools}
+
+\textbf{Figma:} Figma is a powerful tool for creating layouts and user interfaces for the software. We can create interactive prototypes for our system, allowing stakeholders to visualize the final product before development begins. This helps in gathering early feedback and making necessary adjustments to the design.
+
+\textbf{Canva:} We will also be using this tool to create designs and graphics for our system. Some visual elements and presentations will be created using Canva to enhance the overall aesthetic appeal of the project documentation and user interface.
+
+\subsection*{Requirement Management and Visualization}
+
+\textbf{LucidChart:} This is an advanced UML tool which provides different features for creating flowcharts to present requirements visually. This tool will be used to manage requirements, create system diagrams, and ensure simplicity in understanding complex processes. UML diagrams such as use case diagrams, sequence diagrams, and class diagrams will be created using LucidChart.
+
+\subsection*{Development Tools and Technologies}
+
+The specific programming languages, frameworks, and databases will be finalized after detailed requirement analysis. However, based on the project scope, the following technologies are being considered:
+
+\begin{itemize}
+    \item \textbf{Frontend Development:} React.js or Angular for creating an interactive user interface
+    \item \textbf{Backend Development:} Node.js with Express.js for server-side logic
+    \item \textbf{Database:} MongoDB or PostgreSQL for storing user data, templates, and client information
+    \item \textbf{AI/ML Integration:} Python with libraries such as TensorFlow or scikit-learn for proposal analysis and generation
+    \item \textbf{API Integration:} RESTful APIs for connecting with Upwork's platform (if applicable)
+\end{itemize}
+
+These tools and technologies will be reviewed and finalized in consultation with the Requirement Provider during the initial development sprints.
 \newpage
 
+
 \section{References}
-Add your references here...
+
+Here are the sources from which help for the development of this proposal has been taken:
+
+\begin{itemize}[label={}]
+    \item \url{https://mentorsol.com/best-software-development-tools/}
+    \item \url{https://www.upwork.com/resources/how-to-create-a-proposal-that-wins-jobs}
+    \item \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC8021201/}
+    \item \url{https://www.mdpi.com/2076-3417/12/21/10698}
+\end{itemize}
+
+\subsection*{AI Tools Usage}
+
+During the preparation of this proposal, AI tools were used for the following purposes:
+
+\begin{itemize}
+    \item Generating ideas for project objectives and features
+    \item Improving the clarity and structure of written content
+    \item Researching best practices for software development methodologies
+    \item Suggesting appropriate tools and technologies for the project
+\end{itemize}
+
+All AI-generated content was reviewed, edited, and customized by the team members to ensure accuracy and relevance to the project requirements.
 
 \end{document}
