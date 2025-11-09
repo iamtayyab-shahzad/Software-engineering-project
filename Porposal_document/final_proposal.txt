@@ -172,7 +172,7 @@ The project is developed in various short sprints, which each sprint focused on 
 This developing methodology ensures the flexibility, open to adapt changes and helps maintain high quality product.
 This methodology promotes collaboration with stakeholders, regular meetings to verify and validate the system.
 
-This methodology promotes team collaboration, early detection of issues and reduce risks of failures in later stages. The iterative nature of Agile also ensures that the system remains scalable and maintainable. In short, this methodology approach enhances overall efficiency of development and lead to user-focused product.
+This methodology promotes team collaboration, early detection of issues and reduce risks of failures in later stages. The iterative nature of Agile also ensures that the system remains scalable and maintainable. In short, this methodology approach enhances overall efficiency of development and leads to user-focused product.
 \newpage
 
 \section{Tools and Technologies}
