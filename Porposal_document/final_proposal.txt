@@ -166,7 +166,13 @@ Write about your project stakeholders here...
 \newpage
 
 \section{Software Development Methodology}
-Explain your chosen methodology here...
+The Agile development methodology will be adopted for this project. The methodology is chosen as it supports incremental progress will continuous iterations.
+ 
+The project is developed in various short sprints, which each sprint focused on a specific task like proposal generation.
+This developing methodology ensures the flexibility, open to adapt changes and helps maintain high quality product.
+This methodology promotes collaboration with stakeholders, regular meetings to verify and validate the system.
+
+This methodology promotes team collaboration, early detection of issues and reduce risks of failures in later stages. The iterative nature of Agile also ensures that the system remains scalable and maintainable. In short, this methodology approach enhances overall efficiency of development and lead to user-focused product.
 \newpage
 
 \section{Tools and Technologies}
