@@ -166,13 +166,18 @@ Write about your project stakeholders here...
 \newpage
 
 \section{Software Development Methodology}
-The Agile development methodology will be adopted for this project. The methodology is chosen as it supports incremental progress will continuous iterations.
- 
-The project is developed in various short sprints, which each sprint focused on a specific task like proposal generation.
-This developing methodology ensures the flexibility, open to adapt changes and helps maintain high quality product.
-This methodology promotes collaboration with stakeholders, regular meetings to verify and validate the system.
 
-This methodology promotes team collaboration, early detection of issues and reduce risks of failures in later stages. The iterative nature of Agile also ensures that the system remains scalable and maintainable. In short, this methodology approach enhances overall efficiency of development and leads to user-focused product.
+The Agile development methodology will be adopted for this project. The methodology is chosen as it supports incremental progress will continuous iterations, allowing the system to evolve gradually and adapt to changing requirements. This methodology promotes team collaboration, early detection of issues, and reduces the risk of failures in later stages of development. Its iterative nature also ensures that the system remains scalable, maintainable, and adaptable to future needs.
+
+The project will be divided into short, focused sprints, with each sprint dedicated to specific tasks such as data analysis, proposal generation, or user interface enhancement. These focused tasks ensure that the teams’ efforts are concentrated and measurable, allowing for easy tracking of achievements. At the end of each sprint, a working prototype or functional component is delivered, which can then be evaluated by stakeholders. This iterative approach reduces the risk of errors.The iterative approach ensures that the system remains organized, well-structured and capable of adapting to future technological advancements.
+
+Agile methodology promotes collaboration. Stakeholders maintain continuous communication to ensure alignment throughout the project. Daily meetings, sprint planning sessions and sprint retrospectives provide a structured way to share updates discuss challenges and propose solutions.
+
+Another important advantage of Agile is early detection and resolution of issues and errors. Continuous testing and integration throughout each sprint allow team to identify bugs. This approach helps maintain a high standard of quality along reducing risks.
+
+Agile methodology emphasizes customers, satisfaction. By involving stakeholders throughout development process, the team ensures that the product is up to the expectations and requirements of user. Feedback is asked in every sprint, which allows continuous improvement.
+
+By following Agile principles, project achieves a balance between speed, quality and flexibility. The combination of iterative progress, continuous testing and collaborative development ensures that final product is efficient and according to user requirements. Overall, Agile methodology enhances the productivity of team, improves communication and ensures that the product will be of high quality and reliable.
 \newpage
 
 \section{Tools and Technologies}
