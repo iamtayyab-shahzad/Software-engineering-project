@@ -1,0 +1,210 @@
+\documentclass[14pt,a4paper]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{array}   
+\usepackage{graphicx} 
+\usepackage{setspace}
+\usepackage{background}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\geometry{margin=1in}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,
+    urlcolor=blue,
+    pdfborderstyle={/S/U/W 0}
+}
+
+\backgroundsetup{contents={}}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    
+    {\Large \textbf{Namal University, Mianwali}}\\[0.2cm]
+    {\large Department of Computer Science}\\[1.5cm]
+
+    {\LARGE \textbf{CSC-225 – Software Engineering}}\\[0.5cm]
+    {\Large Complex Computing Problem – Milestone 1}\\[2cm]
+
+    {\huge \textbf{Upwork Proposal Assistant}}\\[0.5cm]
+    {\large \emph{Real-World Client Communication \& Proposal Automation System}}\\[2cm]
+
+    {\large \textbf{Team Members}}\\[0.5cm]
+    \renewcommand{\arraystretch}{1.5} 
+    \begin{tabular}{|>{\centering\arraybackslash}m{4.5cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{6cm}|}
+        \hline
+        Name & Roll Number & Email \\ \hline
+        Tayyab Shahzad & bscs24f77 & bscs24f77@namal.edu.pk \\
+        Najeeba       & bscs24f61 & bscs24f61@namal.edu.pk \\
+        Kashif Ali    & bscs24f29 & bscs24f29@namal.edu.pk \\ \hline
+    \end{tabular}\\[2cm]
+
+    {\large \textbf{Submission Date:} 9 November 2025}\\[0.3cm]
+    {\large \textbf{Instructor:} Asiya Batool}\\[2cm]
+
+    {\large \textbf{Department of Computer Science}}\\
+    {\large \textbf{Namal University, Mianwali}}
+\end{titlepage}
+
+\newpage
+\backgroundsetup{
+    scale=1.1,
+    angle=0,
+    opacity=0.08,
+    contents={\includegraphics[width=0.45\paperwidth]{Namal.png}}
+}
+\BgThispage
+
+{\small
+\setstretch{0.95}
+
+\begin{center}
+    \vspace*{0.2cm}
+    {\Large \textbf{Software development agreement}}\\[0.15em]
+    \vspace{0.15cm}
+\end{center}
+
+\noindent This Agreement is made on this day of \textbf{5 November 2025} between the Student Team of \textbf{Namal University, Mianwali}, enrolled in the \textbf{BS Computer Science} program, and the Requirement Provider (\textbf{RP}), \textbf{Faisal Shahzad} a Software Engineer at TechFoot with expertise in ERP and fintech systems using Node.js, Angular, and MariaDB. He now works as a freelancer, providing reliable software solutions, confirm collaboration for the semester software engineering project titled \textbf{"Upwork Proposal Assistant."}
+
+\vspace{0.3em}
+
+\noindent The purpose of this Agreement is to establish a professional understanding between the Student Team and the RP for the successful design and development of the assigned software project.
+
+\vspace{0.25em}
+\noindent\textbf{Mutual Obligations:}
+\begin{itemize}\itemsep0em
+    \item The RP will provide project requirements, domain guidance, and timely feedback.
+    \item The student team will maintain professionalism and effective communication.
+    \item Both parties will meet as needed for discussions and feedback sessions.
+    \item All shared information will remain confidential and will only be used for academic purposes.
+    \item The student team will work diligently to meet the project goals and deadlines.
+\end{itemize}
+
+\vspace{0.25em}
+\noindent This Agreement remains valid for the duration of the current academic semester. Both parties acknowledge that they have read and understood the terms of this Agreement and agree to collaborate responsibly for the success of the project.
+
+\vspace{0.4em}
+\noindent\textbf{Student Team:}
+\begin{enumerate}\itemsep0em
+    \item Tayyab Shahzad
+    \item Najeeba
+    \item Kashif Ali
+\end{enumerate}
+
+\vspace{0.25em}
+\noindent\textbf{Requirement Provider (RP):}\\
+Faisal Shahzad\\
+
+\vspace{0.8em}
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.3cm]{tayyab.png}\\
+    \centering \textbf{Student Leader}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \includegraphics[width=2.3cm]{faisal.png}\\
+    \centering \textbf{Requirement Provider (RP)}
+\end{minipage}
+
+\vfill
+\begin{center}
+    \footnotesize This document serves as an official record of mutual understanding between the student project team and the Requirement Provider.
+\end{center}
+}
+
+\newpage
+\backgroundsetup{contents={}}
+
+\tableofcontents
+\thispagestyle{plain}
+\newpage
+
+% =================== INTRODUCTION ===================
+\section{Introduction}
+\vspace*{2cm}
+
+In today's freelancing world, many online platforms such as Upwork have created new ways for freelancers to connect with professional clients. Success on such platforms depends on proposal writing, which is the first impression of freelancer on the client. Many freelancers find it difficult to write professional and attractive proposals, which is time-consuming and requires skill and experience.
+
+The Upwork Proposal Assistant is a software that solves these problems. It automates the process of writing proposals using smart templates based on user history or client requirements and helps freelancers improve their chances of selection. It also acts as a learning tool for freelancers to improve their writing skills over time.
+
+\vfill 
+\newpage
+
+% =================== PROBLEM STATEMENT ===================
+\section{Problem Statement}
+
+Freelancers often struggle to write professional proposals quickly, reducing their chances of selection. Writing proposals manually is time-consuming and requires skill and experience. Additionally, proposals must address client-specific needs effectively; generic proposals often fail to capture attention. 
+
+The Upwork Proposal Assistant provides an automated, efficient solution, generating professional and personalized proposals quickly while helping users improve their proposal-writing skills.
+
+\newpage
+
+% =================== OBJECTIVES ===================
+\section{Objectives}
+
+\begin{itemize}[leftmargin=*]\itemsep0.5em
+    \item Automate proposal generation based on client requirements.
+    \item Provide quick editing and customization of generated proposals.
+    \item Improve proposal quality and success rate for freelancers.
+\end{itemize}
+
+\newpage
+
+% =================== STAKEHOLDERS ===================
+\section{Stakeholders}
+
+\begin{itemize}[leftmargin=*]\itemsep0.5em
+    \item \textbf{Freelancer (End User):} Uses the system to create and submit proposals.
+    \item \textbf{Administrator:} Manages system functionality, ensures ethical use, and handles bug fixes.
+    \item \textbf{Developer:} Ensures smooth functionality, adds/updates features, and resolves technical issues. (Explicitly included as a stakeholder)
+    \item \textbf{Project Supervisors:} Bridge between developers and administrative team, ensures quality delivery.
+    \item \textbf{Investors/External Platform:} May integrate software to enhance user experience.
+\end{itemize}
+
+\newpage
+
+% =================== METHODOLOGY ===================
+\section{Software Development Methodology}
+
+The \textbf{Agile Scrum methodology} will be adopted for this project, supporting incremental progress and continuous iterations. Work will be divided into short sprints, with daily stand-ups, sprint reviews, and backlog refinement. This ensures flexibility, collaboration with stakeholders, and continuous improvement.
+
+\subsection*{Tentative Development Schedule (One Year)}
+
+\begin{itemize}[leftmargin=*]\itemsep0.3em
+    \item \textbf{Months 1-2: Requirements Gathering \& Planning}  
+    \item \textbf{Months 3-5: Sprint 1-3 (Core Features Development)}  
+    \item \textbf{Months 6-8: Sprint 4-6 (Advanced Features)}  
+    \item \textbf{Months 9-10: Sprint 7-8 (Testing \& Refinement)}  
+    \item \textbf{Months 11-12: Deployment \& Maintenance}  
+\end{itemize}
+
+Throughout the development process, bi-weekly sprint reviews will be conducted with the Requirement Provider to ensure alignment with project goals and user expectations.
+
+\newpage
+
+% =================== REFERENCES ===================
+\section{References}
+
+\begin{itemize}[label={}]\itemsep0.3em
+    \item \url{https://mentorsol.com/best-software-development-tools/}
+    \item \url{https://www.upwork.com/resources/how-to-create-a-proposal-that-wins-jobs}
+    \item \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC8021201/}
+    \item \url{https://www.mdpi.com/2076-3417/12/21/10698}
+\end{itemize}
+
+\subsection*{AI Prompts Usage}
+
+\begin{itemize}[leftmargin=*]\itemsep0.3em
+    \item GPT Prompt: "Generate an automated Upwork proposal for a web development project."
+    \item GPT Prompt: "Summarize client requirements for a freelance proposal."
+    \item GPT Prompt: "Suggest improvements to an existing freelance proposal."
+    \item GPT Prompt: "Provide tips for writing high-quality Upwork proposals."
+    \item GPT Prompt: "Generate multiple versions of a proposal for testing user response."
+\end{itemize}
+
+\end{document}
