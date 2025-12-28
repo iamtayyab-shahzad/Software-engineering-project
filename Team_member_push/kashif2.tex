@@ -1,0 +1,184 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Non-Functional Requirements \\ Upwork Proposal Assistant}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Non-Functional Requirements}
+
+Non-functional requirements describe \textbf{how the system performs} rather than what it does. They define the quality, performance, reliability, and usability of the software.
+
+\subsection*{1. Performance Requirements}
+
+\begin{itemize}
+    \item The system should generate a proposal within 2--5 seconds after user input.
+    \item The application should handle multiple users simultaneously without performance degradation.
+    \item Page loading time should not exceed 3 seconds under normal network conditions.
+\end{itemize}
+
+\subsection*{2. Usability Requirements}
+
+\begin{itemize}
+    \item The system should have a simple and intuitive user interface.
+    \item Users with basic computer knowledge should be able to use the system without training.
+    \item Navigation between different sections (dashboard, proposal generation, history) should be smooth and clear.
+    \item The interface should be responsive and adaptable to different screen sizes.
+\end{itemize}
+
+\subsection*{3. Reliability Requirements}
+
+\begin{itemize}
+    \item The system should be available 24/7, except during scheduled maintenance.
+    \item It should handle unexpected failures gracefully without data loss.
+    \item Automatic backup of user data should be performed regularly.
+\end{itemize}
+
+\subsection*{4. Security Requirements}
+
+\begin{itemize}
+    \item User data must be protected using secure authentication mechanisms.
+    \item All data transmission should be encrypted using HTTPS.
+    \item Unauthorized access to user data must be prevented.
+    \item User credentials and sensitive information should be securely stored.
+\end{itemize}
+
+\subsection*{5. Scalability Requirements}
+
+\begin{itemize}
+    \item The system should be able to handle an increasing number of users without performance issues.
+    \item It should support future expansion, such as adding new features or integrating with more platforms.
+\end{itemize}
+
+\subsection*{6. Maintainability Requirements}
+
+\begin{itemize}
+    \item The system should be modular, making it easy to update or modify individual components.
+    \item Clear documentation should be maintained for future developers.
+    \item Bugs and updates should be fixable without affecting the entire system.
+\end{itemize}
+
+\subsection*{7. Compatibility Requirements}
+
+\begin{itemize}
+    \item The system should be compatible with major web browsers (Chrome, Firefox, Edge).
+    \item It should run on multiple operating systems such as Windows, macOS, and Linux.
+\end{itemize}
+
+\subsection*{8. Availability Requirements}
+
+\begin{itemize}
+    \item The system should maintain at least 99\% uptime.
+    \item Downtime for maintenance should be minimal and preferably scheduled during off-peak hours.
+\end{itemize}
+
+\subsection*{9. Data Integrity Requirements}
+
+\begin{itemize}
+    \item User data should remain accurate and consistent throughout all operations.
+    \item The system must prevent data loss during crashes or unexpected shutdowns.
+\end{itemize}
+
+\subsection*{10. Compliance Requirements}
+
+\begin{itemize}
+    \item The system should comply with data protection and privacy standards.
+    \item It should follow ethical guidelines regarding user data usage.
+\end{itemize}
+
+\section{External Interface of the Upwork Proposal Assistant}
+
+The external interface defines how the Upwork Proposal Assistant interacts with users, hardware, software systems, and communication networks. It ensures smooth interaction between the system and its external environment, enabling users to efficiently generate professional proposals.
+
+\subsection{1. User Interface (UI)}
+
+The user interface is the main point of interaction between the freelancer and the system. It must be simple, intuitive, and user-friendly to allow easy navigation.
+
+\subsubsection*{Key Features of the User Interface:}
+
+\begin{itemize}
+    \item Login and registration screen for freelancers
+    \item Dashboard displaying:
+    \begin{itemize}
+        \item User profile details
+        \item Past proposals
+        \item Client analysis summary
+    \end{itemize}
+    \item Form to input job details or paste the job description
+    \item Option to view client profile analysis (budget, job history, ratings, etc.)
+    \item Template selection interface
+    \item Editable proposal editor
+    \item Preview and download option for the final proposal
+\end{itemize}
+
+The UI should be responsive and accessible on desktops, laptops, and tablets.
+
+\subsection{2. Hardware Interface}
+
+The system does not require specialized hardware and can operate on standard computing devices.
+
+\subsubsection*{Supported Hardware:}
+
+\begin{itemize}
+    \item Desktop computers
+    \item Laptops
+    \item Tablets
+\end{itemize}
+
+\subsubsection*{Input Devices:}
+
+\begin{itemize}
+    \item Keyboard
+    \item Mouse / Touchpad
+\end{itemize}
+
+\subsubsection*{Output Devices:}
+
+\begin{itemize}
+    \item Monitor / Screen
+\end{itemize}
+
+The system will run through a web browser, making it accessible on most modern devices.
+
+\subsection{3. Software Interface}
+
+The software interacts with several internal and external software components:
+
+\subsubsection*{Internal Software Interfaces}
+
+\begin{itemize}
+    \item Database system to store:
+    \begin{itemize}
+        \item User profiles
+        \item Proposal templates
+        \item Client analysis data
+    \end{itemize}
+    \item Backend services for:
+    \begin{itemize}
+        \item Proposal generation
+        \item User authentication
+        \item Data processing
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{External Software Interfaces}
+
+\begin{itemize}
+    \item Web browsers (Chrome, Firefox, Edge)
+    \item APIs for:
+    \begin{itemize}
+        \item Fetching client/job data (if applicable)
+        \item AI-based text generation
+    \end{itemize}
+\end{itemize}
+
+These interfaces ensure smooth communication between system modules.
+
+\end{document}
