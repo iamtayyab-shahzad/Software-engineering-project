@@ -3,54 +3,140 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{titlesec}
 
-\title{Stakeholder Identification, Tools and Technologies}
+\title{Software Requirements Specification\\Upwork Proposal Assistant}
 \author{}
 \date{}
 
 \begin{document}
 
-\section*{Stack holder identification:}
+\maketitle
 
+\section{Introduction}
+This section defines SRS purpose, scope and organization to make stakeholders understand.
+
+\subsection{Purpose}
+This Software Requirements Specification (SRS) document comprehensively defines all Functional requirements (FR) and non-Functional requirements (NFR). It serves as the contractual basis between team and the Requirement Provider (RP), providing the base for system design, implementation, verification, and validation [1,2].
+
+\subsection{Scope}
+The Upwork Proposal Assistant shall analyse client profiles from Upwork (hiring rate, budget history, job success rate, reviews, location), generate the proposal templates using past successful submissions, and provide client summary so that the freelancers may decide whether to apply or not. The benefit is that the time wasted in writing proposal is reduced. The job success rate is 3x higher as there is client analysis [3,4].
+
+\subsection{Definitions, Acronyms, and Abbreviations}
 \begin{itemize}
-    \item \textbf{Freelancer(enduser):} As the project iss about developing template for the user specially for freelancers so its end user is a freelancer that may interact this software to create proposals for thier client. This system will provide template to end user so they could make proposal easily for their client. The end user can also analyze their client profile and can also generate personalized proposals based on different templates provided by the software.
-    
-    \item \textbf{Administrator:} The system administrators are also stack holder for this software as he will be responsible for managing the functionality of their software. They can also check the profiles of the system users. They is also responsible for the ethical use of the system, if there is any unethical activity is being held they can report to the legislative structure. In case of managing system, the administrator is responsible to report the bugs, updating and adding new features in the system to developers.
-    
-    \item \textbf{Developers:} Developers are also user for this software as they are responsible for the smooth functionality and can use according to the constraints of the administrator in case of adding, removing and updating features. If there is any error occurs in the system after the launching, they are responsible to check this bug and remove it. In this way, they are the salient users of the system.
-    
-    \item \textbf{Project supervisors:} are also the user of the software as they are responsible to provide a good featured software to the investors, system administrator and other key figure of the project. They works as a bridge between the developers team and administrative team. So they is also key user for the software.
-    
-    \item \textbf{Investors/external platform:} such as upwork can also use this software as the part of their own to provide facility to their users.
+    \item RP: Requirement Provider (Faisal Shahzad)
+    \item SRS: Software Requirements Specification
+    \item FR: Functional Requirement
+    \item NFR: Non-Functional Requirement
+    \item UI: User Interface
+    \item JSR: Job Success Rate
 \end{itemize}
 
-So the system could have multiple users, so we can say that system could be used publically.
+All undefined terms confirm to IEEE Std 729-1983 Glossary of Software Engineering Terminology [5].
 
-\section*{Tools and Technologies:}
+\section{Overall Description}
+This section provides essential context without specifying implementation details or design solutions.
 
-Developing software is not an easy process, there require a lot of requirement.
+\subsection{Product Perspective}
+New standalone browser extension solving the manual Upwork proposal inefficiencies. Unlike generic template tools, it analyses client history (location eligibility, JSR, hourly rates, post format) before generating personalized proposals [3].
 
-To implement these requirement, we use different tools. In this system, we are going to use lot of tools in case of documentation and designing. Some of the tools are as follows
-
-\textbf{Latex:} As latex is high quality documents preparation tool so we will be writing proposals and requirements from the RP on latex. All type of documentation will be prepared through this tool
-
-\textbf{GitHub:} We will be using GitHub for the storing of proposals by creating repositories and for the collaboration between the projects members. We will also be storing meeting minute and videos that will be captured during the meeting with RP. We will also be using GitHub for the controlling of version.
-
-\textbf{Figma:} Figma is powerful tool for creating layout for the software. We can create interactive prototype for our system.
-
-\textbf{Canva:} we will be aslo using this tool to create design for our system. Some graphics will also being done here. So Canva will also be used.
-
-\textbf{LucidChart:} This is an advanced UML which provide us different feature for the creating flowchart to present requirement visually. This toll will also be used to manage requirement and creating simplicity.
-
-\section*{References:}
-
-Here are some link of sites from where the help for the developing of this proposal has been taken.
-
-\begin{itemize}[label={}]
-    \item \url{https://mentorsol.com/best-software-development-tools/}
-    \item \url{https://www.upwork.com/resources/how-to-create-a-proposal-that-wins-jobs}
-    \item \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC8021201/}
-    \item \url{https://www.mdpi.com/2076-3417/12/21/10698}
+\subsection{Product Functions}
+The system shall support five major functions:
+\begin{itemize}
+    \item Client profile analysis (JSR, reviews, location)
+    \item Client reliability assessment and decision recommendations
+    \item Personalized proposal template generation from past successes
+    \item Proposal customization with full freelancer control
+    \item Success analytics dashboard
 \end{itemize}
+
+\subsection{User Characteristics}
+\textbf{Primary users include:}
+\begin{itemize}
+    \item \textbf{Freelancers} (primary): Intermediate web skills, frequent use, need quick client analysis
+    \item \textbf{Administrators}: Advanced skills, manage templates or users
+    \item \textbf{Developers}: Project team for maintenance
+\end{itemize}
+
+All users have basic browser proficiency.
+
+\subsection{General Constraints}
+\begin{itemize}
+    \item Browser compatibility: Chrome v100+, Firefox v100+, Edge v100+
+    \item No direct Upwork API integration (manual client data input required)
+    \item Freelancer data privacy and ethical usage compliance
+\end{itemize}
+
+\subsection{Assumptions and Dependencies}
+\begin{itemize}
+    \item Freelancers manually input accurate client profile data (JSR, client reviews)
+    \item RP provides validated client analysis parameters and scoring weights
+    \item Users maintain active Upwork accounts
+    \item Past successful proposal data available for template training
+\end{itemize}
+
+\section{Functional Requirements}
+Organized per IEEE Table 2 using ``The system shall...'' format with unique FR-IDs [1].
+
+\subsection{FR-001 Client Profile Analysis}
+\subsubsection{Introduction}
+The system shall analyse Upwork client profiles and generate reliability scores.
+
+\subsubsection{Inputs}
+Client data: JSR (0-100\%), hourly rate (\$0-200), total jobs posted (0-1000), reviews (0-500), location, last activity date, post format.
+
+\subsubsection{Processing}
+Calculate reliability score (0-100) using weighted parameters; location eligibility; detect high-risk clients (JSR<30\%); generate decision recommendation.
+
+\subsubsection{Outputs}
+Client summary report, reliability score, apply or reject recommendation within 2 seconds.
+
+\subsection{FR-002 Proposal Template Generation}
+\subsubsection{Introduction}
+The system shall generate personalized proposals matching client requirements and past successes.
+
+\subsubsection{Inputs}
+Client summary, job requirements, freelancer's past successful proposals, preferred style.
+
+\subsubsection{Processing}
+Match client post format to optimal templates; insert personalized elements (skills, experience); adapt tone to client location or preferences.
+
+\subsubsection{Outputs}
+Complete editable proposal draft in professional format.
+
+\subsection{FR-003 Freelancer Decision Support}
+\subsubsection{Introduction}
+The system shall provide actionable recommendations before proposal submission.
+
+\subsubsection{Inputs}
+Client analysis results, freelancer's application resources and time availability.
+
+\subsubsection{Processing}
+Risk assessment; Connects cost vs. success probability; time investment analysis.
+
+\subsubsection{Outputs}
+Decision matrix: ``Strong Apply'', ``Apply with Caution'', ``Skip''; expected ROI (Return on Investment).
+
+\subsection{FR-004 Template Management}
+\subsubsection{Introduction}
+The system shall maintain and update proposal templates.
+
+\subsubsection{Inputs}
+New successful proposals, RP-approved templates, performance analytics.
+
+\subsubsection{Processing}
+Auto-categorize by client type or job category; rank by success rate; suggest improvements.
+
+\subsubsection{Outputs}
+Template library with success metrics; admin approval workflow.
+
+\section{References (IEEE Style)}
+\begin{enumerate}
+    \item IEEE Std 830-1998, \textit{IEEE Recommended Practice for Software Requirements Specifications}, IEEE Computer Society, 1998.
+    \item ISO/IEC/IEEE 29148:2018, \textit{Systems and Software Engineering --- Requirements Engineering}, ISO, 2018.
+    \item Upwork, ``How to Create a Proposal That Wins Jobs.'' \url{https://www.upwork.com/resources/how-to-create-a-proposal-that-wins-jobs}
+    \item M. Al-Razgan et al., ``Artificial Intelligence-Based Text Generation Systems,'' \textit{Applied Sciences}, vol. 12, no. 21, 2022.
+    \item IEEE Std 729-1983, \textit{IEEE Glossary of Software Engineering Terminology}, IEEE Computer Society.
+\end{enumerate}
 
 \end{document}
