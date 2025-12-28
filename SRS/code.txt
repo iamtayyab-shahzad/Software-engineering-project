@@ -166,15 +166,317 @@ The system shall store, update, and rank proposal templates based on performance
 \end{itemize}
 
 % -------------------------------------------------
+\section{External Interface Requirements}
+
+\subsection{Hardware Interface}
+
+The system does not require specialized hardware and can operate on standard computing devices.
+
+\textbf{Supported Hardware:}
+\begin{itemize}
+    \item Desktop computers
+    \item Laptops
+    \item Tablets
+\end{itemize}
+
+\textbf{Input Devices:}
+\begin{itemize}
+    \item Keyboard
+    \item Mouse / Touchpad
+\end{itemize}
+
+\textbf{Output Devices:}
+\begin{itemize}
+    \item Monitor / Screen
+\end{itemize}
+
+The system will run through a web browser, making it accessible on most modern devices.
+
+\subsection{Software Interface}
+
+The software interacts with several internal and external software components.
+
+\textbf{Internal Software Interfaces:}
+\begin{itemize}
+    \item Database system to store:
+    \begin{itemize}
+        \item User profiles
+        \item Proposal templates
+        \item Client analysis data
+    \end{itemize}
+    \item Backend services for:
+    \begin{itemize}
+        \item Proposal generation
+        \item User authentication
+        \item Data processing
+    \end{itemize}
+\end{itemize}
+
+\textbf{External Software Interfaces:}
+\begin{itemize}
+    \item Web browsers (Chrome, Firefox, Edge)
+    \item APIs for:
+    \begin{itemize}
+        \item Fetching client or job data (if applicable)
+        \item AI-based text generation
+    \end{itemize}
+\end{itemize}
+
+These interfaces ensure smooth communication between system modules.
+
+% -------------------------------------------------
 \section{System Diagrams}
 
 \subsection{Context Diagram}
 \includegraphics[width=0.8\textwidth]{context_diagram.jpg}
 
-
 \subsection{Use Case Diagram}
 \includegraphics[width=0.8\textwidth]{usecase.png}
 
+% -------------------------------------------------
+\section{References}
+\begin{itemize}
+    \item IEEE Std 830-1998, Software Requirements Specification
+    \item ISO/IEC/IEEE 29148:2018, Requirements Engineering
+    \item Upwork Proposal Writing Guidelines
+    \item IEEE Std 729-1983, Software Engineering Glossary
+\end{itemize}
+
+\end{document}
+\documentclass[12pt,a4paper]{article}
+
+% ---------------- Packages ----------------
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+\onehalfspacing
+
+\titleformat{\section}{\bfseries\Large}{\thesection}{1em}{}
+\titleformat{\subsection}{\bfseries\large}{\thesubsection}{1em}{}
+
+% ---------------- Document ----------------
+\begin{document}
+
+\begin{center}
+    \textbf{\LARGE Software Requirements Specification (SRS)}\\[0.5em]
+    \textbf{Upwork Proposal Assistant}\\[1em]
+\end{center}
+
+\tableofcontents
+\newpage
+
+% -------------------------------------------------
+\section{Introduction}
+
+This section describes the purpose and scope of the Software Requirements Specification (SRS) to help stakeholders understand the system.
+
+\subsection{Purpose}
+This SRS document defines the Functional Requirements (FR) and Non-Functional Requirements (NFR) of the system. It acts as a formal reference between the development team and the Requirement Provider (RP) and provides a basis for system design, implementation, and validation.
+
+\subsection{Scope}
+The Upwork Proposal Assistant analyzes client profiles from Upwork such as job success rate, reviews, budget history, and location. Based on this analysis, it generates proposal templates using past successful submissions and provides a client summary to help freelancers decide whether to apply. The system reduces proposal writing time and improves decision-making.
+
+\subsection{Definitions and Abbreviations}
+\begin{itemize}
+    \item RP: Requirement Provider
+    \item SRS: Software Requirements Specification
+    \item FR: Functional Requirement
+    \item NFR: Non-Functional Requirement
+    \item UI: User Interface
+    \item JSR: Job Success Rate
+\end{itemize}
+
+All undefined terms follow IEEE Std 729-1983.
+
+% -------------------------------------------------
+\section{Overall Description}
+
+\subsection{Product Perspective}
+The system is a standalone browser extension designed to reduce manual effort in writing Upwork proposals by analyzing client history before proposal generation.
+
+\subsection{Product Functions}
+\begin{itemize}
+    \item Client profile analysis
+    \item Client reliability assessment
+    \item Personalized proposal generation
+    \item Proposal editing and customization
+    \item Proposal history and analytics
+\end{itemize}
+
+\subsection{User Characteristics}
+\begin{itemize}
+    \item Freelancers: Basic web skills, frequent users
+    \item Administrators: Manage templates and users
+    \item Developers: Maintain and update the system
+\end{itemize}
+
+All users have basic browser proficiency.
+
+\subsection{General Constraints}
+\begin{itemize}
+    \item Compatible with Chrome, Firefox, and Edge
+    \item No direct Upwork API integration
+    \item Ethical and privacy-compliant data usage
+\end{itemize}
+
+\subsection{Assumptions and Dependencies}
+\begin{itemize}
+    \item Freelancers provide accurate client data
+    \item RP provides scoring rules
+    \item Users have active Upwork accounts
+    \item Past proposal data is available
+\end{itemize}
+
+% -------------------------------------------------
+\section{Functional Requirements}
+
+\subsection{FR-001 Client Profile Analysis}
+The system shall analyze client data and generate a reliability score and application recommendation.
+
+\subsection{FR-002 Proposal Template Generation}
+The system shall generate personalized and editable proposal drafts based on client requirements and past successful proposals.
+
+\subsection{FR-003 Freelancer Decision Support}
+The system shall provide recommendations such as Strong Apply, Apply with Caution, or Skip.
+
+\subsection{FR-004 Template Management}
+The system shall store, update, and rank proposal templates based on performance.
+
+% -------------------------------------------------
+\section{Non-Functional Requirements}
+
+\subsection{Performance Requirements}
+\begin{itemize}
+    \item The system shall load the main interface within 3 seconds under normal network conditions.
+    \item Client profile analysis and proposal generation shall complete within 5 seconds.
+    \item The system shall support multiple concurrent users without performance degradation.
+    \item External requests shall be handled asynchronously.
+\end{itemize}
+
+\subsection{Reliability and Availability}
+\begin{itemize}
+    \item The system shall maintain at least 99\% uptime per month.
+    \item The system shall handle failures gracefully.
+    \item User data shall not be lost during unexpected shutdowns.
+\end{itemize}
+
+\subsection{Usability Requirements}
+\begin{itemize}
+    \item The system shall provide a simple and intuitive user interface.
+    \item User input shall be minimized where possible.
+    \item Error messages shall be clear and informative.
+\end{itemize}
+
+\subsection{Security Requirements}
+\begin{itemize}
+    \item All communication shall use HTTPS with TLS encryption.
+    \item User data shall be stored securely with restricted access.
+    \item Unauthorized access shall be prevented.
+\end{itemize}
+
+\subsection{Scalability Requirements}
+\begin{itemize}
+    \item The system shall support increasing numbers of users.
+    \item Future freelance platform integration shall be possible.
+\end{itemize}
+
+\subsection{Maintainability and Modularity}
+\begin{itemize}
+    \item The system shall follow a modular architecture.
+    \item Code shall be well-documented.
+    \item Updates shall not disrupt existing functionality.
+\end{itemize}
+
+\subsection{Data Backup and Recovery}
+\begin{itemize}
+    \item User data shall be backed up every 24 hours.
+    \item Data recovery shall be supported in case of failure.
+\end{itemize}
+
+\subsection{Compatibility and Portability}
+\begin{itemize}
+    \item The system shall work on modern browsers and operating systems.
+    \item The browser extension shall not interfere with normal platform usage.
+\end{itemize}
+
+\subsection{Legal and Ethical Constraints}
+\begin{itemize}
+    \item The system shall comply with third-party platform policies.
+    \item The system shall prevent unethical usage.
+    \item Final proposal submission responsibility remains with the freelancer.
+\end{itemize}
+
+% -------------------------------------------------
+\section{External Interface Requirements}
+
+\subsection{Hardware Interface}
+
+The system does not require specialized hardware and can operate on standard computing devices.
+
+\textbf{Supported Hardware:}
+\begin{itemize}
+    \item Desktop computers
+    \item Laptops
+    \item Tablets
+\end{itemize}
+
+\textbf{Input Devices:}
+\begin{itemize}
+    \item Keyboard
+    \item Mouse / Touchpad
+\end{itemize}
+
+\textbf{Output Devices:}
+\begin{itemize}
+    \item Monitor / Screen
+\end{itemize}
+
+The system will run through a web browser, making it accessible on most modern devices.
+
+\subsection{Software Interface}
+
+The software interacts with several internal and external software components.
+
+\textbf{Internal Software Interfaces:}
+\begin{itemize}
+    \item Database system to store:
+    \begin{itemize}
+        \item User profiles
+        \item Proposal templates
+        \item Client analysis data
+    \end{itemize}
+    \item Backend services for:
+    \begin{itemize}
+        \item Proposal generation
+        \item User authentication
+        \item Data processing
+    \end{itemize}
+\end{itemize}
+
+\textbf{External Software Interfaces:}
+\begin{itemize}
+    \item Web browsers (Chrome, Firefox, Edge)
+    \item APIs for:
+    \begin{itemize}
+        \item Fetching client or job data (if applicable)
+        \item AI-based text generation
+    \end{itemize}
+\end{itemize}
+
+These interfaces ensure smooth communication between system modules.
+
+% -------------------------------------------------
+\section{System Diagrams}
+
+\subsection{Context Diagram}
+\includegraphics[width=0.8\textwidth]{context_diagram.jpg}
+
+\subsection{Use Case Diagram}
+\includegraphics[width=0.8\textwidth]{usecase.png}
 
 % -------------------------------------------------
 \section{References}
