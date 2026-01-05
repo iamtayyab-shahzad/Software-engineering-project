@@ -23,11 +23,11 @@ Role: Freelancer and Requirement Provider
 ---
 
 ## Project Description
-Upwork Proposal Assistant is a software system designed to assist freelancers in analyzing Upwork job postings and client profiles before submitting proposals. The system evaluates multiple client-related factors such as hiring behavior, feedback history, job success rate, and budget patterns to determine client reliability.
+Upwork Proposal Assistant is a software system developed to assist freelancers in analyzing Upwork job postings and client profiles before submitting proposals. The system evaluates client-related factors such as hiring history, feedback records, job success rate, and budget behavior to assess client reliability.
 
-Based on this analysis, the system generates structured and customizable proposal drafts using predefined templates and historical success data. Additionally, the system provides decision support recommendations to help freelancers determine whether applying for a particular job is beneficial. The primary objective of the system is to reduce proposal writing time, improve decision-making, and increase proposal success rates.
+Based on this analysis, the system generates structured and customizable proposal drafts using predefined templates and historical success data. It also provides decision-support recommendations to help freelancers decide whether applying for a specific job is worthwhile. The main goal of the system is to reduce proposal writing time, improve decision-making, and increase proposal success rates.
 
-This project is being developed following standard software engineering practices and documented according to IEEE Software Requirements Specification (SRS) guidelines.
+The project follows standard software engineering practices and is documented according to IEEE Software Requirements Specification (SRS) guidelines.
 
 ---
 
@@ -38,12 +38,12 @@ The system focuses on:
 - Freelancer decision support
 - Administrative management of templates and system data
 
-The system does not submit proposals automatically; final submission remains the responsibility of the freelancer.
+The system does not automatically submit proposals. Final submission remains the responsibility of the freelancer.
 
 ---
 
 ## UI Prototypes (Figma)
-The system user interface has been designed using Figma. The prototypes represent the visual flow and interaction of both user roles.
+The user interface of the system has been designed using Figma. The prototypes represent the workflow and interactions for both user roles.
 
 Freelancer Side Prototype:  
 https://output-badger-16575296.figma.site/
@@ -63,25 +63,26 @@ End Date: 17 January 2026
 Software-engineering-project/
 ├── README.md
 ├── Proposal_document/
-├── Meetingminutes/
-├── Meetingvideo/
+├── Milestone_1_work/
+│   ├── Meetingvideo/
+│   └── Meetingminutes/
 └── Documents/
 
 ---
 
 ## Project Documentation
 - Proposal documents and SRS are available in the Documents folder
-- Client meetings and discussions are recorded and stored
-- Meeting minutes are maintained for requirement validation and progress tracking
+- Requirement Provider meetings are recorded and stored for validation
+- Meeting minutes are maintained for requirement clarification and progress tracking
 
 ---
 
 ## Important Links
 Meeting Videos:  
-https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingvideo
+https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Milestone_1_work/Meetingvideo
 
 Meeting Minutes:  
-https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingminutes
+https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Milestone_1_work/Meetingminutes
 
 ---
 
