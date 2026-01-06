@@ -1,490 +1,1321 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{report}
 
 % ---------------- Packages ----------------
-\usepackage[a4paper, margin=1in]{geometry}
-\usepackage{graphicx}
-\usepackage[hidelinks]{hyperref}
+\usepackage[a4paper,margin=1in]{geometry}
 \usepackage{setspace}
-\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
 \usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage{pgf-umlsd}
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit, backgrounds}
 
+% ---------------- Spacing & Titles ----------------
 \onehalfspacing
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
 
 \titleformat{\section}{\bfseries\Large}{\thesection}{1em}{}
 \titleformat{\subsection}{\bfseries\large}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection}{1em}{}
+
+% ---------------- Header & Footer ----------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Upwork Proposal Assistant SRS}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------------- TikZ Styles ----------------
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{entity} = [rectangle, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=green!20]
+\tikzstyle{system} = [ellipse, minimum width=3cm, minimum height=2cm, text centered, draw=black, fill=yellow!30, line width=1.5pt]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 % ---------------- Document ----------------
 \begin{document}
 
-\begin{center}
-    \textbf{\LARGE Software Requirements Specification (SRS)}\\[0.5em]
-    \textbf{Upwork Proposal Assistant}\\[1em]
-\end{center}
+% ---------------- Title Page ----------------
+\begin{titlepage}
+\centering
+\vspace*{1in}
 
+{\Huge \textbf{Software Requirements Specification}}\\[0.3cm]
+{\Huge \textbf{(SRS)}}\\[1cm]
+{\LARGE \textbf{Upwork Proposal Assistant}}\\[0.5cm]
+{\large A Browser Extension for Intelligent Freelance Proposal Management}\\[2cm]
+
+{\large \textbf{Prepared By:}}\\[0.3cm]
+{\large University Project Team}\\
+{\large Department of Computer Science}\\
+{\large Namal University, Mianwali}\\[1.5cm]
+
+{\large \textbf{Document Version:} 1.0}\\[0.3cm]
+{\large \textbf{Date:} January 5, 2026}\\[1cm]
+
+{\large \textbf{Prepared For:}}\\
+{\large CSC-225 – Software Engineering}\\
+{\large Complex Computing Problem – Milestone 2}\\
+
+\vfill
+
+{\small \textit{This document conforms to IEEE Std 830-1984 guidelines for Software Requirements Specifications}}
+
+\end{titlepage}
+
+% ---------------- Revision History ----------------
+\chapter*{Revision History}
+\addcontentsline{toc}{chapter}{Revision History}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{2cm}|p{2.5cm}|p{6cm}|p{3cm}|}
+\hline
+\textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Author} \\
+\hline
+0.1 & Nov 15, 2025 & Initial draft created after RP Meeting 1 & Project Team \\
+\hline
+0.5 & Nov 28, 2025 & Added functional requirements and diagrams & Project Team \\
+\hline
+1.0 & Jan 5, 2026 & Final version with complete NFRs and validation & Project Team \\
+\hline
+\end{tabular}
+\caption{Document Revision History}
+\end{table}
+
+\newpage
 \tableofcontents
 \newpage
 
-% -------------------------------------------------
-\section{Introduction}
+% ================= 1. INTRODUCTION =================
+\chapter{Introduction}
 
-This section describes the purpose and scope of the Software Requirements Specification (SRS) to help stakeholders understand the system.
+\section{Purpose}
+\subsection{Document Purpose}
+The primary purpose of this Software Requirements Specification (SRS) is to provide a comprehensive and definitive description of the Upwork Proposal Assistant system. This document explicitly defines all functional and non-functional requirements to ensure that the final product aligns with the expectations of the Requirement Provider (RP) and meets the academic standards established by Namal University's Department of Computer Science.
 
-\subsection{Purpose}
-This SRS document defines the Functional Requirements (FR) and Non-Functional Requirements (NFR) of the system. It acts as a formal reference between the development team and the Requirement Provider (RP) and provides a basis for system design, implementation, and validation.
+\subsection{Intended Audience}
+This SRS is designed to serve multiple stakeholders throughout the software development lifecycle:
 
-\subsection{Scope}
-The Upwork Proposal Assistant analyzes client profiles from Upwork such as job success rate, reviews, budget history, and location. Based on this analysis, it generates proposal templates using past successful submissions and provides a client summary to help freelancers decide whether to apply. The system reduces proposal writing time and improves decision-making.
-
-\subsection{Definitions and Abbreviations}
 \begin{itemize}
-    \item RP: Requirement Provider
-    \item SRS: Software Requirements Specification
-    \item FR: Functional Requirement
-    \item NFR: Non-Functional Requirement
-    \item UI: User Interface
-    \item JSR: Job Success Rate
+\item \textbf{Development Team:} Software engineers and developers who will design, implement, and test the system. This document provides them with a clear technical roadmap including architectural constraints, interface specifications, and performance benchmarks.
+
+\item \textbf{Project Managers:} Individuals responsible for planning, scheduling, and resource allocation. The SRS enables accurate effort estimation and milestone definition based on the scope and complexity of requirements.
+
+\item \textbf{Quality Assurance Team:} Testers and validation engineers who will verify that the implemented system meets all specified requirements. Each requirement in this document is written to be verifiable and measurable.
+
+\item \textbf{Requirement Provider (RP):} The client or stakeholder who commissioned this system. This document serves as a formal contract defining what will be delivered, establishing clear boundaries between in-scope and out-of-scope functionality.
+
+\item \textbf{Academic Evaluators:} Faculty members and instructors evaluating this project for CSC-225 Software Engineering. The document demonstrates comprehensive understanding of requirements engineering principles and IEEE standards compliance.
+
+\item \textbf{Maintenance Personnel:} Future developers who may need to enhance or modify the system. The traceability and clarity of requirements will facilitate efficient maintenance operations.
 \end{itemize}
 
-All undefined terms follow IEEE Std 729-1983.
+\subsection{Document Benefits}
+By adhering to IEEE Std 830-1984 guidelines, this SRS provides several specific benefits:
 
-% -------------------------------------------------
-\section{Overall Description}
+\begin{enumerate}
+\item \textbf{Establishes Contractual Baseline:} Creates a formal agreement between stakeholders on system functionality, reducing the risk of scope creep and misaligned expectations during development.
 
-\subsection{Product Perspective}
-The system is a standalone browser extension designed to reduce manual effort in writing Upwork proposals by analyzing client history before proposal generation.
+\item \textbf{Reduces Development Costs:} Early identification of requirements conflicts, ambiguities, and technical constraints minimizes expensive redesign and recoding efforts during later phases.
 
-\subsection{Product Functions}
+\item \textbf{Enables Accurate Estimation:} Provides a realistic foundation for cost estimation, resource planning, and schedule development based on clearly defined deliverables.
+
+\item \textbf{Facilitates Validation and Verification:} Each requirement is specified in a measurable, testable format, enabling systematic quality assurance processes and acceptance testing.
+
+\item \textbf{Supports System Evolution:} The modular organization and comprehensive traceability enable efficient modification and enhancement of the system throughout its operational lifetime.
+
+\item \textbf{Improves Communication:} Serves as a single source of truth, eliminating ambiguity and ensuring all stakeholders share a common understanding of system behavior.
+\end{enumerate}
+
+\section{Scope}
+
+\subsection{Product Name and Context}
+The system to be developed is the \textbf{Upwork Proposal Assistant}, a specialized browser extension designed to optimize the workflow of professional freelancers operating on the Upwork platform. In the current competitive landscape of online freelancing, professionals spend significant time analyzing potential clients, crafting customized proposals, and managing their application history.
+
+\subsection{Problem Statement}
+Current freelance workflow challenges include:
+
 \begin{itemize}
-    \item Client profile analysis
-    \item Client reliability assessment
-    \item Personalized proposal generation
-    \item Proposal editing and customization
-    \item Proposal history and analytics
+\item \textbf{Time Inefficiency:} Freelancers spend an average of 15-20 minutes per job application analyzing client history, reading reviews, and writing customized proposals.
+
+\item \textbf{Information Overload:} Upwork job listings contain extensive data (client spending history, hire rates, previous feedback, job requirements) that must be manually processed and evaluated.
+
+\item \textbf{Inconsistent Quality:} Without systematic analysis tools, freelancers may submit proposals to low-quality clients or fail to identify red flags in client behavior patterns.
+
+\item \textbf{Resource Wastage:} Upwork's "Connect" system charges freelancers for each application. Applying to clients with poor hiring records wastes both Connects and time.
+
+\item \textbf{Template Management:} Successful freelancers maintain libraries of proposal templates but lack tools to track which templates perform best or systematically improve their approach.
 \end{itemize}
 
-\subsection{User Characteristics}
+\subsection{Solution Overview}
+The Upwork Proposal Assistant addresses these challenges through intelligent automation and data-driven decision support. The system will reduce proposal preparation time by approximately 60\% through the following core capabilities:
+
+\subsubsection{Automated Client Analysis}
+The system shall automatically extract and analyze client profile data including:
 \begin{itemize}
-    \item Freelancers: Basic web skills, frequent users
-    \item Administrators: Manage templates and users
-    \item Developers: Maintain and update the system
+\item Total spending history and budget patterns
+\item Historical hire rate percentages
+\item Previous freelancer feedback and sentiment analysis
+\item Payment verification status and geographic location
+\item Job posting patterns and response rates
 \end{itemize}
 
-All users have basic browser proficiency.
+This analysis will be synthesized into a normalized "Client Reliability Score" (1-100 scale) displayed prominently within the Upwork interface, enabling freelancers to make informed decisions about where to invest their limited Connects.
 
-\subsection{General Constraints}
+\subsubsection{AI-Powered Proposal Generation}
+Leveraging large language models (LLMs), the system shall generate customized proposal drafts by:
 \begin{itemize}
-    \item Compatible with Chrome, Firefox, and Edge
-    \item No direct Upwork API integration
-    \item Ethical and privacy-compliant data usage
+\item Parsing job description requirements and matching them to the freelancer's skill profile
+\item Adapting tone and style based on client characteristics (corporate vs. startup, technical vs. non-technical)
+\item Incorporating relevant portfolio examples and past project successes
+\item Maintaining professional quality while reducing writing time from 15 minutes to under 2 minutes
 \end{itemize}
 
-\subsection{Assumptions and Dependencies}
+\subsubsection{Template Management and Analytics}
+The system shall provide sophisticated template management including:
 \begin{itemize}
-    \item Freelancers provide accurate client data
-    \item RP provides scoring rules
-    \item Users have active Upwork accounts
-    \item Past proposal data is available
+\item Storage and categorization of proposal templates
+\item Performance tracking (views, interviews, hires per template)
+\item Automated ranking based on success metrics
+\item Historical analytics showing proposal effectiveness trends over time
 \end{itemize}
 
-% -------------------------------------------------
-\section{Functional Requirements}
+\subsection{System Boundaries}
+To ensure compliance with Upwork's Terms of Service and maintain ethical operation, the system explicitly \textbf{will NOT}:
 
-\subsection{FR-001 Client Profile Analysis}
-The system shall analyze client data and generate a reliability score and application recommendation.
-
-\subsection{FR-002 Proposal Template Generation}
-The system shall generate personalized and editable proposal drafts based on client requirements and past successful proposals.
-
-\subsection{FR-003 Freelancer Decision Support}
-The system shall provide recommendations such as Strong Apply, Apply with Caution, or Skip.
-
-\subsection{FR-004 Template Management}
-The system shall store, update, and rank proposal templates based on performance.
-
-% -------------------------------------------------
-\section{Non-Functional Requirements}
-
-\subsection{Performance Requirements}
 \begin{itemize}
-    \item The system shall load the main interface within 3 seconds under normal network conditions.
-    \item Client profile analysis and proposal generation shall complete within 5 seconds.
-    \item The system shall support multiple concurrent users without performance degradation.
-    \item External requests shall be handled asynchronously.
+\item Automatically submit proposals without explicit user confirmation
+\item Circumvent Upwork's Connect payment system
+\item Violate Upwork's rate limiting or anti-automation policies
+\item Store or transmit Upwork user credentials (authentication handled via OAuth where possible)
+\item Scrape data from Upwork for purposes other than assisting the authenticated user
+\item Share or aggregate data across multiple users without explicit consent
 \end{itemize}
 
-\subsection{Reliability and Availability}
+The system functions strictly as an "Assistant" – augmenting human decision-making rather than replacing it. All final decisions regarding proposal submission remain with the freelancer.
+
+\subsection{Target Metrics and Success Criteria}
+Upon successful implementation, the system shall achieve:
+
 \begin{itemize}
-    \item The system shall maintain at least 99\% uptime per month.
-    \item The system shall handle failures gracefully.
-    \item User data shall not be lost during unexpected shutdowns.
+\item \textbf{Time Reduction:} Average proposal preparation time reduced from 15 minutes to 6 minutes or less (60\% improvement)
+\item \textbf{Decision Quality:} 80\% of users report improved ability to identify high-quality clients
+\item \textbf{Resource Efficiency:} 50\% reduction in wasted Connects on low-probability applications
+\item \textbf{User Satisfaction:} System Usability Scale (SUS) score of 75 or higher
+\item \textbf{Performance:} 99.5\% of analysis operations completed within 3 seconds
 \end{itemize}
 
-\subsection{Usability Requirements}
-\begin{itemize}
-    \item The system shall provide a simple and intuitive user interface.
-    \item User input shall be minimized where possible.
-    \item Error messages shall be clear and informative.
-\end{itemize}
+\subsection{Benefits and Objectives}
+The successful deployment of this system will provide:
 
-\subsection{Security Requirements}
-\begin{itemize}
-    \item All communication shall use HTTPS with TLS encryption.
-    \item User data shall be stored securely with restricted access.
-    \item Unauthorized access shall be prevented.
-\end{itemize}
+\begin{enumerate}
+\item \textbf{Competitive Advantage:} Freelancers can respond to job postings faster and more effectively than competitors using manual processes.
 
-\subsection{Scalability Requirements}
-\begin{itemize}
-    \item The system shall support increasing numbers of users.
-    \item Future freelance platform integration shall be possible.
-\end{itemize}
+\item \textbf{Income Optimization:} By avoiding low-quality clients and targeting high-value opportunities, freelancers can increase their effective hourly rate.
 
-\subsection{Maintainability and Modularity}
-\begin{itemize}
-    \item The system shall follow a modular architecture.
-    \item Code shall be well-documented.
-    \item Updates shall not disrupt existing functionality.
-\end{itemize}
+\item \textbf{Professional Development:} Analytics and performance tracking enable freelancers to systematically improve their proposal strategies over time.
 
-\subsection{Data Backup and Recovery}
-\begin{itemize}
-    \item User data shall be backed up every 24 hours.
-    \item Data recovery shall be supported in case of failure.
-\end{itemize}
+\item \textbf{Stress Reduction:} Automation of tedious tasks reduces cognitive load and allows freelancers to focus on high-value creative work.
 
-\subsection{Compatibility and Portability}
-\begin{itemize}
-    \item The system shall work on modern browsers and operating systems.
-    \item The browser extension shall not interfere with normal platform usage.
-\end{itemize}
+\item \textbf{Scalability:} The system enables freelancers to efficiently manage higher volumes of applications without proportional time investment.
+\end{enumerate}
 
-\subsection{Legal and Ethical Constraints}
-\begin{itemize}
-    \item The system shall comply with third-party platform policies.
-    \item The system shall prevent unethical usage.
-    \item Final proposal submission responsibility remains with the freelancer.
-\end{itemize}
+\section{Definitions, Acronyms, and Abbreviations}
 
-% -------------------------------------------------
-\section{External Interface Requirements}
+\begin{description}[leftmargin=4cm,style=nextline]
 
-\subsection{Hardware Interface}
+\item[API] Application Programming Interface: A set of protocols and tools that enables communication between different software components. In this system, APIs facilitate interaction between the browser extension, backend server, and external AI services.
 
-The system does not require specialized hardware and can operate on standard computing devices.
+\item[Client Reliability Score] A normalized numerical value (1-100) calculated by the system to represent the overall trustworthiness and quality of an Upwork client based on historical data analysis.
 
-\textbf{Supported Hardware:}
-\begin{itemize}
-    \item Desktop computers
-    \item Laptops
-    \item Tablets
-\end{itemize}
+\item[Connect] Upwork's internal currency used by freelancers to submit proposals. Each job application costs a specific number of Connects (typically 1-6), and freelancers must purchase additional Connects when their allocation is exhausted.
 
-\textbf{Input Devices:}
-\begin{itemize}
-    \item Keyboard
-    \item Mouse / Touchpad
-\end{itemize}
+\item[CSS Selector] A pattern-matching syntax used to identify and extract specific HTML elements from web pages. The system uses CSS selectors to scrape client data from Upwork's Document Object Model.
 
-\textbf{Output Devices:}
-\begin{itemize}
-    \item Monitor / Screen
-\end{itemize}
+\item[DOM] Document Object Model: The hierarchical tree structure representing a web page's content. The browser extension manipulates the DOM to inject UI elements and extract job data.
 
-The system will run through a web browser, making it accessible on most modern devices.
+\item[Extension Manifest] A JSON configuration file (manifest.json) that defines a browser extension's permissions, capabilities, scripts, and metadata. This system uses Manifest V3 specification.
 
-\subsection{Software Interface}
+\item[Freelancer] The primary end-user of this system; a professional service provider who seeks and completes projects through the Upwork platform.
 
-The software interacts with several internal and external software components.
+\item[JSR] Job Success Rate: An Upwork metric representing the percentage of contracts a freelancer completes successfully, weighted by project value and client feedback.
 
-\textbf{Internal Software Interfaces:}
-\begin{itemize}
-    \item Database system to store:
-    \begin{itemize}
-        \item User profiles
-        \item Proposal templates
-        \item Client analysis data
-    \end{itemize}
-    \item Backend services for:
-    \begin{itemize}
-        \item Proposal generation
-        \item User authentication
-        \item Data processing
-    \end{itemize}
-\end{itemize}
+\item[LLM] Large Language Model: An artificial intelligence system trained on vast text corpora capable of generating human-like text. This system uses LLMs (such as GPT-4 or Claude) for proposal generation.
 
-\textbf{External Software Interfaces:}
-\begin{itemize}
-    \item Web browsers (Chrome, Firefox, Edge)
-    \item APIs for:
-    \begin{itemize}
-        \item Fetching client or job data (if applicable)
-        \item AI-based text generation
-    \end{itemize}
-\end{itemize}
+\item[NFR] Non-Functional Requirement: A specification of system quality attributes (performance, security, usability) rather than specific behaviors or functions.
 
-These interfaces ensure smooth communication between system modules.
+\item[OAuth] Open Authorization: An industry-standard protocol for secure delegated access, potentially used for Upwork API authentication if direct integration becomes available.
 
-% -------------------------------------------------
-\section{System Diagrams}
+\item[Proposal] A formal written application submitted by a freelancer to a client's job posting, typically including an introduction, relevant experience, project approach, pricing, and call-to-action.
 
-\subsection{Context Diagram}
-\includegraphics[width=0.8\textwidth]{context_diagram.jpg}
+\item[RP] Requirement Provider: The individual or entity responsible for defining system goals, validating requirements, and accepting final deliverables. In academic context, this may be a faculty advisor or external client.
 
-\subsection{Use Case Diagram}
-\includegraphics[width=0.8\textwidth]{usecase.png}
+\item[REST API] Representational State Transfer Application Programming Interface: An architectural style for web services using HTTP methods (GET, POST, PUT, DELETE) for data exchange between the extension and backend server.
 
-% -------------------------------------------------
+\item[SRS] Software Requirements Specification: This formal document describing all functional and non-functional requirements for the system being developed, conforming to IEEE Std 830-1984 guidelines.
+
+\item[TBD] To Be Determined: A placeholder indicating that specific requirement details are not yet finalized and require future resolution by a specified milestone or meeting.
+
+\item[TLS] Transport Layer Security: A cryptographic protocol ensuring secure, encrypted communication between the browser extension and backend servers, protecting user data during transmission.
+
+\item[Upwork Platform] The online marketplace connecting freelancers with clients seeking professional services. The system interfaces with Upwork's web application but operates independently.
+
+\item[Use Case] A specific scenario describing how an actor (user or external system) interacts with the system to achieve a particular goal, including preconditions, main flow, and expected outcomes.
+
+\end{description}
+
 \section{References}
+
+\begin{enumerate}
+\item ANSI/IEEE Std 830-1984, \textit{IEEE Guide to Software Requirements Specifications}. Institute of Electrical and Electronics Engineers, 1984.
+
+\item IEEE Std 729-1983, \textit{IEEE Standard Glossary of Software Engineering Terminology}. Institute of Electrical and Electronics Engineers, 1983.
+
+\item Namal University Department of Computer Science, \textit{CSC-225 Software Engineering: Complex Computing Problem – Milestone 2 Guidelines}, November 2025.
+
+\item Upwork Inc., \textit{Upwork Terms of Service}, Available at: https://www.upwork.com/legal, Accessed December 2025.
+
+\item Upwork Inc., \textit{Upwork API Documentation}, Available at: https://developers.upwork.com/, Accessed December 2025.
+
+\item Mozilla Developer Network, \textit{Browser Extensions API Documentation}, Available at: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions, Accessed December 2025.
+
+\item Google Chrome Developers, \textit{Chrome Extension Manifest V3 Migration Guide}, Available at: https://developer.chrome.com/docs/extensions/mv3/, Accessed December 2025.
+
+\item OpenAI, \textit{GPT-4 API Reference Documentation}, Available at: https://platform.openai.com/docs/, Accessed December 2025.
+
+\item Anthropic, \textit{Claude API Documentation}, Available at: https://docs.anthropic.com/, Accessed December 2025.
+
+\item World Wide Web Consortium (W3C), \textit{Web Content Accessibility Guidelines (WCAG) 2.1}, Available at: https://www.w3.org/WAI/WCAG21/quickref/, June 2018.
+
+\item Internet Engineering Task Force (IETF), \textit{RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3}, August 2018.
+
+\item European Parliament and Council, \textit{General Data Protection Regulation (GDPR)}, Regulation (EU) 2016/679, April 2016.
+\end{enumerate}
+
+\section{Document Overview}
+
+This Software Requirements Specification is organized into eight primary chapters designed to provide comprehensive coverage of all system aspects while maintaining readability and logical flow.
+
+\subsection{Document Structure}
+
+\textbf{Chapter 1: Introduction} (Current Chapter) establishes the document's purpose, defines the system scope, provides essential terminology, and outlines the overall document organization. This chapter ensures all readers share a common understanding of objectives and context.
+
+\textbf{Chapter 2: Overall Description} provides high-level context for the system including its relationship to other products, general capabilities, user characteristics, operating environment, design constraints, and fundamental assumptions. This chapter bridges the gap between project vision and detailed requirements.
+
+\textbf{Chapter 3: External Interface Requirements} specifies all touchpoints between the system and external entities including user interfaces, hardware platforms, software dependencies, and communication protocols. This chapter ensures complete integration planning.
+
+\textbf{Chapter 4: Functional Requirements} contains the core behavioral specifications – what the system shall do. Each requirement is uniquely identified, written in verifiable format, and organized by functional area for clarity and traceability.
+
+\textbf{Chapter 5: Non-Functional Requirements} defines quality attributes and constraints including performance benchmarks, security standards, usability criteria, maintainability guidelines, and legal compliance requirements. These specifications ensure the system meets operational excellence standards.
+
+\textbf{Chapter 6: System Models and Diagrams} presents visual representations including Use Case Diagrams and Context Diagrams that illustrate system boundaries, actor interactions, and data flows. These models complement textual requirements with graphical clarity.
+
+\textbf{Chapter 7: Appendices} contains supporting materials including sample data formats, UI mockups, API specifications, meeting minutes summaries, and glossaries. This supplementary information aids understanding without cluttering primary requirement sections.
+
+\textbf{Chapter 8: Index and Traceability} provides cross-referencing tools including a comprehensive index of key terms and a requirements traceability matrix linking functional requirements to non-functional constraints and test cases.
+
+\subsection{Reading Guidance}
+
+\textbf{For Project Managers and Executives:} Focus on Chapters 1, 2, and 5 to understand scope, objectives, and quality commitments without technical implementation details.
+
+\textbf{For Developers and Architects:} Chapters 3, 4, and 6 provide the technical specifications required for system design and implementation, including interface contracts and behavioral requirements.
+
+\textbf{For Quality Assurance Teams:} All chapters are relevant, with particular emphasis on Chapters 4 and 5 where each requirement specifies its verification method and acceptance criteria.
+
+\textbf{For Academic Evaluators:} The document demonstrates comprehensive requirements engineering practices, IEEE standard compliance, and systematic software development methodology throughout all chapters.
+
+\subsection{Document Maintenance}
+
+This SRS is maintained under version control with all changes tracked in the Revision History table. Modifications to requirements must follow the formal change control process:
+
+\begin{enumerate}
+\item Change requests are documented with rationale and impact analysis
+\item Stakeholders review and approve changes in formal review meetings
+\item Approved changes are incorporated with updated version numbers
+\item Affected downstream artifacts (design documents, test plans) are updated accordingly
+\item All modifications maintain backward traceability to source requirements
+\end{enumerate}
+
+The document is reviewed and revalidated at major project milestones to ensure continued alignment with stakeholder needs and technical feasibility.
+
+% ================= 2. OVERALL DESCRIPTION =================
+\chapter{Overall Description}
+
+\section{Product Perspective}
+
+\subsection{System Context}
+The Upwork Proposal Assistant exists within a complex ecosystem of interconnected technologies and platforms. Understanding this context is essential for proper system design and integration planning.
+
+The system is neither a standalone product nor a component of a larger pre-existing software suite. Instead, it functions as an \textbf{augmentation layer} that integrates with existing platforms and services. The primary integration point is the Upwork web platform, accessed through standard web browsers (Chrome, Firefox, Edge, Brave). The system does not replace or fundamentally alter Upwork's functionality; rather, it enhances the user experience by providing additional analytical and automation capabilities.
+
+\subsection{Architectural Overview}
+The Upwork Proposal Assistant employs a three-tier distributed architecture:
+
+\subsubsection{Tier 1: Client-Side Browser Extension}
+The front-end component runs entirely within the user's web browser as a packaged extension conforming to Manifest V3 specifications. This component is responsible for:
+
 \begin{itemize}
-    \item IEEE Std 830-1998, Software Requirements Specification
-    \item ISO/IEC/IEEE 29148:2018, Requirements Engineering
-    \item Upwork Proposal Writing Guidelines
-    \item IEEE Std 729-1983, Software Engineering Glossary
+\item \textbf{DOM Manipulation:} Injecting visual overlays, badges, and sidebars into Upwork pages without disrupting native functionality
+\item \textbf{Data Extraction:} Parsing HTML structure using CSS selectors and XPath queries to extract client data, job descriptions, and user profile information
+\item \textbf{Local Storage Management:} Caching frequently accessed data (templates, user preferences) in browser local storage for offline access
+\item \textbf{Event Handling:} Listening for user interactions (button clicks, page navigation) and triggering appropriate backend requests
+\item \textbf{Real-Time UI Updates:} Displaying analysis results, proposal drafts, and notifications without requiring page refreshes
 \end{itemize}
+
+The extension maintains minimal footprint (under 5MB packaged size) to ensure fast installation and updates. All computationally intensive operations (AI inference, sentiment analysis) are delegated to the backend tier to prevent browser performance degradation.
+
+\subsubsection{Tier 2: Backend Application Server}
+A Node.js-based REST API server deployed on cloud infrastructure (AWS, Google Cloud, or Azure) handles business logic and orchestrates external service integrations. Core responsibilities include:
+
+\begin{itemize}
+\item \textbf{Authentication and Authorization:} Validating user sessions using JWT (JSON Web Tokens) and enforcing role-based access control
+\item \textbf{Data Processing Pipeline:} Executing client analysis algorithms, sentiment scoring, and reliability calculations
+\item \textbf{AI Service Integration:} Managing API calls to LLM providers (OpenAI, Anthropic) with request queuing, retry logic, and error handling
+\item \textbf{Analytics Aggregation:} Processing proposal history data to generate performance reports and success metrics
+\item \textbf{Cache Management:} Implementing Redis-based caching to reduce database load and improve response times
+\item \textbf{Rate Limiting:} Enforcing usage quotas to prevent abuse and manage API costs
+\end{itemize}
+
+The backend architecture follows microservices principles, with distinct modules for analysis, generation, authentication, and analytics. This modularity enables independent scaling, testing, and deployment of individual components.
+
+\subsubsection{Tier 3: Data Persistence Layer}
+A MongoDB database cluster provides persistent storage for:
+
+\begin{itemize}
+\item \textbf{User Profiles:} Account information, skill configurations, preferences, and subscription tiers
+\item \textbf{Proposal Templates:} User-created and system-provided templates with associated metadata (success rates, usage counts, tags)
+\item \textbf{Historical Data:} Complete archive of generated proposals, client analyses, and decision outcomes for analytics
+\item \textbf{System Configuration:} API keys, feature flags, rate limits, and operational parameters
+\end{itemize}
+
+MongoDB was selected for its flexible schema design, horizontal scalability, and native JSON document storage aligning with JavaScript-based application architecture.
+
+\subsection{External System Dependencies}
+The Upwork Proposal Assistant interfaces with several external systems:
+
+\subsubsection{Upwork Web Platform (Primary External System)}
+\begin{itemize}
+\item \textbf{Interface Type:} Indirect DOM-based interaction (no official API integration)
+\item \textbf{Data Flow:} Unidirectional read-only access to public job posting data
+\item \textbf{Dependency Risk:} High – Changes to Upwork's HTML structure may break data extraction
+\item \textbf{Mitigation Strategy:} Implement adaptive CSS selectors with fallback patterns and automated regression testing
+\end{itemize}
+
+\subsubsection{Large Language Model APIs (AI Services)}
+\begin{itemize}
+\item \textbf{Primary Provider:} OpenAI GPT-4 or Anthropic Claude (configurable)
+\item \textbf{Interface Type:} RESTful HTTPS API using JSON payloads
+\item \textbf{Data Flow:} Bidirectional – System sends context prompts; AI returns generated text
+\item \textbf{Dependency Risk:} Medium – Service outages impact proposal generation but not analysis features
+\item \textbf{Mitigation Strategy:} Implement provider failover and graceful degradation to manual templates
+\end{itemize}
+
+\subsubsection{Browser Extension Stores}
+\begin{itemize}
+\item \textbf{Platforms:} Chrome Web Store, Firefox Add-ons, Microsoft Edge Add-ons
+\item \textbf{Interface Type:} Manual upload and automated update distribution
+\item \textbf{Dependency Risk:} Low – Only affects distribution, not operation
+\item \textbf{Compliance Requirements:} Must adhere to each platform's content policies and technical requirements
+\end{itemize}
+
+\subsection{System Boundaries and Constraints}
+
+\subsubsection{Technical Boundaries}
+The system operates exclusively within the boundaries of:
+\begin{itemize}
+\item Modern web browsers supporting JavaScript ES6+ and Web Extensions API
+\item Upwork's publicly accessible job posting pages (does not access authenticated areas beyond user's own account)
+\item HTTPS-encrypted communication channels for all external data transmission
+\item User-granted browser permissions (no unauthorized data access)
+\end{itemize}
+
+\subsubsection{Functional Boundaries}
+The system explicitly \textbf{does not}:
+\begin{itemize}
+\item Guarantee hiring success (provides decision support only)
+\item Automate bid placement or contract acceptance
+\item Modify Upwork's native functionality or appearance permanently
+\item Store Upwork account credentials (uses session-based authentication)
+\item Share individual user data across accounts without explicit consent
+\end{itemize}
+
+\subsubsection{Legal and Ethical Boundaries}
+The system respects:
+\begin{itemize}
+\item Upwork's Terms of Service regarding automated access
+\item GDPR and data protection regulations for user privacy
+\item Intellectual property rights (no plagiarism in AI-generated content)
+\item Fair use principles in data analysis and processing
+\end{itemize}
+
+\subsection{Operational Perspective}
+
+\subsubsection{Deployment Model}
+The system follows a hybrid deployment approach:
+
+\begin{itemize}
+\item \textbf{Extension:} Distributed through official browser extension marketplaces with automatic update mechanisms
+\item \textbf{Backend:} Deployed on containerized cloud infrastructure (Docker/Kubernetes) with auto-scaling capabilities
+\item \textbf{Database:} Managed MongoDB Atlas cluster with automated backups and point-in-time recovery
+\end{itemize}
+
+\subsubsection{Operational Lifecycle}
+The typical user journey spans:
+\begin{enumerate}
+\item \textbf{Discovery and Installation:} User finds extension in browser store, reviews permissions, and installs
+\item \textbf{Onboarding:} First-run configuration wizard collects profile data and preferences
+\item \textbf{Daily Usage:} User browses Upwork jobs; system provides real-time analysis and proposal assistance
+\item \textbf{Continuous Improvement:} System learns from user feedback and proposal outcomes to refine recommendations
+\item \textbf{Subscription Management:} User may upgrade tiers for advanced features (premium AI models, unlimited analyses)
+\end{enumerate}
+
+\subsubsection{Maintenance and Support}
+System maintenance encompasses:
+\begin{itemize}
+\item \textbf{Proactive Monitoring:} 24/7 automated health checks on API endpoints, database connections, and third-party service availability
+\item \textbf{Reactive Support:} User-reported issues triaged through in-app feedback system and support ticketing
+\item \textbf{Continuous Updates:} Monthly feature releases and weekly security patches delivered via automatic extension updates
+\item \textbf{Data Integrity:} Daily automated backups with 30-day retention and quarterly disaster recovery drills
+\end{itemize}
+
+\section{Product Functions}
+
+This section provides a high-level summary of system capabilities organized by functional area. Detailed specifications for each function appear in Chapter 4 (Functional Requirements).
+
+\subsection{Client Intelligence and Analysis}
+
+\subsubsection{Automated Profile Evaluation (FR-001)}
+The system shall autonomously extract and analyze client historical data from Upwork job postings including total spending, hire rate percentages, payment verification status, and geographic location. This data shall be normalized into a Client Reliability Score (1-100 scale) using weighted algorithms that prioritize hiring history (40\%), spending patterns (30\%), and review sentiment (30\%).
+
+\subsubsection{Sentiment Analysis of Client Reviews (FR-001)}
+The system shall perform natural language processing on previous freelancer feedback to identify patterns indicating positive or negative client experiences. Red-flag keywords (e.g., "unresponsive," "payment issues," "scope creep") shall be automatically detected and factored into reliability calculations.
+
+\subsubsection{Competitive Analysis (FR-003)}
+The system shall evaluate the number of existing applicants, average interview rates, and job posting recency to estimate the probability of the user's proposal being viewed and considered. This competitive intelligence enables strategic decision-making about Connect allocation.
+
+\subsection{Intelligent Proposal Generation}
+
+\subsubsection{AI-Driven Draft Creation (FR-002)}
+Leveraging large language models, the system shall generate customized proposal drafts by synthesizing job description requirements with the user's professional profile. The generated text shall maintain professional quality, incorporate relevant experience examples, and adapt tone based on client characteristics.
+
+\subsubsection{Context-Aware Customization (FR-002, FR-007)}
+The system shall analyze job descriptions to identify key requirements, preferred skills, and client priorities. Proposal generation shall emphasize matching qualifications and de-emphasize irrelevant experience, maximizing perceived fit.
+
+\subsubsection{Style and Tone Adaptation (FR-007)}
+Users shall configure proposal voice settings (Professional, Friendly, Technical, Concise) that influence AI generation parameters. The system shall maintain stylistic consistency while ensuring authenticity and avoiding generic template language.
+
+\subsection{Template and Content Management}
+
+\subsubsection{Template Library Management (FR-004)}
+The system shall provide a comprehensive repository for storing, organizing, and retrieving proposal templates. Each template shall support dynamic placeholders (e.g., [Client\_Name], [Project\_Budget]) that automatically populate from job posting data.
+
+\subsubsection{Performance-Based Ranking (FR-004)}
+Templates shall be automatically ranked using a "Success Velocity" metric calculated as: $V = \frac{\text{Interviews}}{\text{Total Uses}} \times 100$. High-performing templates shall be promoted in selection interfaces, while consistently underperforming templates shall be flagged for revision.
+
+\subsubsection{Template Optimization Recommendations (FR-004)}
+The system shall analyze successful vs. unsuccessful proposals to identify effective keywords, optimal length ranges, and structural patterns. Users shall receive actionable suggestions for improving template performance.
+
+\subsection{Historical Analytics and Performance Tracking}
+
+\subsubsection{Comprehensive Proposal Archive (FR-005)}
+The system shall maintain a complete historical record of all generated proposals, associated client analyses, and application outcomes (views, interviews, hires). This archive enables longitudinal performance analysis and strategy refinement.
+\subsubsection{Success Metrics Dashboard (FR-005)}
+Users shall access visual analytics including:
+\begin{itemize}
+\item Weekly proposal volume trends (line graphs)
+\item Client reliability distribution of applied jobs (histogram)
+\item Template performance comparison (bar charts)
+\item Interview-to-application conversion rates (pie charts)
+\item Average Connect cost per interview (calculated metric)
+\end{itemize}
+\subsubsection{Trend Analysis and Insights (FR-005)}
+The system shall identify patterns such as:
+\begin{itemize}
+\item Time-of-day correlations with proposal success
+\item Client characteristics associated with higher interview rates
+\item Keyword effectiveness in different job categories
+\item Seasonal variations in market competitiveness
+\end{itemize}
+\subsection{User Profile and Skill Configuration}
+\subsubsection{Professional Identity Management (FR-006)}
+Users shall define their professional profile including:
+\begin{itemize}
+\item Biographical summary and career highlights
+\item Technical skill inventory with proficiency levels
+\item Portfolio links and work sample references
+\item Hourly rate ranges and availability preferences
+\item Specialization areas and target industries
+\end{itemize}
+\subsubsection{Skill-Job Matching (FR-006)}
+The system shall cross-reference job requirements against the user's configured skills to calculate a compatibility percentage. Applications to jobs where the user lacks 50%+ of required skills shall trigger warning notifications.
+\subsubsection{Dynamic Profile Updates (FR-006)}
+As users gain experience and complete projects, the system shall suggest profile updates to reflect new capabilities and accomplishments, ensuring proposal generation utilizes current information.
+\subsection{Decision Support and Recommendations}
+\subsubsection{Multi-Tier Analysis Engine (FR-003)}
+The system shall apply sophisticated logic gates to generate application recommendations:
+\begin{itemize}
+\item \textbf{Tier 1 (Resource Protection):} Flag jobs with 50+ applicants and client hire rate below 30% as "High Risk - Consider Skipping"
+\item \textbf{Tier 2 (Quality Scoring):} Categorize jobs as Strong Apply (score 80+), Caution (50-79), or Skip (below 50)
+\item \textbf{Tier 3 (Urgency Detection):} Identify time-sensitive opportunities (posted within 30 minutes, high hire rate) with "Urgent Action" badges
+\end{itemize}
+\subsubsection{Reasoning Transparency (FR-003)}
+Each recommendation shall include a plain-language explanation of the underlying rationale (e.g., "Client has 90% hire rate but pays 20% below market average for this skill level"), enabling users to understand and validate system logic.
+\subsection{System Administration and Maintenance}
+\subsubsection{Global Template Repository (FR-008)}
+Administrators shall manage a curated library of high-performing templates shared across the user base (with appropriate anonymization). Community-sourced templates undergo quality review before publication.
+\subsubsection{System Health Monitoring (FR-008)}
+Administrative dashboards shall display real-time metrics including:
+\begin{itemize}
+\item API response time percentiles (p50, p95, p99)
+\item Error rates by endpoint and failure type
+\item Database query performance and connection pool utilization
+\item Third-party service availability (AI APIs, external dependencies)
+\end{itemize}
+\subsubsection{Configuration Management (FR-008)}
+Administrators shall control system-wide settings including:
+\begin{itemize}
+\item AI model selection and prompt engineering parameters
+\item Rate limiting thresholds and usage quotas per tier
+\item Feature flags for gradual rollout of new capabilities
+\item API key rotation for security compliance
+\end{itemize}
+\subsection{Data Synchronization and Persistence}
+\subsubsection{Cross-Device Sync (FR-009)}
+User data (profiles, templates, settings) shall synchronize across multiple devices in near-real-time using event-driven architecture. Conflict resolution shall prioritize most-recent-write with user override options.
+\subsubsection{Offline Capability (FR-009)}
+The system shall cache essential data locally, enabling limited functionality (template access, manual proposal drafting) during network outages. Upon reconnection, pending operations shall queue for automatic synchronization.
+\subsubsection{Data Security and Encryption (FR-009)}
+All data transmission shall employ TLS 1.3 encryption. Data at rest shall be encrypted using AES-256. User-specific encryption keys shall derive from account credentials to ensure only authorized access.
+\section{User Classes and Characteristics}
+The Upwork Proposal Assistant serves a diverse user base with varying technical proficiency, freelancing experience, and usage patterns. Understanding these user classes ensures appropriate interface design, feature prioritization, and documentation strategies.
+\subsection{Primary User Class: Professional Freelancers}
+\subsubsection{Novice Freelancers}
+\begin{itemize}
+\item \textbf{Characteristics:} Less than 6 months active on Upwork; limited proposal writing experience; uncertain about client evaluation; typically possess 1-2 specialized skills
+\item \textbf{Technical Proficiency:} Basic computer literacy; comfortable with web browsers and common applications; may struggle with advanced configuration
+\item \textbf{Primary Needs:} Step-by-step guidance; clear explanations of client metrics; pre-built template options; confidence-building feedback
+\item \textbf{Usage Frequency:} Daily during initial ramp-up phase; seeking to build profile and reputation
+\item \textbf{Pain Points:} Fear of wasting Connects; uncertainty about competitive positioning; lack of benchmark data
+\item \textbf{System Adaptations:} Simplified onboarding wizard; contextual help tooltips; conservative recommendation defaults; extensive tutorial content
+\end{itemize}
+\subsubsection{Intermediate Freelancers}
+\begin{itemize}
+\item \textbf{Characteristics:} 6-24 months Upwork experience; established JSR (Job Success Rate) 85%+; growing client base; 3-5 specialized skills with portfolio evidence
+\item \textbf{Technical Proficiency:} Comfortable with browser extensions; willing to customize settings; moderate understanding of analytics
+\item \textbf{Primary Needs:} Efficiency gains; template performance optimization; competitive intelligence; time-saving automation
+\item \textbf{Usage Frequency:} 3-5 times per week for targeted applications; strategic rather than volume-based approach
+\item \textbf{Pain Points:} Time constraints balancing project work with new business development; difficulty scaling application volume without quality degradation
+\item \textbf{System Adaptations:} Advanced filtering options; keyboard shortcuts; batch analysis features; customizable workflows
+\end{itemize}
+\subsubsection{Expert Freelancers}
+\begin{itemize}
+\item \textbf{Characteristics:} 2+ years platform experience; Top Rated or Top Rated Plus badges; selective about opportunities; specialized in high-value niches; annual earnings $75k+
+\item \textbf{Technical Proficiency:} Advanced users comfortable with APIs, automation tools, and data analysis; may request programmatic access
+\item \textbf{Primary Needs:} Deep analytics; predictive modeling; integration with CRM tools; ROI optimization; market intelligence
+\item \textbf{Usage Frequency:} Weekly for highly selective applications; focus on quality over quantity
+\item \textbf{Pain Points:} Distinguishing genuinely premium opportunities from inflated budgets; maintaining competitive edge as market matures
+\item \textbf{System Adaptations:} Advanced analytics dashboard; API access for custom integrations; white-label options; priority support
+\end{itemize}
+\subsection{Secondary User Class: System Administrators}
+\subsubsection{Technical Administrators}
+\begin{itemize}
+\item \textbf{Responsibilities:} Backend infrastructure management; database optimization; API integration maintenance; security monitoring
+\item \textbf{Technical Proficiency:} Expert-level software engineering; DevOps and cloud platform expertise; security best practices knowledge
+\item \textbf{Primary Needs:} Comprehensive logging; performance monitoring dashboards; automated alerting; deployment automation tools
+\item \textbf{System Adaptations:} Admin control panel with system health metrics; log aggregation tools; configuration management interfaces; automated backup and recovery tools
+\end{itemize}
+\subsubsection{Content Administrators}
+\begin{itemize}
+\item \textbf{Responsibilities:} Template library curation; user support and training; content moderation; quality assurance
+\item \textbf{Technical Proficiency:} Moderate technical skills; strong understanding of freelancing best practices; excellent communication abilities
+\item \textbf{Primary Needs:} Template management tools; user feedback analysis; content publishing workflows; moderation queues
+\item \textbf{System Adaptations:} Simplified admin interface; bulk editing capabilities; approval workflows; user communication tools
+\end{itemize}
+\subsection{Tertiary User Class: Stakeholders}
+\subsubsection{Business Analysts}
+\begin{itemize}
+\item \textbf{Interests:} Market trends; feature adoption rates; user retention metrics; revenue optimization
+\item \textbf{System Needs:} Aggregated analytics dashboards; cohort analysis tools; A/B testing frameworks; export capabilities
+\end{itemize}
+\subsubsection{Compliance Officers}
+\begin{itemize}
+\item \textbf{Interests:} GDPR compliance; Terms of Service adherence; data retention policies; security audit trails
+\item \textbf{System Needs:} Audit logs; data access reports; consent management tools; right-to-deletion workflows
+\end{itemize}
+\subsection{User Characteristic Summary Matrix}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|p{2.5cm}|p{2cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{User Class} & \textbf{Tech Skill} & \textbf{Frequency} & \textbf{Experience} & \textbf{Primary Goal} \
+\hline
+Novice Freelancer & Basic & Daily & 0-6 months & Learning & Building Profile \
+\hline
+Intermediate & Moderate & 3-5x/week & 6-24 months & Efficiency & Growth \
+\hline
+Expert & Advanced & Weekly & 2+ years & Optimization & Scale \
+\hline
+Tech Admin & Expert & Daily & N/A & System Stability \
+\hline
+Content Admin & Moderate & Daily & N/A & Quality & Support \
+\hline
+\end{tabular}
+\caption{User Class Characteristics Summary}
+\end{table}
+\section{Operating Environment}
+The Upwork Proposal Assistant must function reliably across diverse computing environments while maintaining consistent performance and user experience. This section defines the technical platforms, configurations, and environmental constraints within which the system operates.
+\subsection{Client-Side Environment Requirements}
+\subsubsection{Supported Web Browsers}
+The browser extension shall be compatible with:
+\begin{itemize}
+\item \textbf{Google Chrome:} Version 100 and later (released April 2022+)
+\item \textbf{Microsoft Edge:} Version 100 and later (Chromium-based versions only)
+\item \textbf{Brave Browser:} Version 1.40 and later
+\item \textbf{Mozilla Firefox:} Version 95 and later (released December 2021+)
+\item \textbf{Opera:} Version 85 and later (Chromium-based)
+\end{itemize}
+\textbf{Rationale:} These minimum versions ensure support for Manifest V3, ES2020 JavaScript features, and modern Web Extensions APIs required for DOM manipulation and secure communication.
+\textbf{Browser Limitations:} Safari is explicitly not supported in initial release due to incompatibilities between Safari's extension architecture and Chrome/Firefox standards. Mobile browsers (iOS Safari, Chrome Mobile) are not supported as Upwork's mobile interface differs substantially from desktop.
+\subsubsection{Operating System Compatibility}
+The system shall operate on:
+\begin{itemize}
+\item \textbf{Windows:} Windows 10 (Version 1909+) and Windows 11
+\item \textbf{macOS:} macOS 12 (Monterey) and later versions
+\item \textbf{Linux:} Ubuntu 20.04 LTS+, Fedora 35+, or any distribution supporting modern Chromium/Firefox builds
+\end{itemize}
+The system is operating system agnostic at the application level (no OS-specific APIs used), but OS choice affects browser availability and update mechanisms.
+\subsubsection{Hardware Requirements}
+\textbf{Minimum Configuration:}
+\begin{itemize}
+\item \textbf{Processor:} Dual-core CPU at 1.6 GHz (Intel Core i3 or AMD equivalent)
+\item \textbf{RAM:} 4 GB system memory (with 2 GB available for browser)
+\item \textbf{Storage:} 50 MB free disk space for extension installation
+\item \textbf{Display:} 1280x720 resolution (HD)
+\item \textbf{Network:} Broadband internet connection (5 Mbps download minimum)
+\end{itemize}
+\textbf{Recommended Configuration:}
+\begin{itemize}
+\item \textbf{Processor:} Quad-core CPU at 2.4 GHz or better
+\item \textbf{RAM:} 8 GB system memory
+\item \textbf{Storage:} SSD (for faster extension loading)
+\item \textbf{Display:} 1920x1080 resolution (Full HD) or higher
+\item \textbf{Network:} 25 Mbps+ broadband connection
+\end{itemize}
+\textbf{Input Devices:} Standard keyboard and mouse/trackpad required. Touchscreen support is provided on compatible devices but not optimized as primary interaction method.
+\subsection{Backend Infrastructure Environment}
+\subsubsection{Cloud Platform Requirements}
+Backend services shall be deployed on:
+\begin{itemize}
+\item \textbf{Primary Platform:} Amazon Web Services (AWS) or Google Cloud Platform (GCP)
+\item \textbf{Compute:} Containerized deployment using Docker containers orchestrated by Kubernetes
+\item \textbf{Auto-Scaling:} Elastic compute instances that scale based on CPU utilization (target: 70% utilization) and request queue depth
+\item \textbf{Geographic Distribution:} Multi-region deployment (US-East, EU-West, Asia-Pacific) for latency optimization
+\end{itemize}
+\subsubsection{Database Environment}
+\begin{itemize}
+\item \textbf{Database System:} MongoDB Atlas (managed cloud service)
+\item \textbf{Cluster Configuration:} M10+ tier with replica sets for high availability
+\item \textbf{Storage:} Minimum 100 GB provisioned IOPS storage with automatic expansion
+\item \textbf{Backup:} Continuous backup with point-in-time recovery to any point within 7 days
+\end{itemize}
+\subsubsection{Caching Layer}
+\begin{itemize}
+\item \textbf{Cache System:} Redis 6.0+ for session management and frequent query results
+\item \textbf{Configuration:} In-memory cache with persistence enabled for durability
+\item \textbf{Capacity:} 4-16 GB memory allocation based on user base size
+\end{itemize}
+\subsection{Network and Connectivity Requirements}
+\subsubsection{User Network Requirements}
+\begin{itemize}
+\item \textbf{Minimum Bandwidth:} 5 Mbps download / 1 Mbps upload for basic functionality
+\item \textbf{Recommended Bandwidth:} 25+ Mbps download / 5+ Mbps upload for optimal AI proposal generation
+\item \textbf{Latency:} Sub-200ms round-trip time to backend servers for responsive UI
+\item \textbf{Stability:} Persistent connection not required; system handles intermittent connectivity gracefully
+\end{itemize}
+\subsubsection{Security Protocols}
+\begin{itemize}
+\item \textbf{Encryption:} All communications use TLS 1.3 with strong cipher suites only
+\item \textbf{Certificate Validation:} Extension validates server certificates to prevent MITM attacks
+\item \textbf{Firewall Compatibility:} System operates over standard HTTPS (port 443); no special firewall rules required
+\end{itemize}
+\subsection{External Service Dependencies}
+\subsubsection{AI Service Providers}
+\begin{itemize}
+\item \textbf{Primary Provider:} OpenAI API (GPT-4) or Anthropic API (Claude)
+\item \textbf{Availability Requirements:} 99.5%+ uptime from provider
+\item \textbf{Fallback:} Secondary AI provider or local template system if primary unavailable
+\end{itemize}
+\subsubsection{Upwork Platform Dependency}
+\begin{itemize}
+\item \textbf{Availability:} System functionality contingent on Upwork.com accessibility
+\item \textbf{Version Compatibility:} Must adapt to Upwork's front-end updates without prior notice
+\item \textbf{Access Method:} Standard HTTPS requests to public pages; no private API access required
+\end{itemize}
+\subsection{Development and Testing Environments}
+\subsubsection{Development Environment}
+\begin{itemize}
+\item \textbf{IDE:} Visual Studio Code or WebStorm
+\item \textbf{Node.js:} Version 18 LTS or later
+\item \textbf{Package Manager:} npm or yarn
+\item \textbf{Version Control:} Git with GitHub/GitLab hosting
+\item \textbf{Local Database:} MongoDB Community Edition or Docker container
+\end{itemize}
+\subsubsection{Testing Environment}
+\begin{itemize}
+\item \textbf{Browser Testing:} BrowserStack or Sauce Labs for cross-browser validation
+\item \textbf{API Testing:} Postman or Insomnia for endpoint verification
+\item \textbf{Load Testing:} Apache JMeter or k6 for performance benchmarking
+\item \textbf{CI/CD:} GitHub Actions or Jenkins for automated testing pipeline
+\end{itemize}
+\subsection{Accessibility Environment}
+The system shall support users with disabilities through:
+\begin{itemize}
+\item \textbf{Screen Readers:} JAWS, NVDA, VoiceOver compatibility via semantic HTML and ARIA labels
+\item \textbf{Keyboard Navigation:} Full functionality accessible without mouse (Tab, Enter, Esc shortcuts)
+\item \textbf{Visual Accommodations:} High contrast mode support; respects OS-level zoom settings (up to 200%)
+\item \textbf{Color Blindness:} Information conveyed through shape and text labels in addition to color
+\end{itemize}
+\section{Design and Implementation Constraints}
+This section identifies restrictions and limitations that constrain design choices and implementation approaches. These constraints arise from technical standards, business policies, legal requirements, and platform limitations.
+\subsection{Standards Compliance Constraints}
+\subsubsection{IEEE Software Engineering Standards}
+\begin{itemize}
+\item The system design and documentation shall conform to IEEE Std 830-1984 for requirements specification
+\item Testing procedures shall align with IEEE Std 829-1983 for test documentation
+\item Quality assurance processes shall follow IEEE Std 730-1981 guidelines
+\end{itemize}
+\subsubsection{Web Standards and Protocols}
+\begin{itemize}
+\item All frontend code shall comply with W3C HTML5 and CSS3 specifications
+\item JavaScript code shall adhere to ECMAScript 2020 (ES11) standard or later
+\item API communications shall follow REST architectural principles
+\item Data exchange formats shall use JSON conforming to RFC 8259
+\end{itemize}
+\subsubsection{Accessibility Standards}
+\begin{itemize}
+\item User interfaces shall meet WCAG 2.1 Level AA compliance requirements
+\item Color contrast ratios shall meet or exceed 4.5:1 for normal text, 3:1 for large text
+\item Interactive elements shall provide keyboard alternatives to mouse operations
+\end{itemize}
+\subsection{Browser Extension Platform Constraints}
+\subsubsection{Manifest V3 Requirements}
+\begin{itemize}
+\item Extension must use Manifest V3 format (Manifest V2 deprecated by Chrome in 2023)
+\item Background scripts replaced by service workers (no persistent background pages)
+\item Content Security Policy restricts eval() and inline script execution
+\item Remote code execution prohibited (all logic must be packaged with extension)
+\end{itemize}
+\subsubsection{Permission and Security Restrictions}
+\begin{itemize}
+\item Extension may only request permissions essential to declared functionality
+\item Access to user browsing history beyond Upwork domain is prohibited
+\item Storage quota limited to 10 MB for chrome.storage.local
+\item Cross-origin requests require explicit host permissions in manifest
+\end{itemize}
+\subsubsection{Marketplace Policy Compliance}
+\begin{itemize}
+\item Chrome Web Store: No obfuscated code; clear privacy policy; no cryptocurrency mining
+\item Firefox Add-ons: Source code review required; no tracking without disclosure
+\item Edge Add-ons: Microsoft Store compliance including content rating
+\end{itemize}
+\subsection{Legal and Regulatory Constraints}
+\subsubsection{Data Protection Regulations}
+\begin{itemize}
+\item \textbf{GDPR Compliance (EU users):}
+\begin{itemize}
+\item Explicit user consent required before data collection
+\item Right to data portability: Export user data in machine-readable format
+\item Right to erasure: Permanent deletion within 30 days of request
+\item Data processing logs maintained for audit purposes
+\end{itemize}
+\item \textbf{CCPA Compliance (California users):}
+\begin{itemize}
+\item Disclosure of data collection practices in privacy policy
+\item Opt-out mechanism for data sale (though system does not sell data)
+\item Non-discrimination for users exercising privacy rights
+\end{itemize}
+\end{itemize}
+\subsubsection{Upwork Platform Terms of Service}
+\begin{itemize}
+\item System shall not automate bid submissions (violates Section 5.2 of Upwork ToS)
+\item Data scraping must respect Upwork's robots.txt directives
+\item Rate limiting must prevent excessive server load (maximum 10 requests per minute)
+\item No circumvention of Upwork's Connect payment system
+\item User accounts remain subject to Upwork's acceptable use policies
+\end{itemize}
+\subsubsection{Intellectual Property Constraints}
+\begin{itemize}
+\item AI-generated proposals must be reviewed to prevent plagiarism
+\item System shall not reproduce copyrighted training content verbatim
+\item User-submitted templates remain property of the user (system gains license to use)
+\item Upwork trademarks used only for compatibility description (no endorsement implied)
+\end{itemize}
+\subsection{Technical Architecture Constraints}
+\subsubsection{Programming Language Restrictions}
+\begin{itemize}
+\item \textbf{Frontend:} JavaScript/TypeScript only (as required by browser extension APIs)
+\item \textbf{Backend:} Node.js JavaScript for consistency with frontend (alternative: Python allowed for ML components)
+\item \textbf{Database Queries:} MongoDB Query Language (no SQL injection risk)
+\end{itemize}
+\subsubsection{Framework and Library Constraints}
+\begin{itemize}
+\item Frontend framework limited to lightweight options (React, Vue, Svelte) due to extension size limits
+\item UI component libraries must not conflict with Upwork's native styles (CSS scoping required)
+\item External dependencies must be bundled (no CDN loading for security)
+\item Total bundled extension size shall not exceed 5 MB (Chrome Web Store recommendation)
+\end{itemize}
+\subsubsection{Database Design Constraints}
+\begin{itemize}
+\item MongoDB schema must support horizontal sharding for scalability
+\item Denormalization acceptable for read-heavy operations (proposal history queries)
+\item Sensitive fields (API keys, user credentials) must use field-level encryption
+\item Indexes required on frequently queried fields (user_id, timestamp, template_id)
+\end{itemize}
+\subsection{Performance and Resource Constraints}
+\subsubsection{Client-Side Resource Limits}
+\begin{itemize}
+\item Extension memory footprint shall not exceed 150 MB during active use
+\item CPU utilization limited to 5% on average (measured on Intel Core i5 baseline)
+\item DOM manipulation operations must complete within one frame (16ms) to prevent jank
+\item localStorage usage capped at 5 MB to leave room for other extensions
+\end{itemize}
+\subsubsection{Backend Infrastructure Limits}
+\begin{itemize}
+\item API response time must meet p95 latency target of 500ms (95th percentile)
+\item Database connection pool limited to 100 concurrent connections per instance
+\item AI API costs constrained to $0.10 per proposal generation on average
+\item Bandwidth costs maintained under $0.05 per user per month
+\end{itemize}
+\subsection{Security and Privacy Constraints}
+\subsubsection{Authentication and Authorization}
+\begin{itemize}
+\item User passwords must never be transmitted or stored by the system
+\item Session tokens expire after 48 hours of inactivity (configurable by admin)
+\item Multi-factor authentication required for administrative access
+\item API keys stored in environment variables (never hardcoded in source)
+\end{itemize}
+\subsubsection{Data Encryption Requirements}
+\begin{itemize}
+\item All data in transit encrypted using TLS 1.3 with Perfect Forward Secrecy
+\item Data at rest encrypted using AES-256-GCM algorithm
+\item Encryption keys rotated quarterly and after any suspected compromise
+\item Backup data encrypted separately with distinct key hierarchy
+\end{itemize}
+\subsubsection{Audit and Logging Constraints}
+\begin{itemize}
+\item Security events logged with immutable audit trail (write-once storage)
+\item Logs retained for minimum 90 days, maximum 2 years
+\item Personal identifiable information (PII) redacted from logs per GDPR
+\item Log access restricted to authorized personnel with change tracking
+\end{itemize}
+\subsection{Business and Operational Constraints}
+\subsubsection{Budget Constraints}
+\begin{itemize}
+\item Cloud infrastructure costs capped at $5,000/month for first 10,000 users
+\item AI API usage limited to 50,000 proposals/month on initial budget
+\item Development team limited to 4 full-time engineers plus 2 part-time QA testers
+\end{itemize}
+\subsubsection{Timeline Constraints}
+\begin{itemize}
+\item Minimum Viable Product (MVP) delivery deadline: April 2026
+\item Beta testing phase must complete before public launch
+\item Major version updates constrained to quarterly release schedule
+\end{itemize}
+\subsubsection{Support and Maintenance Constraints}
+\begin{itemize}
+\item User support provided during business hours only (9 AM - 5 PM UTC) initially
+\item Critical bug fixes delivered within 48 hours
+\item Feature requests prioritized based on user voting system
+\item System must support graceful degradation (core features work if AI API fails)
+\end{itemize}
+\subsection{Interoperability Constraints}
+\begin{itemize}
+\item System must not interfere with other installed browser extensions
+\item Must coexist with Upwork's native browser extension (if any)
+\item API design must allow future mobile app development
+\item Data export formats must be importable by common productivity tools (CSV, JSON)
+\end{itemize}
+\section{User Documentation}
+Comprehensive, accessible documentation is essential for user adoption, system maintainability, and support efficiency. This section specifies the documentation artifacts that shall accompany the Upwork Proposal Assistant.
+\subsection{End-User Documentation}
+\subsubsection{Quick Start Guide}
+A concise, visual guide enabling new users to achieve their first proposal generation within 5 minutes:
+\begin{itemize}
+\item \textbf{Format:} Interactive web-based tutorial with embedded screenshots and short video clips
+\item \textbf{Content:} Installation instructions, permission explanations, initial profile setup, first analysis walkthrough
+\item \textbf{Length:} Maximum 1,500 words across 5 screens/pages
+\item \textbf{Accessibility:} Available in-app during first launch; accessible via Help menu thereafter
+\end{itemize}
+\subsubsection{Complete User Manual}
+Comprehensive reference documentation covering all system features:
+\begin{itemize}
+\item \textbf{Format:} Searchable online knowledge base with categorized articles
+\item \textbf{Structure:} Organized by user task (analyzing clients, generating proposals, managing templates, reviewing analytics)
+\item \textbf{Content Includes:}
+\begin{itemize}
+\item Feature descriptions with annotated screenshots
+\item Step-by-step procedures for common tasks
+\item Troubleshooting guides for common issues
+\item FAQ section addressing user questions from beta testing
+\item Glossary of Upwork and system-specific terminology
+\end{itemize}
+\item \textbf{Maintenance:} Updated within 2 weeks of any feature release
+\end{itemize}
+\subsubsection{Video Tutorials}
+Visual learning resources for users who prefer video format:
+\begin{itemize}
+\item \textbf{Library:} Minimum 10 tutorial videos (3-5 minutes each) covering core workflows
+\item \textbf{Topics:} Installation, profile setup, client analysis, proposal generation, template management, analytics review
+\item \textbf{Platform:} Hosted on YouTube with closed captions for accessibility
+\item \textbf{Production Quality:} Professional narration, screen recordings with zoom annotations, consistent branding
+\end{itemize}
+\subsubsection{Contextual Help}
+In-application assistance available at point of need:
+\begin{itemize}
+\item \textbf{Tooltips:} Hover-triggered explanations for UI elements and settings
+\item \textbf{Help Icons:} Clickable "?" icons opening relevant documentation sections
+\item \textbf{Onboarding Tours:} Optional guided tours highlighting key features for first-time users
+\item \textbf{Smart Suggestions:} Context-aware tips based on user behavior (e.g., "Try filtering by score" when viewing many results)
+\end{itemize}
+\subsection{Technical Documentation}
+\subsubsection{API Documentation}
+For developers and advanced users requiring programmatic access:
+\begin{itemize}
+\item \textbf{Format:} OpenAPI 3.0 specification with interactive documentation (Swagger UI)
+\item \textbf{Content:}
+\begin{itemize}
+\item Endpoint descriptions with request/response examples
+\item Authentication methods and token management
+\item Rate limiting policies and error codes
+\item Webhook configuration for event notifications
+\end{itemize}
+\item \textbf{Code Examples:} Sample code in JavaScript, Python, and cURL
+\end{itemize}
+\subsubsection{Developer Guide}
+For contributors and maintainers working on the codebase:
+\begin{itemize}
+\item \textbf{Architecture Overview:} System design diagrams, component interactions, data flow
+\item \textbf{Setup Instructions:} Development environment configuration, dependency installation, local testing
+\item \textbf{Coding Standards:} Style guide, naming conventions, commenting practices
+\item \textbf{Testing Procedures:} Unit test, integration test, and end-to-end test guidelines
+\item \textbf{Deployment Process:} Build pipeline, staging environment, production release checklist
+\end{itemize}
+\subsubsection{Database Schema Documentation}
+\begin{itemize}
+\item Entity-Relationship diagrams showing data model
+\item Collection/table descriptions with field definitions
+\item Index strategies and query optimization notes
+\item Migration procedures for schema updates
+\end{itemize}
+\subsection{Administrative Documentation}
+\subsubsection{Administrator Manual}
+For system administrators managing backend operations:
+\begin{itemize}
+\item \textbf{Dashboard Navigation:} Guide to admin control panel features
+\item \textbf{User Management:} Account administration, role assignment, access control
+\item \textbf{System Monitoring:} Interpreting health metrics, setting up alerts, performance tuning
+\item \textbf{Configuration Management:} Adjusting system settings, feature flags, API keys
+\item \textbf{Backup and Recovery:} Procedures for data backup, restoration, disaster recovery
+\end{itemize}
+\subsubsection{Operations Runbook}
+Step-by-step procedures for handling operational scenarios:
+\begin{itemize}
+\item Incident response workflows for service outages
+\item Scaling procedures for handling traffic spikes
+\item Security incident response protocols
+\item Routine maintenance task schedules
+\end{itemize}
+
+\subsubsection{Maintenance and Support Documentation}
+\begin{itemize}
+\item \textbf{Version Control Logs:} Detailed changelogs for every release branch.
+\item \textbf{Issue Tracking:} Procedures for documenting bugs via GitHub Issues or Jira.
+\item \textbf{Security Patching:} Protocol for deploying emergency fixes for identified vulnerabilities.
+\end{itemize}
+
+% ================= 4. FUNCTIONAL REQUIREMENTS =================
+\chapter{Functional Requirements}
+
+\section{Introduction}
+This chapter defines the fundamental actions the Upwork Proposal Assistant must perform. Each requirement is derived from the Use Case Diagram and is categorized by its specific system module. Every functional requirement (FR) is described in terms of its logic, data inputs, internal processing, and resulting outputs.
+
+\section{FR-001: Automated Client Data Extraction}
+\subsection{Description}
+The system shall programmatically scrape and parse the Document Object Model (DOM) of the active Upwork job page to extract client-related metadata without manual user intervention.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Active Tab Context:} The URL of the current Upwork job post.
+    \item \textbf{DOM Tree:} The raw HTML structure of the page.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item The system shall identify specific CSS selectors associated with client metrics.
+    \item It shall parse the "Hire Rate," "Total Spent," and "Average Hourly Rate."
+    \item The system shall extract the last 10 feedback entries to identify recurring sentiment patterns.
+\end{enumerate}
+
+\subsection{Outputs}
+\begin{itemize}
+    \item \textbf{Data Object:} A structured JSON object containing parsed metrics.
+    \item \textbf{Status Event:} A trigger sent to the UI to update the loading state.
+\end{itemize}
+
+\section{FR-002: Client Reliability Scoring Engine}
+\subsection{Description}
+This module processes extracted data to generate a normalized 1-100 score representing the client's quality and trustworthiness.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item Client metadata from FR-001.
+    \item Admin-defined weightage constants ($w_1, w_2, w_3$).
+\end{itemize}
+
+\subsection{Processing}
+The system shall calculate the Final Score ($S$) using a weighted linear combination:
+$$S = (w_1 \cdot \text{HireRate}) + (w_2 \cdot \text{SpendMetric}) + (w_3 \cdot \text{SentimentScore})$$
+Where:
+\begin{itemize}
+    \item \textbf{HireRate}: Normalized value between 0 and 1.
+    \item \textbf{SpendMetric}: Logarithmic scale of total dollars spent to prevent outlier bias.
+    \item \textbf{SentimentScore}: A value derived from keyword matching in client reviews.
+\end{itemize}
+
+\subsection{Outputs}
+\begin{itemize}
+    \item \textbf{Visual Score:} A numerical value (1-100) displayed in the extension.
+    \item \textbf{Traffic Light Status:} Red (Score $<$ 50), Yellow (50--79), Green ($\geq$ 80).
+\end{itemize}
+
+\section{FR-003: Freelancer Decision Support System}
+\subsection{Description}
+The DSS acts as the analytical "brain" of the extension. It synthesizes data to provide a final verdict on whether the user should spend "Connects" on a job.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Aggregated Client Score:} The 1-100 value from FR-002.
+    \item \textbf{Job Recency:} Time since post.
+    \item \textbf{Applicant Count:} Total current proposals submitted.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Tier 1 Logic:} If (Applicants $> 50$) AND (Hire Rate $< 30\%$), output "Skip."
+    \item \textbf{Tier 2 Logic:} If (Score $> 80$) AND (Applicants $< 20$), output "Strong Apply."
+    \item \textbf{Tier 3 Logic:} If (Post Time $< 30$ mins), add "Urgent Action" badge.
+\end{enumerate}
+
+\subsection{Outputs}
+\begin{itemize}
+    \item \textbf{Recommendation Badge:} Green (Apply), Yellow (Caution), Red (Skip).
+    \item \textbf{Probability Estimate:} Percentage likelihood of the client viewing the proposal.
+\end{itemize}
+
+\section{FR-004: Proposal Template Management \& Ranking}
+\subsection{Description}
+Allows management of a library of templates. The system tracks which templates lead to interviews and ranks them by performance.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Template Body:} Text containing placeholders like [Client\_Name].
+    \item \textbf{Performance Data:} User-marked success (Interview/Hire).
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Success Velocity ($V$):} $V = (\text{Interviews} / \text{Total Uses}) \times 100$.
+    \item \textbf{Auto-Ranking:} Reorder list based on $V$ value.
+    \item \textbf{Parsing:} Replace brackets with data from FR-001.
+\end{enumerate}
+
+\subsection{Outputs}
+\begin{itemize}
+    \item \textbf{Ranked Library:} A searchable list sorted by performance.
+    \item \textbf{Performance Icons:} "Top Performer" or "Needs Improvement."
+\end{itemize}
+
+\section{FR-005: Proposal History and Analytics}
+\subsection{Description}
+Maintains a record of all generated proposals for user auditing and performance tracking.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Proposal Text:} Final draft content.
+    \item \textbf{Timestamp:} Date of generation.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Aggregation:} Weekly totals of applications submitted.
+    \item \textbf{Trend Calculation:} Compare current week success rate to previous week.
+\end{enumerate}
+
+\subsection{Outputs}
+\begin{itemize}
+    \item \textbf{Dashboard:} Graphical bar and pie charts.
+    \item \textbf{Export:} CSV/PDF generation.
+\end{itemize}
+
+\section{FR-006: User Profile and Skills Configuration}
+\subsection{Description}
+A knowledge base for the AI, storing the freelancer's specific background and technical strengths.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Professional Bio:} Detailed experience summary.
+    \item \textbf{Skill Tags:} Keywords like [React], [Python], [SEO].
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Mapping:} Compare user skill tags with job-required skills.
+    \item \textbf{Matching \%:} Calculate $M = (\text{User Skills} \cap \text{Job Skills}) / \text{Job Skills}$.
+\end{enumerate}
+
+\section{FR-007: AI Tone and Style Configuration}
+\subsection{Description}
+Controls the linguistic "voice" of the generated proposals.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Tone Select:} Professional, Friendly, Technical, or Aggressive.
+    \item \textbf{Length:} Short, Medium, or Detailed.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Prompt Engineering:} Append style constraints to the AI API request.
+\end{enumerate}
+
+\section{FR-008: Administrative System Management}
+\subsection{Description}
+Internal tools for the admin to monitor system health and global template quality.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Global Usage Logs:} API latency and success rates.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{Key Rotation:} Update system-wide API keys for AI services.
+\end{enumerate}
+
+\section{FR-009: Data Synchronization and Persistence}
+\subsection{Description}
+Ensures data is not lost across browser sessions or extension reinstalls.
+
+\subsection{Inputs}
+\begin{itemize}
+    \item \textbf{Session Data:} Local storage JSON.
+\end{itemize}
+
+\subsection{Processing}
+\begin{enumerate}
+    \item \textbf{AES-256 Encryption:} Encrypt data before sending to cloud backup.
+\end{enumerate}
+
+% ================= 5. NON-FUNCTIONAL REQUIREMENTS =================
+\chapter{Non-Functional Requirements}
+
+\section{Introduction}
+While functional requirements define what the system does, this chapter defines the quality attributes, operational constraints, and performance benchmarks that ensure the system is professional-grade. In adherence to IEEE Std 830-1984, these requirements are quantifiable, measurable, and verifiable.
+
+\section{Performance Requirements}
+\subsection{Speed and Latency}
+\begin{itemize}
+    \item \textbf{NFR-P-01 (UI Responsiveness):} The extension popup and on-page overlays shall render and become interactive within \textbf{1.5 seconds} of the trigger event.
+    \item \textbf{NFR-P-02 (Analysis Execution):} The Client Reliability Analysis (FR-001/FR-002) shall complete processing and display results within \textbf{3.0 seconds} of data extraction.
+    \item \textbf{NFR-P-03 (Generation Latency):} AI-based proposal generation shall deliver a draft to the user in under \textbf{5.0 seconds}, excluding external network API delays.
+\end{itemize}
+
+\subsection{Resource Utilization}
+\begin{itemize}
+    \item \textbf{NFR-P-04 (Memory Management):} The browser extension shall not consume more than \textbf{180MB of RAM} at peak processing to ensure no degradation of the browser experience.
+    \item \textbf{NFR-P-05 (CPU Overhead):} Background script CPU usage shall remain below \textbf{3\%} during idle states and \textbf{10\%} during active generation.
+\end{itemize}
+
+\section{Reliability and Availability}
+\begin{itemize}
+    \item \textbf{NFR-R-01 (Availability):} The system backend and template database shall maintain \textbf{99.9\% uptime} (Three Nines), measured on a monthly basis.
+    \item \textbf{NFR-R-02 (Fault Tolerance):} In the event of an external AI API failure, the system shall provide a fallback to manual templates within \textbf{500ms} without crashing the UI.
+    \item \textbf{NFR-R-03 (Data Persistence):} User drafts and history shall be automatically cached locally every \textbf{30 seconds} to prevent data loss during browser crashes.
+\end{itemize}
+
+\section{Security and Privacy}
+\begin{itemize}
+    \item \textbf{NFR-S-01 (Encryption):} All data in transit between the extension and the server shall use \textbf{TLS 1.3} encryption over HTTPS.
+    \item \textbf{NFR-S-02 (Storage Security):} Sensitive user data, including API keys and credentials, shall be stored using \textbf{AES-256} encryption at rest.
+    \item \textbf{NFR-S-03 (Anonymization):} During data extraction, no sensitive client personal identifiable information (PII) shall be stored on the system backend.
+\end{itemize}
+
+\section{Usability and Human Factors}
+\begin{itemize}
+    \item \textbf{NFR-U-01 (Learnability):} A new user shall be able to perform a "Client Analysis" and "Proposal Generation" within \textbf{2 minutes} of installation without reading a manual.
+    \item \textbf{NFR-U-02 (Accessibility):} The user interface shall comply with \textbf{WCAG 2.1 Level AA} standards, including high-contrast support and screen-reader compatibility.
+\end{itemize}
+
+% ================= 6. DIAGRAMS AND MODELS =================
+\chapter{Diagrams and Models}
+
+\section{Context Diagram (Level 0 DFD)}
+The Context Diagram establishes the boundary between the Upwork Proposal Assistant and the external entities. The system is represented by a central process bubble, highlighting its role as an intermediary and data processor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{contextfinal.png}
+    \caption{Level 0 Context Diagram of the Upwork Proposal Assistant}
+    \label{fig:context_diagram}
+\end{figure}
+
+
+
+\subsection{Entity Interaction Analysis}
+\begin{itemize}
+    \item \textbf{Freelancer:} The primary user who supplies job selections and tone preferences. In return, the system provides real-time reliability scores and proposal drafts.
+    
+    \item \textbf{Upwork Platform:} Acts as a data provider. The system extracts job metadata, budget history, and client feedback directly from the site's DOM.
+    
+    \item \textbf{AI Service API:} An external computational entity that receives structured prompts from the system and returns high-quality, generated proposal text.
+    
+    \item \textbf{System Administrator:} Responsible for managing system configurations, maintaining templates, and monitoring system performance. The administrator does not participate in proposal generation but ensures the reliability, security, and proper operation of the platform.
+\end{itemize}
+
+
+\section{Use Case Diagram}
+The Use Case Diagram defines the functional scope of the system and illustrates how different actors interact with the system's core features.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{usecase2.png}
+    \caption{UML Use Case Diagram showing Actor-System interactions}
+    \label{fig:use_case}
+\end{figure}
+
+
+
+
+
+
+
+% ================= 8. REFERENCES =================
+\chapter{References}
+\begin{enumerate}[label={[\arabic*]}]
+    \item IEEE Computer Society, "IEEE Std 830-1984: IEEE Guide to Software Requirements Specifications," 1984.
+    \item Chrome Developers, "Chrome Extension Manifest V3 Documentation," Google, 2025.
+    \item Upwork Global Inc., "Upwork API and Terms of Service for Developers," 2025.
+    \item N. Nielsen, "10 Usability Heuristics for User Interface Design," 1994.
+\end{enumerate}
 
 \end{document}
-\documentclass[12pt,a4paper]{article}
 
-% ---------------- Packages ----------------
-\usepackage[a4paper, margin=1in]{geometry}
-\usepackage{graphicx}
-\usepackage[hidelinks]{hyperref}
-\usepackage{setspace}
-\usepackage{enumitem}
-\usepackage{titlesec}
 
-\onehalfspacing
-
-\titleformat{\section}{\bfseries\Large}{\thesection}{1em}{}
-\titleformat{\subsection}{\bfseries\large}{\thesubsection}{1em}{}
-
-% ---------------- Document ----------------
-\begin{document}
-
-\begin{center}
-    \textbf{\LARGE Software Requirements Specification (SRS)}\\[0.5em]
-    \textbf{Upwork Proposal Assistant}\\[1em]
-\end{center}
-
-\tableofcontents
-\newpage
-
-% -------------------------------------------------
-\section{Introduction}
-
-This section describes the purpose and scope of the Software Requirements Specification (SRS) to help stakeholders understand the system.
-
-\subsection{Purpose}
-This SRS document defines the Functional Requirements (FR) and Non-Functional Requirements (NFR) of the system. It acts as a formal reference between the development team and the Requirement Provider (RP) and provides a basis for system design, implementation, and validation.
-
-\subsection{Scope}
-The Upwork Proposal Assistant analyzes client profiles from Upwork such as job success rate, reviews, budget history, and location. Based on this analysis, it generates proposal templates using past successful submissions and provides a client summary to help freelancers decide whether to apply. The system reduces proposal writing time and improves decision-making.
-
-\subsection{Definitions and Abbreviations}
-\begin{itemize}
-    \item RP: Requirement Provider
-    \item SRS: Software Requirements Specification
-    \item FR: Functional Requirement
-    \item NFR: Non-Functional Requirement
-    \item UI: User Interface
-    \item JSR: Job Success Rate
-\end{itemize}
-
-All undefined terms follow IEEE Std 729-1983.
-
-% -------------------------------------------------
-\section{Overall Description}
-
-\subsection{Product Perspective}
-The system is a standalone browser extension designed to reduce manual effort in writing Upwork proposals by analyzing client history before proposal generation.
-
-\subsection{Product Functions}
-\begin{itemize}
-    \item Client profile analysis
-    \item Client reliability assessment
-    \item Personalized proposal generation
-    \item Proposal editing and customization
-    \item Proposal history and analytics
-\end{itemize}
-
-\subsection{User Characteristics}
-\begin{itemize}
-    \item Freelancers: Basic web skills, frequent users
-    \item Administrators: Manage templates and users
-    \item Developers: Maintain and update the system
-\end{itemize}
-
-All users have basic browser proficiency.
-
-\subsection{General Constraints}
-\begin{itemize}
-    \item Compatible with Chrome, Firefox, and Edge
-    \item No direct Upwork API integration
-    \item Ethical and privacy-compliant data usage
-\end{itemize}
-
-\subsection{Assumptions and Dependencies}
-\begin{itemize}
-    \item Freelancers provide accurate client data
-    \item RP provides scoring rules
-    \item Users have active Upwork accounts
-    \item Past proposal data is available
-\end{itemize}
-
-% -------------------------------------------------
-\section{Functional Requirements}
-
-\subsection{FR-001 Client Profile Analysis}
-The system shall analyze client data and generate a reliability score and application recommendation.
-
-\subsection{FR-002 Proposal Template Generation}
-The system shall generate personalized and editable proposal drafts based on client requirements and past successful proposals.
-
-\subsection{FR-003 Freelancer Decision Support}
-The system shall provide recommendations such as Strong Apply, Apply with Caution, or Skip.
-
-\subsection{FR-004 Template Management}
-The system shall store, update, and rank proposal templates based on performance.
-
-% -------------------------------------------------
-\section{Non-Functional Requirements}
-
-\subsection{Performance Requirements}
-\begin{itemize}
-    \item The system shall load the main interface within 3 seconds under normal network conditions.
-    \item Client profile analysis and proposal generation shall complete within 5 seconds.
-    \item The system shall support multiple concurrent users without performance degradation.
-    \item External requests shall be handled asynchronously.
-\end{itemize}
-
-\subsection{Reliability and Availability}
-\begin{itemize}
-    \item The system shall maintain at least 99\% uptime per month.
-    \item The system shall handle failures gracefully.
-    \item User data shall not be lost during unexpected shutdowns.
-\end{itemize}
-
-\subsection{Usability Requirements}
-\begin{itemize}
-    \item The system shall provide a simple and intuitive user interface.
-    \item User input shall be minimized where possible.
-    \item Error messages shall be clear and informative.
-\end{itemize}
-
-\subsection{Security Requirements}
-\begin{itemize}
-    \item All communication shall use HTTPS with TLS encryption.
-    \item User data shall be stored securely with restricted access.
-    \item Unauthorized access shall be prevented.
-\end{itemize}
-
-\subsection{Scalability Requirements}
-\begin{itemize}
-    \item The system shall support increasing numbers of users.
-    \item Future freelance platform integration shall be possible.
-\end{itemize}
-
-\subsection{Maintainability and Modularity}
-\begin{itemize}
-    \item The system shall follow a modular architecture.
-    \item Code shall be well-documented.
-    \item Updates shall not disrupt existing functionality.
-\end{itemize}
-
-\subsection{Data Backup and Recovery}
-\begin{itemize}
-    \item User data shall be backed up every 24 hours.
-    \item Data recovery shall be supported in case of failure.
-\end{itemize}
-
-\subsection{Compatibility and Portability}
-\begin{itemize}
-    \item The system shall work on modern browsers and operating systems.
-    \item The browser extension shall not interfere with normal platform usage.
-\end{itemize}
-
-\subsection{Legal and Ethical Constraints}
-\begin{itemize}
-    \item The system shall comply with third-party platform policies.
-    \item The system shall prevent unethical usage.
-    \item Final proposal submission responsibility remains with the freelancer.
-\end{itemize}
-
-% -------------------------------------------------
-\section{External Interface Requirements}
-
-\subsection{Hardware Interface}
-
-The system does not require specialized hardware and can operate on standard computing devices.
-
-\textbf{Supported Hardware:}
-\begin{itemize}
-    \item Desktop computers
-    \item Laptops
-    \item Tablets
-\end{itemize}
-
-\textbf{Input Devices:}
-\begin{itemize}
-    \item Keyboard
-    \item Mouse / Touchpad
-\end{itemize}
-
-\textbf{Output Devices:}
-\begin{itemize}
-    \item Monitor / Screen
-\end{itemize}
-
-The system will run through a web browser, making it accessible on most modern devices.
-
-\subsection{Software Interface}
-
-The software interacts with several internal and external software components.
-
-\textbf{Internal Software Interfaces:}
-\begin{itemize}
-    \item Database system to store:
-    \begin{itemize}
-        \item User profiles
-        \item Proposal templates
-        \item Client analysis data
-    \end{itemize}
-    \item Backend services for:
-    \begin{itemize}
-        \item Proposal generation
-        \item User authentication
-        \item Data processing
-    \end{itemize}
-\end{itemize}
-
-\textbf{External Software Interfaces:}
-\begin{itemize}
-    \item Web browsers (Chrome, Firefox, Edge)
-    \item APIs for:
-    \begin{itemize}
-        \item Fetching client or job data (if applicable)
-        \item AI-based text generation
-    \end{itemize}
-\end{itemize}
-
-These interfaces ensure smooth communication between system modules.
-
-% -------------------------------------------------
-\section{System Diagrams}
-
-\subsection{Context Diagram}
-\includegraphics[width=0.8\textwidth]{context_diagram.jpg}
-
-\subsection{Use Case Diagram}
-\includegraphics[width=0.8\textwidth]{usecase.png}
-
-% -------------------------------------------------
-\section{References}
-\begin{itemize}
-    \item IEEE Std 830-1998, Software Requirements Specification
-    \item ISO/IEC/IEEE 29148:2018, Requirements Engineering
-    \item Upwork Proposal Writing Guidelines
-    \item IEEE Std 729-1983, Software Engineering Glossary
-\end{itemize}
-
-\end{document}
