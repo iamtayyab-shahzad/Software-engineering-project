@@ -1,1 +1,857 @@
-https://output-badger-16575296.figma.site/
+\documentclass[12pt,a4paper,openany,oneside]{report}
+
+% ============================================
+% PACKAGES
+% ============================================
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{times}
+\usepackage{placeins} % FIX FOR BLANK PAGES
+
+% ============================================
+% PAGE GEOMETRY
+% ============================================
+\geometry{
+    a4paper,
+    left=1in,
+    right=1in,
+    top=1in,
+    bottom=1in
+}
+
+% ============================================
+% SPACING
+% ============================================
+\onehalfspacing
+
+% ============================================
+% HYPERLINK SETUP
+% ============================================
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,
+    urlcolor=blue,
+    citecolor=black,
+    pdftitle={System Design Report - Upwork Proposal Assistant},
+    pdfauthor={Namal University Team},
+    bookmarks=true,
+}
+
+% ============================================
+% HEADER AND FOOTER
+% ============================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+}
+
+% ============================================
+% CHAPTER AND SECTION FORMATTING
+% ============================================
+\titleformat{\chapter}[display]
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% ============================================
+% TABLE OF CONTENTS FORMATTING
+% ============================================
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
+
+% ============================================
+% CODE LISTING SETUP
+% ============================================
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false
+}
+
+% ============================================
+% DOCUMENT INFORMATION
+% ============================================
+\author{Namal University, Mianwali}
+\date{\today}
+
+% ============================================
+% BEGIN DOCUMENT
+% ============================================
+% Force all "clearing" commands to only clear a single page, never a double one
+\makeatletter
+\def\cleardoublepage{\clearpage}
+\makeatother
+
+
+\begin{document}
+
+
+% ============================================
+% TITLE PAGE
+% ============================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\LARGE \textbf{Namal University, Mianwali}}\\[0.5cm]
+    {\Large Department of Computer Science}\\[2cm]
+    {\huge \textbf{System Design Report}}\\[0.5cm]
+    {\LARGE \textbf{Upwork Proposal Assistant}}\\[0.3cm]
+    {\large A Browser Extension for Intelligent Freelance Proposal Management}\\[2cm]
+    {\Large \textbf{CSC-225 – Software Engineering}}\\[0.3cm]
+    {\large Complex Computing Problem – Milestone 3}\\[2cm]
+
+    \begin{minipage}{0.8\textwidth}
+    \begin{flushleft}
+        \textbf{Prepared By:}\\[0.3cm]
+        \begin{tabular}{ll}
+            \textbf{Group Leader:} & Tayyab Shahzad \\
+            \textbf{Team Member:} & Kashif \\
+            \textbf{Team Member:} & Najiba \\
+        \end{tabular}
+    \end{flushleft}
+    \end{minipage}\\[1.5cm]
+
+    \begin{minipage}{0.8\textwidth}
+    \begin{flushleft}
+        \textbf{Supervised By:}\\[0.3cm]
+        Asiya Batool\\
+        Department of Computer Science\\
+        Namal University, Mianwali
+    \end{flushleft}
+    \end{minipage}
+
+    \vfill
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\chapter{Introduction}
+\label{ch:introduction}
+
+This chapter provides an overview of the System Design Report for the Upwork Proposal Assistant, outlining the purpose, scope, and organization of this document. It establishes the context for the detailed design specifications that follow.
+
+\section{Purpose of this Design Document}
+\label{sec:purpose}
+
+The primary purpose of this System Design Report is to translate the approved Software Requirements Specification (SRS) into a comprehensive, implementable system design. This document serves as a bridge between requirements analysis and system implementation, providing detailed blueprints for developers, testers, and stakeholders.
+
+\subsection{Document Objectives}
+
+This design document aims to:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Translate Requirements into Design:} Convert functional and non-functional requirements from the SRS into concrete design artifacts including architectural components, class structures, and interaction models.
+    
+    \item \textbf{Establish Design Decisions:} Document and justify key architectural and design decisions made during the system design phase, ensuring traceability and rationale for future reference.
+    
+    \item \textbf{Facilitate Implementation:} Provide developers with clear, unambiguous specifications through visual models (UML diagrams, DFDs) and detailed descriptions that guide the coding process.
+    
+    \item \textbf{Enable Validation and Verification:} Establish a foundation for testing by clearly defining system behavior, component interactions, and expected outcomes.
+    
+    \item \textbf{Support Stakeholder Communication:} Serve as a communication tool between technical teams, project managers, requirement providers, and academic evaluators.
+    
+    \item \textbf{Ensure Quality and Consistency:} Maintain adherence to IEEE software engineering standards (IEEE Std 1016-2009) and industry best practices for software design documentation.
+\end{itemize}
+
+\subsection{Intended Audience}
+
+This document is prepared for multiple stakeholders:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Development Team:} Software engineers who will implement the system based on these design specifications.
+    \item \textbf{Quality Assurance Team:} Testers who will validate system behavior against design models.
+    \item \textbf{Requirement Provider:} Client stakeholder who will verify that the design meets their expectations.
+    \item \textbf{Course Instructor and Evaluators:} Academic assessors evaluating the quality and completeness of design work.
+    \item \textbf{Project Managers:} Individuals responsible for planning implementation phases and resource allocation.
+    \item \textbf{Future Maintainers:} Developers who may need to enhance or modify the system in the future.
+\end{itemize}
+
+\section{Project Overview}
+\label{sec:project-overview}
+
+\subsection{System Context}
+
+The \textbf{Upwork Proposal Assistant} is a browser extension designed to revolutionize the freelance proposal workflow on the Upwork platform. In the highly competitive landscape of online freelancing, professionals face significant challenges in efficiently analyzing potential clients, crafting customized proposals, and managing their application history.
+
+\subsection{Problem Statement}
+
+Current freelance workflow challenges include:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Time Inefficiency:} Freelancers spend 15-20 minutes per job application analyzing client history, reading reviews, and writing customized proposals.
+    
+    \item \textbf{Information Overload:} Upwork job listings contain extensive data that must be manually processed and evaluated.
+    
+    \item \textbf{Inconsistent Quality:} Without systematic analysis tools, freelancers may submit proposals to low-quality clients or fail to identify red flags.
+    
+    \item \textbf{Resource Wastage:} Upwork's "Connect" system charges freelancers for each application, making poor targeting costly.
+    
+    \item \textbf{Template Management:} Successful freelancers lack tools to track which templates perform best or systematically improve their approach.
+\end{itemize}
+
+\subsection{Solution Overview}
+
+The Upwork Proposal Assistant addresses these challenges through intelligent automation and data-driven decision support. The system provides:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Automated Client Analysis:} Extracts and analyzes client profile data including spending history, hire rates, and feedback patterns to generate a normalized Client Reliability Score.
+    
+    \item \textbf{AI-Powered Proposal Generation:} Leverages large language models to create customized proposal drafts tailored to job requirements and client characteristics.
+    
+    \item \textbf{Template Management and Analytics:} Provides sophisticated template organization with performance tracking and automated ranking based on success metrics.
+    
+    \item \textbf{Decision Support System:} Offers intelligent recommendations on whether to apply to specific jobs based on multi-tier analysis.
+    
+    \item \textbf{Historical Analytics:} Maintains comprehensive proposal history with visual analytics for continuous improvement.
+\end{enumerate}
+
+\subsection{Key System Features}
+
+Based on the approved SRS, the system delivers nine core functional capabilities:
+
+\begin{itemize}[leftmargin=*]
+    \item FR-001: Automated client data extraction from Upwork job pages
+    \item FR-002: Client reliability scoring with visual indicators
+    \item FR-003: Intelligent recommendation engine (Apply/Skip/Strong Apply)
+    \item FR-004: Template library management with performance ranking
+    \item FR-005: Proposal history tracking and analytics visualization
+    \item FR-006: User profile and skills configuration
+    \item FR-007: AI tone and style customization for proposals
+    \item FR-008: Administrative system management and monitoring
+    \item FR-009: Secure data synchronization across devices
+\end{itemize}
+
+\section{Scope of Design}
+\label{sec:scope-design}
+
+\subsection{Design Coverage}
+
+This design document comprehensively covers:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Behavioral Models:} Use case diagrams, data flow diagrams (Levels 0-2), sequence diagrams, and activity diagrams representing system behavior and interactions.
+    
+    \item \textbf{Structural Models:} Class diagrams and component diagrams illustrating system architecture and organization.
+    
+    \item \textbf{Traceability:} Complete mapping between functional requirements and design artifacts ensuring full coverage.
+    
+    \item \textbf{User Interface Design:} Paper-based and interactive Figma prototypes demonstrating system interfaces and user workflows.
+    
+    \item \textbf{Design Rationale:} Documented assumptions, constraints, and key design decisions with justifications.
+\end{itemize}
+
+\subsection{Design Boundaries}
+
+This document \textbf{does not} include:
+
+\begin{itemize}[leftmargin=*]
+    \item Detailed implementation code or algorithms
+    \item Database schema design (physical implementation details)
+    \item Deployment and infrastructure configuration
+    \item Test cases and test plans (covered in separate testing documentation)
+    \item Project management artifacts (schedules, budgets, resource allocation)
+\end{itemize}
+
+\subsection{System Boundaries}
+
+The system operates within the following boundaries:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Platform:} Browser extension (Chrome, Firefox, Edge, Brave)
+    \item \textbf{Integration:} Upwork platform (web interface only, no mobile)
+    \item \textbf{User Base:} Professional freelancers and system administrators
+    \item \textbf{Functionality:} Decision support and automation (not autonomous application submission)
+    \item \textbf{Compliance:} Upwork Terms of Service, GDPR, browser extension policies
+\end{itemize}
+
+\section{Design Methodology}
+\label{sec:design-methodology}
+
+\subsection{Design Approach}
+
+The system design follows a \textbf{model-driven, object-oriented approach} with emphasis on:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Requirements Traceability:} Every design element traces directly to one or more functional requirements from the SRS, ensuring complete coverage and preventing scope creep.
+    
+    \item \textbf{Iterative Refinement:} Design models were developed iteratively with stakeholder feedback from two formal Requirement Provider meetings:
+    \begin{itemize}
+        \item Meeting 1: Paper-based prototype review and feedback
+        \item Meeting 2: Interactive Figma prototype validation and refinement
+    \end{itemize}
+    
+    \item \textbf{Top-Down Decomposition:} System functionality is decomposed hierarchically from high-level context (Level 0 DFD) through detailed process models (Level 2 DFD), ensuring logical organization.
+    
+    \item \textbf{Object-Oriented Principles:} Class design follows SOLID principles with appropriate use of inheritance, composition, and encapsulation.
+    
+    \item \textbf{Separation of Concerns:} Clear separation between presentation layer (browser extension UI), business logic (analysis and generation), and data persistence (storage and synchronization).
+\end{enumerate}
+
+\subsection{Modeling Standards}
+
+All diagrams conform to:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{UML 2.5 Notation:} Use case, sequence, activity, class, and component diagrams follow Unified Modeling Language standards.
+    \item \textbf{DFD Conventions:} Data flow diagrams follow Yourdon-DeMarco notation with proper balancing across levels.
+    \item \textbf{IEEE Std 1016-2009:} Software Design Description standards for documentation structure and content.
+\end{itemize}
+
+\subsection{Design Tools}
+
+The following tools were utilized:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Diagram Creation:} Draw.io, Lucidchart, Visual Paradigm
+    \item \textbf{Prototyping:} Figma for interactive UI/UX prototypes
+    \item \textbf{Documentation:} LaTeX for professional report formatting
+    \item \textbf{Version Control:} GitHub for collaborative design artifact management
+\end{itemize}
+
+\section{Document Organization}
+\label{sec:document-organization}
+
+This design document is organized into the following chapters:
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Chapter 1: Introduction} – Provides context, purpose, and overview of the design document (current chapter).
+    
+    \item \textbf{Chapter 2: Design Assumptions and Constraints} – Documents assumptions made during design and constraints that limit design choices.
+    
+    \item \textbf{Chapter 3: Key Design Decisions} – Explains and justifies critical architectural and design decisions including DFD decomposition strategy, class relationships, and functionality distribution.
+    
+    \item \textbf{Chapter 4: System Design Diagrams} – Presents all behavioral and structural models:
+    \begin{itemize}
+        \item Use Case Diagram
+        \item Data Flow Diagrams (Levels 0-2)
+        \item Sequence Diagrams
+        \item Activity Diagrams
+        \item Class Diagram
+        \item Component Diagram
+    \end{itemize}
+    
+   
+    
+    \item \textbf{Chapter 5: GitHub and Figma Links} – Provides access to project repository and interactive prototypes.
+\end{itemize}
+
+\subsection{Reading Guide}
+
+\textbf{For Developers:} Focus on Chapters 3, 4, and 5 for implementation guidance.
+
+\textbf{For Testers:} Review Chapters 4 and 5 to understand expected system behavior.
+
+\textbf{For Stakeholders:} Chapters 1, 2, and 5 provide high-level overview and validation materials.
+
+\textbf{For Academic Evaluators:} All chapters demonstrate comprehensive design methodology and IEEE compliance.
+
+\section{References}
+\label{sec:references}
+
+This design document is based on and references the following:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Software Requirements Specification (SRS)} – Upwork Proposal Assistant, Version 1.0, January 5, 2026. This document defines all functional and non-functional requirements upon which this design is based.
+    
+    \item \textbf{IEEE Std 1016-2009} – IEEE Standard for Information Technology—Systems Design—Software Design Descriptions.
+    
+    \item \textbf{IEEE Std 830-1998} – IEEE Recommended Practice for Software Requirements Specifications.
+    
+    \item \textbf{UML 2.5 Specification} – Object Management Group (OMG), Unified Modeling Language standard.
+    
+    \item \textbf{Yourdon-DeMarco DFD Notation} – Structured analysis methodology for data flow diagrams.
+   
+    
+    \item \textbf{Upwork Platform Documentation} – Upwork Terms of Service and Developer Guidelines.
+    
+    \item \textbf{Browser Extension Standards} – Chrome Extension Manifest V3, Firefox WebExtensions API.
+\end{enumerate}
+
+\subsection{External Links}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{SRS Document:} Available in project GitHub repository
+    \item \textbf{Requirement Provider Meeting Minutes:} Linked in GitHub repository
+    \item \textbf{Design Diagrams:} All diagrams available in \texttt{/Design\_Diagrams} folder
+\end{itemize}
+
+
+\chapter{Design Assumptions and Constraints}
+
+\section{Design Assumptions}
+
+\subsection{User Roles and Characteristics Assumptions}
+The system design assumes the existence of two primary user roles:
+\begin{itemize}
+    \item \textbf{Freelancer (Primary User):} \\
+    The primary users are professional freelancers who actively use the Upwork platform to apply for jobs. It is assumed that users:
+    \begin{itemize}
+        \item Have basic familiarity with web browsers and browser extensions.
+        \item Understand the standard Upwork workflow (viewing jobs, analyzing clients, submitting proposals).
+        \item Possess at least a minimal professional profile including skills, experience, and portfolio items.
+        \item Are capable of reviewing AI-generated content and making final decisions manually.
+    \end{itemize}
+
+    \item \textbf{Administrator (Secondary/Internal Role):} \\
+    The administrator role is assumed to be limited to internal system maintenance tasks such as monitoring system health, managing AI API keys, and reviewing global usage metrics. Administrators are assumed to have technical expertise and are not typical end-users of the system.
+\end{itemize}
+
+No assumptions are made about user technical expertise beyond basic computer literacy. The system is explicitly designed to assist decision-making rather than replace human judgment, aligning with the SRS system boundary definitions.
+
+\subsection{Deployment Environment Assumptions}
+The system design assumes that the Upwork Proposal Assistant is deployed as a browser extension operating in modern web browsers. The following assumptions apply:
+\begin{itemize}
+    \item Users access Upwork through supported browsers such as Google Chrome, Mozilla Firefox, Microsoft Edge, etc.
+    \item The extension is built according to Manifest V3 specifications, ensuring compatibility with current browser security models.
+    \item The user environment includes:
+    \begin{itemize}
+        \item Stable internet connectivity for AI-based proposal generation.
+        \item Sufficient system resources to support lightweight background processing.
+    \end{itemize}
+    \item Backend services are deployed on a cloud-based infrastructure (e.g., AWS or GCP), providing scalability, availability, and geographic distribution.
+\end{itemize}
+
+The design assumes no dependency on operating-system-specific APIs, making the system OS-agnostic at the application level.
+
+\subsection{Usage Pattern Assumptions}
+The system is designed under the assumption that:
+\begin{itemize}
+    \item Users interact with the extension on-demand, primarily when viewing Upwork job postings.
+    \item Typical usage involves:
+    \begin{itemize}
+        \item Viewing a job post
+        \item Triggering client analysis
+        \item Reviewing a reliability score
+        \item Generating and refining a proposal draft
+    \end{itemize}
+    \item The system is not used continuously but in short, focused sessions aligned with job application workflows.
+    \item AI-powered proposal generation is invoked selectively rather than excessively to avoid unnecessary API usage.
+\end{itemize}
+
+It is assumed that users prefer fast feedback, minimal UI interruptions, and the ability to manually edit generated proposals before submission.
+
+\subsection{Data Availability Assumptions}
+The system design assumes that:
+\begin{itemize}
+    \item Required client and job data are available within the Upwork job page DOM and can be extracted using stable selectors.
+    \item The structure of Upwork job pages remains reasonably consistent over time.
+    \item External AI services (e.g., LLM APIs) are available and responsive during normal operation.
+    \item Users provide accurate and up-to-date profile information (skills, experience, preferences) for effective proposal personalization.
+\end{itemize}
+
+The system does not assume access to private Upwork APIs or sensitive user credentials, in compliance with platform policies.
+
+\section{Design Constraints}
+
+\subsection{Technology Stack Constraints}
+The design is constrained by the selected technology stack, which includes:
+\begin{itemize}
+    \item Browser Extension Technologies: JavaScript, HTML, CSS
+    \item Extension APIs: WebExtensions API (Manifest V3)
+    \item Backend: RESTful APIs implemented using server-side technologies
+    \item AI Integration: External AI service APIs
+    \item Database: Cloud-hosted NoSQL database (e.g., MongoDB)
+\end{itemize}
+
+These constraints limit the system to technologies that are:
+\begin{itemize}
+    \item Secure
+    \item Widely supported
+    \item Compatible with browser extension security policies
+\end{itemize}
+
+\subsection{Platform Constraints (Browser Extension Limitations)}
+As a browser extension, the system is constrained by:
+\begin{itemize}
+    \item Sandboxed execution environments
+    \item Restricted access to system-level resources
+    \item Limited background processing capabilities
+    \item Strict permission declarations required by browsers
+    \item Content script limitations when interacting with third-party websites
+\end{itemize}
+
+These constraints influenced the separation of responsibilities between content scripts, background scripts, and backend services.
+
+\subsection{Performance Constraints}
+Performance requirements defined in the SRS impose strict constraints, including:
+\begin{itemize}
+    \item UI responsiveness within defined time limits
+    \item Analysis and proposal generation within acceptable latency thresholds
+    \item Limited CPU and memory usage to prevent browser degradation
+\end{itemize}
+
+These constraints guided the decision to offload computationally expensive tasks (e.g., AI processing) to backend services rather than executing them locally.
+
+\subsection{Security Constraints}
+Security-related constraints include:
+\begin{itemize}
+    \item Mandatory encryption for data in transit (TLS)
+    \item Secure local storage of sensitive data
+    \item No storage of user credentials
+    \item Compliance with data privacy principles and anonymization requirements
+\end{itemize}
+
+These constraints restrict how data is stored, processed, and transmitted, directly influencing backend API and storage design.
+
+\subsection{Business and Timeline Constraints}
+The system design is constrained by:
+\begin{itemize}
+    \item Academic project timelines
+    \item Limited development resources
+    \item Requirement to strictly follow the approved SRS
+    \item Evaluation criteria defined in Project Milestone 3
+\end{itemize}
+
+These constraints required prioritization of core functionalities and avoidance of scope creep.
+
+
+
+\chapter{Key Design Decisions}
+
+This section explains the rationale behind critical design choices, demonstrating traceability between requirements and design artifacts.
+
+\section{DFD Decomposition Strategy}
+
+\subsection{Process Breakdown Rationale}
+The Data Flow Diagrams were decomposed incrementally from Level 0 to Level 2 to manage system complexity. High-level processes were broken down based on:
+\begin{itemize}
+    \item Functional responsibility
+    \item Data transformation boundaries
+    \item Logical separation of concerns
+\end{itemize}
+
+For example, proposal generation was decomposed into data extraction, skill matching, prompt construction, AI interaction, and result presentation.
+
+\subsection{Balancing Approach}
+Balancing was ensured by maintaining consistency of inputs and outputs across DFD levels. Each child diagram preserved the data flows of its parent process, ensuring:
+\begin{itemize}
+    \item No data loss
+    \item No introduction of undocumented processes
+    \item Full traceability to functional requirements
+\end{itemize}
+
+\section{Class Relationship Decisions}
+
+\subsection{Association, Aggregation, and Composition}
+\begin{itemize}
+    \item Association was used where objects interact without ownership (e.g., User and Job).
+    \item Aggregation was applied where objects logically belong together but can exist independently (e.g., User and Template).
+    \item Composition was used where lifecycle dependency exists (e.g., Proposal and ProposalDraft).
+\end{itemize}
+
+These choices reflect real-world ownership semantics and reduce coupling.
+
+\subsection{Inheritance Decisions}
+Inheritance was used selectively to avoid overgeneralization. Shared attributes and behaviors were abstracted into base classes (e.g., User → Freelancer/Admin) only where reuse was meaningful.
+
+\subsection{Interface Design Decisions}
+Interfaces were introduced to abstract external services such as AI providers, allowing:
+\begin{itemize}
+    \item Vendor independence
+    \item Easier testing
+    \item Future extensibility
+\end{itemize}
+
+\section{Functionality Distribution}
+
+\subsection{Multiple Sequence Diagrams}
+Multiple sequence diagrams were created to:
+\begin{itemize}
+    \item Avoid overcrowded diagrams
+    \item Clearly represent distinct use cases
+    \item Improve readability and traceability
+\end{itemize}
+
+Each sequence diagram maps to a specific functional requirement.
+
+\subsection{Multiple Activity Diagrams}
+Activity diagrams were separated by workflow type (analysis, generation, template management) to:
+\begin{itemize}
+    \item Clearly show decision points
+    \item Model parallel activities
+    \item Improve understanding of user-system interaction
+\end{itemize}
+
+\subsection{Component Separation Rationale}
+The system was divided into components (UI, analysis engine, AI service, storage) to:
+\begin{itemize}
+    \item Reduce coupling
+    \item Improve maintainability
+    \item Support scalability
+\end{itemize}
+
+\section{Architecture Decisions}
+
+\subsection{Browser Extension Architecture}
+A three-part extension architecture (content scripts, background scripts, UI components) was chosen to comply with Manifest V3 and ensure security.
+
+\subsection{Backend API Design Decisions}
+RESTful APIs were selected for:
+\begin{itemize}
+    \item Stateless communication
+    \item Simplicity
+    \item Scalability
+    \item Compatibility with browser-based clients
+\end{itemize}
+
+\subsection{Database Design Decisions}
+A NoSQL database was chosen to support:
+\begin{itemize}
+    \item Flexible data models
+    \item Rapid schema evolution
+    \item Efficient storage of semi-structured data
+\end{itemize}
+
+
+
+% ============================================
+% CHAPTER 4: SYSTEM DESIGN DIAGRAMS
+% ============================================
+\clearpage        % flushes previous content
+\let\clearpage\relax  % disables LaTeX from forcing a new page
+
+\chapter{System Design Diagrams}
+\label{ch:design-diagrams}
+
+% ------------------------------------------------
+\section{Use Case Diagram}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{usecase.png}
+    \caption{Use Case Diagram of the Upwork Proposal Assistant}
+    \label{fig:usecase}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+This diagram represents the functional behavior of the Upwork Proposal Assistant System from the user's perspective. The primary actor is the Freelancer, who can log in, view client profiles, analyze client reliability, generate and edit proposals, save templates, view proposal history, and receive job application recommendations. The system interacts with the Upwork Platform to retrieve job and client information and with an AI Text Service to generate proposals. An Administrator actor is responsible for managing users, templates, and monitoring system usage. The diagram clearly illustrates how different users interact with the system and its external services.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\section{Data Flow Diagrams}
+
+\subsection{Context Diagram (Level 0)}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{level0.png}
+    \caption{Context Diagram (Level 0 DFD)}
+    \label{fig:dfd-level0}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+The Level 0 DFD represents the system as a single process and shows its interaction with external entities such as the freelancer, admin, and the Upwork platform. It provides a high-level overview of data entering and leaving the system.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\subsection{Level 1 DFD}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{level1.png}
+    \caption{Data Flow Diagram (Level 1)}
+    \label{fig:dfd-level1}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+This diagram decomposes the main system into major sub-processes such as client analysis, proposal generation, template handling, and analytics. It explains how data flows between internal processes and data stores.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\subsection{Level 2 DFD}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{level2.png}
+    \caption{Data Flow Diagram (Level 2)}
+    \label{fig:dfd-level2}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+The Level 2 DFD further breaks down critical processes into detailed steps, providing a deeper understanding of internal data transformations and decision-making logic within the system.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\section{Sequence Diagrams}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{sequence.jpeg}
+    \caption{Sequence Diagram for Proposal Generation Workflow}
+    \label{fig:sequence}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+This sequence diagram demonstrates the time-ordered interaction between system components during the proposal generation process. It shows how user actions trigger system services and how responses are generated.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\section{Activity Diagrams}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{activity.jpeg}
+    \caption{Activity Diagram of User Interaction Flow}
+    \label{fig:activity}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+The activity diagram represents the overall workflow of a freelancer using the system, from job selection to final proposal submission. It highlights decision points and parallel activities.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\section{Class Diagram}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{class.png}
+    \caption{Class Diagram of the System}
+    \label{fig:class}
+\end{figure}
+
+\subsubsection*{Diagram Explanation}
+This class diagram defines the static structure of the system by showing classes, attributes, methods, and relationships. It reflects object-oriented design principles used in the system.
+
+\FloatBarrier
+
+% ------------------------------------------------
+\section{Component Diagram}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{component.png}
+    \caption{Component Diagram of the Upwork Proposal Assistant}
+    \label{fig:component}
+\end{figure}
+    
+\subsubsection*{Diagram Explanation}
+This diagram shows the overall architecture of the Upwork Proposal Assistant System and how its major components interact. The system consists of a Browser Extension, a Backend Server, external services, and a Data Layer. The browser extension collects job and client data from the Upwork platform and communicates securely with the backend through a REST API. The backend handles authentication, client analysis, proposal generation, and analytics by coordinating multiple internal engines and an AI service. Data is stored and managed using MongoDB for persistent storage and Redis for fast access and caching. This architecture ensures modularity, scalability, and efficient data processing.
+
+
+
+
+% ============================================
+% CHAPTER 5: GITHUB AND FIGMA LINKS
+% ============================================
+\chapter{GitHub and Figma Links}
+\label{ch:github-figma}
+\label{ch:links}
+
+This chapter provides access to the project repository, interactive prototypes, and related resources.
+
+\section{GitHub Repository}
+\label{sec:github}
+
+The complete project, including all design artifacts, diagrams, meeting minutes, and documentation, is maintained in a structured GitHub repository.
+
+\subsection{Repository Information}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Repository URL:} \url{https://github.com/iamtayyab-shahzad/Software-engineering-project}
+    \item \textbf{Repository Type:} Public
+    \item \textbf{Last Updated:} January 2026
+\end{itemize}
+
+
+
+
+\subsection{Key Repository Contents}
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Design\_Report/:} Contains this document in PDF format and LaTeX source files
+    \item \textbf{Design\_Diagrams/:} All UML and DFD diagrams in high-resolution PNG format
+    \item \textbf{Traceability/:} Requirements-Design Traceability Matrix
+    \item \textbf{Prototypes/:} Paper prototype photos and Figma prototype screenshots
+    \item \textbf{Meeting\_Minutes/:} Documentation of both RP meetings including videos
+    \item \textbf{SRS/:} Approved Software Requirements Specification document
+    \item \textbf{README.md:} Project overview and quick navigation guide
+\end{itemize}
+
+\section{Figma Interactive Prototypes}
+\label{sec:figma}
+
+Two comprehensive interactive prototypes have been developed in Figma to demonstrate the complete system functionality from both user perspectives.
+
+\subsection{Freelancer-Side Prototype}
+
+\textbf{Purpose:} Demonstrates the complete freelancer workflow including job analysis, proposal generation, template management, and analytics.
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Prototype URL:} \url{https://output-badger-16575296.figma.site/}
+    \item \textbf{Access:} Public (no login required)
+    \item \textbf{Interactive Features:} Clickable navigation, form interactions, modal dialogs
+\end{itemize}
+
+\textbf{Key Screens Included:}
+\begin{itemize}[leftmargin=*]
+    \item Extension popup and main dashboard
+    \item Job analysis interface with client scoring
+    \item Recommendation display (Apply/Skip/Strong Apply)
+    \item Proposal generator with AI tone settings
+    \item Template library and template editor
+    \item Analytics dashboard with charts and metrics
+    \item User profile configuration
+    \item Settings and synchronization controls
+\end{itemize}
+
+\subsection{Admin-Side Prototype}
+
+\textbf{Purpose:} Demonstrates administrative functionality including system monitoring, user management, and global template curation.
+
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Prototype URL:} \url{https://omen-easel-40982277.figma.site/}
+    \item \textbf{Access:} Public (no login required)
+    \item \textbf{Interactive Features:} Dashboard navigation, data tables, configuration panels
+\end{itemize}
+
+\textbf{Key Screens Included:}
+\begin{itemize}[leftmargin=*]
+    \item Admin dashboard with system health metrics
+    \item User management interface
+    \item Global template library and curation tools
+    \item System configuration panel
+    \item Analytics and reporting tools
+    \item Data synchronization management
+    \item Audit logs and monitoring displays
+\end{itemize}
+
+
+
+% ============================================
+% BIBLIOGRAPHY (Optional)
+% ============================================
+% \bibliographystyle{IEEEtran}
+% \bibliography{references}
+
+\end{document}
