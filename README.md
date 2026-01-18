@@ -1,44 +1,92 @@
-# Software-engineering-project
-# Upwork Proposal Assistant – Software Engineering Project
+# Software Engineering Project
+# Upwork Proposal Assistant
 
-## 📘 Course Information
-**Course:** CSC-225 – Software Engineering  
-**Department:** Computer Science, Namal University Mianwali  
+## Course Information
+Course Code: CSC-225 – Software Engineering  
+Department: Computer Science  
+University: Namal University Mianwali  
 
-## 👥 Team Members
-- **Leader:** Tayyab Shahzad  
-- **Member 1:** Najeeba  
-- **Member 2:** Kashif Ali  
+---
 
-## 🧑‍💼 Requirement Provider
-**Name:** Faisal Shahzad  
-**Experience:** 3 years in industry, currently working as a freelancer  
-**Role:** Requirement Provider  
+## Project Team
+- Team Leader: Tayyab Shahzad  
+- Team Member: Najeeba  
+- Team Member: Kashif Ali  
 
-## 🧾 Project Summary
-"Upwork Proposal Assistant" is a smart browser extension/app that helps freelancers automatically
-analyze Upwork client profiles, evaluate client reliability (hiring rate, feedback history, budget behavior), and generate personalized proposal templates based on past success data.  
+---
 
-The system aims to save time and increase freelancers' win rates through data-driven recommendations.
+## Requirement Provider (RP)
+Name: Faisal Shahzad  
+Industry Experience: 3 Years  
+Role: Freelancer and Requirement Provider  
 
-## 📅 Project Duration
-**Start Date:** 4 Nov 2025  
-**End Date:** 17 Jan 2026  
+---
 
-## 📂 Repository Structure
+## Project Description
+Upwork Proposal Assistant is a software system designed to assist freelancers in analyzing Upwork job postings and client profiles before submitting proposals. The system evaluates multiple client-related factors such as hiring behavior, feedback history, job success rate, and budget patterns to determine client reliability.
 
-```
+Based on this analysis, the system generates structured and customizable proposal drafts using predefined templates and historical success data. Additionally, the system provides decision support recommendations to help freelancers determine whether applying for a particular job is beneficial. The primary objective of the system is to reduce proposal writing time, improve decision-making, and increase proposal success rates.
+
+This project is being developed following standard software engineering practices and documented according to IEEE Software Requirements Specification (SRS) guidelines.
+
+---
+
+## System Scope
+The system focuses on:
+- Client profile analysis
+- Proposal template generation
+- Freelancer decision support
+- Administrative management of templates and system data
+
+The system does not submit proposals automatically; final submission remains the responsibility of the freelancer.
+
+---
+
+## UI Prototypes (Figma)
+The system user interface has been designed using Figma. The prototypes represent the visual flow and interaction of both user roles.
+
+Freelancer Side Prototype:  
+https://output-badger-16575296.figma.site/
+
+Admin Side Prototype:  
+https://omen-easel-40982277.figma.site/
+
+---
+
+## Project Duration
+Start Date: 4 November 2025  
+End Date: 17 January 2026  
+
+---
+
+## Repository Structure
 Software-engineering-project/
 ├── README.md
-├── Porposal_document/
+├── Proposal_document/
 ├── Meetingminutes/
-└── Meetingvideo/
+├── Meetingvideo/
 └── Documents/
 
-```
+---
 
-## 🔗 Important Links
+## Project Documentation
+- Proposal documents and SRS are available in the Documents folder
+- Client meetings and discussions are recorded and stored
+- Meeting minutes are maintained for requirement validation and progress tracking
 
-**Meeting Video:** [View Meeting Video](https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingvideo)
+---
 
-**Meeting Minutes:** [View Meeting Minutes](https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingminutes)
+## Important Links
+Meeting Videos:  
+https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingvideo
+
+Meeting Minutes:  
+https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Meetingminutes
+
+---
+
+## Standards Followed
+- IEEE Std 830 – Software Requirements Specification  
+- IEEE Std 729 – Software Engineering Terminology  
+- ISO/IEC/IEEE 29148 – Requirements Engineering  
+
