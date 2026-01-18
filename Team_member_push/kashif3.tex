@@ -1,0 +1,277 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{parskip}
+
+\title{Design Assumptions, Constraints, and Key Decisions}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Design Assumptions}
+
+\subsection{User Roles and Characteristics Assumptions}
+
+The system design assumes the existence of two primary user roles:
+
+\begin{itemize}
+    \item \textbf{Freelancer (Primary User):}
+    
+    The primary users are professional freelancers who actively use the Upwork platform to apply for jobs. It is assumed that users:
+    \begin{itemize}
+        \item Have basic familiarity with web browsers and browser extensions.
+        \item Understand the standard Upwork workflow (viewing jobs, analyzing clients, submitting proposals).
+        \item Possess at least a minimal professional profile including skills, experience, and portfolio items.
+        \item Are capable of reviewing AI-generated content and making final decisions manually.
+    \end{itemize}
+    
+    \item \textbf{Administrator (Secondary/Internal Role):}
+    
+    The administrator role is assumed to be limited to internal system maintenance tasks such as monitoring system health, managing AI API keys, and reviewing global usage metrics. Administrators are assumed to have technical expertise and are not typical end-users of the system.
+\end{itemize}
+
+No assumptions are made about user technical expertise beyond basic computer literacy. The system is explicitly designed to assist decision-making rather than replace human judgment, aligning with the SRS system boundary definitions.
+
+\subsection{Deployment Environment Assumptions}
+
+The system design assumes that the Upwork Proposal Assistant is deployed as a browser extension operating in modern web browsers. The following assumptions apply:
+
+\begin{itemize}
+    \item Users access Upwork through supported browsers such as Google Chrome, Mozilla Firefox, Microsoft Edge, etc.
+    \item The extension is built according to Manifest V3 specifications, ensuring compatibility with current browser security models.
+    \item The user environment includes:
+    \begin{itemize}
+        \item Stable internet connectivity for AI-based proposal generation.
+        \item Sufficient system resources to support lightweight background processing.
+    \end{itemize}
+    \item Backend services are deployed on a cloud-based infrastructure (e.g., AWS or GCP), providing scalability, availability, and geographic distribution.
+\end{itemize}
+
+The design assumes no dependency on operating-system-specific APIs, making the system OS-agnostic at the application level.
+
+\subsection{Usage Pattern Assumptions}
+
+The system is designed under the assumption that:
+
+\begin{itemize}
+    \item Users interact with the extension on-demand, primarily when viewing Upwork job postings.
+    \item Typical usage involves:
+    \begin{itemize}
+        \item Viewing a job post
+        \item Triggering client analysis
+        \item Reviewing a reliability score
+        \item Generating and refining a proposal draft
+    \end{itemize}
+    \item The system is not used continuously but in short, focused sessions aligned with job application workflows.
+    \item AI-powered proposal generation is invoked selectively rather than excessively to avoid unnecessary API usage.
+\end{itemize}
+
+It is assumed that users prefer fast feedback, minimal UI interruptions, and the ability to manually edit generated proposals before submission.
+
+\subsection{Data Availability Assumptions}
+
+The system design assumes that:
+
+\begin{itemize}
+    \item Required client and job data are available within the Upwork job page DOM and can be extracted using stable selectors.
+    \item The structure of Upwork job pages remains reasonably consistent over time.
+    \item External AI services (e.g., LLM APIs) are available and responsive during normal operation.
+    \item Users provide accurate and up-to-date profile information (skills, experience, preferences) for effective proposal personalization.
+\end{itemize}
+
+The system does not assume access to private Upwork APIs or sensitive user credentials, in compliance with platform policies.
+
+\section{Design Constraints}
+
+\subsection{Technology Stack Constraints}
+
+The design is constrained by the selected technology stack, which includes:
+
+\begin{itemize}
+    \item \textbf{Browser Extension Technologies:} JavaScript, HTML, CSS
+    \item \textbf{Extension APIs:} WebExtensions API (Manifest V3)
+    \item \textbf{Backend:} RESTful APIs implemented using server-side technologies
+    \item \textbf{AI Integration:} External AI service APIs
+    \item \textbf{Database:} Cloud-hosted NoSQL database (e.g., MongoDB)
+\end{itemize}
+
+These constraints limit the system to technologies that are:
+
+\begin{itemize}
+    \item Secure
+    \item Widely supported
+    \item Compatible with browser extension security policies
+\end{itemize}
+
+\subsection{Platform Constraints (Browser Extension Limitations)}
+
+As a browser extension, the system is constrained by:
+
+\begin{itemize}
+    \item Sandboxed execution environments
+    \item Restricted access to system-level resources
+    \item Limited background processing capabilities
+    \item Strict permission declarations required by browsers
+    \item Content script limitations when interacting with third-party websites
+\end{itemize}
+
+These constraints influenced the separation of responsibilities between content scripts, background scripts, and backend services.
+
+\subsection{Performance Constraints}
+
+Performance requirements defined in the SRS impose strict constraints, including:
+
+\begin{itemize}
+    \item UI responsiveness within defined time limits
+    \item Analysis and proposal generation within acceptable latency thresholds
+    \item Limited CPU and memory usage to prevent browser degradation
+\end{itemize}
+
+These constraints guided the decision to offload computationally expensive tasks (e.g., AI processing) to backend services rather than executing them locally.
+
+\subsection{Security Constraints}
+
+Security-related constraints include:
+
+\begin{itemize}
+    \item Mandatory encryption for data in transit (TLS)
+    \item Secure local storage of sensitive data
+    \item No storage of user credentials
+    \item Compliance with data privacy principles and anonymization requirements
+\end{itemize}
+
+These constraints restrict how data is stored, processed, and transmitted, directly influencing backend API and storage design.
+
+\subsection{Business and Timeline Constraints}
+
+The system design is constrained by:
+
+\begin{itemize}
+    \item Academic project timelines
+    \item Limited development resources
+    \item Requirement to strictly follow the approved SRS
+    \item Evaluation criteria defined in Project Milestone 3
+\end{itemize}
+
+These constraints required prioritization of core functionalities and avoidance of scope creep.
+
+\section{Key Design Decisions}
+
+This section explains the rationale behind critical design choices, demonstrating traceability between requirements and design artifacts.
+
+\subsection{DFD Decomposition Strategy}
+
+\subsubsection{Process Breakdown Rationale}
+
+The Data Flow Diagrams were decomposed incrementally from Level 0 to Level 2 to manage system complexity. High-level processes were broken down based on:
+
+\begin{itemize}
+    \item Functional responsibility
+    \item Data transformation boundaries
+    \item Logical separation of concerns
+\end{itemize}
+
+For example, proposal generation was decomposed into data extraction, skill matching, prompt construction, AI interaction, and result presentation.
+
+\subsubsection{Balancing Approach}
+
+Balancing was ensured by maintaining consistency of inputs and outputs across DFD levels. Each child diagram preserved the data flows of its parent process, ensuring:
+
+\begin{itemize}
+    \item No data loss
+    \item No introduction of undocumented processes
+    \item Full traceability to functional requirements
+\end{itemize}
+
+\subsection{Class Relationship Decisions}
+
+\subsubsection{Association, Aggregation, and Composition}
+
+\begin{itemize}
+    \item Association was used where objects interact without ownership (e.g., User and Job).
+    \item Aggregation was applied where objects logically belong together but can exist independently (e.g., User and Template).
+    \item Composition was used where lifecycle dependency exists (e.g., Proposal and ProposalDraft).
+\end{itemize}
+
+These choices reflect real-world ownership semantics and reduce coupling.
+
+\subsubsection{Inheritance Decisions}
+
+Inheritance was used selectively to avoid overgeneralization. Shared attributes and behaviors were abstracted into base classes (e.g., User $\rightarrow$ Freelancer/Admin) only where reuse was meaningful.
+
+\subsubsection{Interface Design Decisions}
+
+Interfaces were introduced to abstract external services such as AI providers, allowing:
+
+\begin{itemize}
+    \item Vendor independence
+    \item Easier testing
+    \item Future extensibility
+\end{itemize}
+
+\subsection{Functionality Distribution}
+
+\subsubsection{Multiple Sequence Diagrams}
+
+Multiple sequence diagrams were created to:
+
+\begin{itemize}
+    \item Avoid overcrowded diagrams
+    \item Clearly represent distinct use cases
+    \item Improve readability and traceability
+\end{itemize}
+
+Each sequence diagram maps to a specific functional requirement.
+
+\subsubsection{Multiple Activity Diagrams}
+
+Activity diagrams were separated by workflow type (analysis, generation, template management) to:
+
+\begin{itemize}
+    \item Clearly show decision points
+    \item Model parallel activities
+    \item Improve understanding of user-system interaction
+\end{itemize}
+
+\subsubsection{Component Separation Rationale}
+
+The system was divided into components (UI, analysis engine, AI service, storage) to:
+
+\begin{itemize}
+    \item Reduce coupling
+    \item Improve maintainability
+    \item Support scalability
+\end{itemize}
+
+\subsection{Architecture Decisions}
+
+\subsubsection{Browser Extension Architecture}
+
+A three-part extension architecture (content scripts, background scripts, UI components) was chosen to comply with Manifest V3 and ensure security.
+
+\subsubsection{Backend API Design Decisions}
+
+RESTful APIs were selected for:
+
+\begin{itemize}
+    \item Stateless communication
+    \item Simplicity
+    \item Scalability
+    \item Compatibility with browser-based clients
+\end{itemize}
+
+\subsubsection{Database Design Decisions}
+
+A NoSQL database was chosen to support:
+
+\begin{itemize}
+    \item Flexible data models
+    \item Rapid schema evolution
+    \item Efficient storage of semi-structured data
+\end{itemize}
+
+\end{document}
