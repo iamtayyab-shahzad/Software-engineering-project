@@ -1,0 +1,573 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage{background}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+\onehalfspacing
+
+% Background Image
+\backgroundsetup{
+scale=4.8,
+angle=0,
+opacity=0.03,
+contents={\includegraphics{namal .png}}
+}
+
+\title{
+\textbf{Upwork Proposal Assistant} \\
+Database Systems Semester Project Proposal \\
+CSC-271 – Database Systems \\
+Namal University, Mianwali
+}
+
+\author{
+Group Members: \\
+Kashif Ali \\
+Tayyab Shahzad \\
+Najeeba \\
+}
+
+\date{12 March 2026}
+
+\begin{document}
+
+\BgThispage
+\maketitle
+
+\tableofcontents
+\newpage
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+\section{Introduction}
+
+In recent years, freelancing has become one of the most popular ways for professionals to offer their skills and services online. Many freelancing platforms allow individuals to connect with clients from around the world and work on various projects remotely. These platforms provide opportunities for developers, designers, writers, and many other professionals to earn income and build their careers. However, competition on freelancing platforms is very high, and freelancers must present themselves professionally in order to secure projects.
+
+One of the most important steps in winning a freelance project is writing a strong and convincing proposal. A proposal is usually the first communication between a freelancer and a client, and it plays a very important role in creating a positive impression. A well-written proposal explains how the freelancer understands the client's requirements and how they can provide an effective solution. Unfortunately, many freelancers find it difficult to write professional proposals because it requires good communication skills, proper understanding of client requirements, and experience in presenting solutions in a structured and convincing way.
+
+Another challenge faced by freelancers is analyzing the client's job description and profile before applying for a project. Many freelancers quickly apply for jobs without properly understanding the client's needs, which leads to irrelevant or weak proposals. As a result, clients often ignore such proposals and select freelancers who clearly address their requirements.
+
+The Upwork Proposal Assistant is designed to solve these challenges by helping freelancers analyze client job descriptions and generate professional proposals efficiently. The system will analyze the job description provided by the client, identify important requirements, and generate a structured proposal using intelligent templates and automated suggestions. By simplifying the proposal writing process and helping freelancers better understand client needs, the system aims to save time, improve productivity, and increase freelancers' chances of getting selected for projects.
+
+%------------------------------------------------
+
+\section{Problem Statement}
+
+Freelancers working on online platforms face specific challenges that reduce their effectiveness and success rate when applying for projects.
+
+\textbf{Difficulty in Assessing Job Opportunities and Client Reliability:}
+Freelancers often struggle to analyze job descriptions and extract key requirements from lengthy postings. Moreover, they rarely examine the client's profile, Job Success Rate, or payment history before applying. This leads to wasted effort on fake jobs, unreliable clients, or irrelevant projects that do not match their expertise.
+
+\textbf{Lack of Professional Proposal Writing Skills:}
+Writing an effective proposal requires clear communication skills and the ability to present solutions in a structured manner. Many freelancers, particularly beginners, do not know how to format their proposals properly or how to highlight their relevant experience. This results in weak proposals that fail to convince clients.
+
+\textbf{Generic and Irrelevant Proposals:}
+Due to time constraints or lack of understanding, freelancers often submit generic proposals that do not specifically address the client's requirements. Since clients receive numerous applications for each job posting, these non-personalized proposals are quickly rejected.
+
+\textbf{Time-Consuming Proposal Writing Process:}
+Freelancers must apply to multiple jobs to increase their chances of getting hired. Writing individual proposals for each job posting is extremely time-consuming and reduces overall productivity. This repetitive task discourages freelancers from applying to more opportunities.
+
+\textbf{No Systematic Approach for Proposal Management:}
+Freelancers do not have an organized way to store, reuse, or track their proposal templates. They often rewrite similar content repeatedly instead of using proven templates that have worked successfully in the past.
+
+Currently, there is no integrated system that helps freelancers analyze job descriptions, generate personalized proposals automatically, and manage their proposal templates efficiently. The Upwork Proposal Assistant addresses this gap by providing a database-driven system that automates proposal generation, extracts key requirements from job postings, and helps freelancers submit more relevant and professional applications.
+
+%------------------------------------------------
+
+\section{Objectives}
+
+\begin{itemize}
+
+\item \textbf{Evaluate Client Reliability Before Applying} \\
+The system will analyze client information including their Job Success Rate, payment history, and reviews to help freelancers decide whether they should apply for a job opportunity or skip it. This helps freelancers avoid unreliable clients and focus on quality opportunities.
+
+\item \textbf{Automate Proposal Generation} \\
+The system aims to automatically generate professional proposals based on the client's job description and project requirements. This allows freelancers to quickly create structured proposals without writing them entirely from scratch.
+
+\item \textbf{Reduce Time and Effort for Freelancers} \\
+One of the main objectives of the system is to reduce the time required to prepare proposals. By generating automated drafts and extracting key information from job descriptions, freelancers can apply to more jobs efficiently.
+
+\item \textbf{Provide Smart Suggestions for Job Applications} \\
+The system will provide intelligent suggestions to freelancers about important points that should be included in their proposals. These suggestions will be based on the client's requirements and project details.
+
+\item \textbf{Increase Freelancers' Success Rate} \\
+By generating more relevant and targeted proposals that directly address client needs, the system aims to improve the chances of freelancers being noticed and selected by clients on freelancing platforms.
+
+\end{itemize}
+
+
+\section{Scope}
+
+The Upwork Proposal Assistant is designed to assist freelancers on the Upwork platform in analyzing job postings and generating structured proposals. The system focuses on improving the proposal preparation process by helping freelancers understand client requirements and create more relevant applications.
+
+The scope of this system includes the following areas.
+
+\subsection{Data Coverage}
+
+\begin{itemize}
+\item The system will manage freelancer profile information required for using the assistant.
+\item The system will store client information extracted from Upwork job postings.
+\item The system will maintain a collection of reusable proposal templates for different project categories.
+\item The system will store generated proposals and their submission status.
+\item The system will maintain calculated client reliability scores and recommendation results.
+\end{itemize}
+
+\subsection{Functional Coverage}
+
+\begin{itemize}
+\item The system will assist freelancers in analyzing client job postings available on Upwork.
+\item The system will support generation of structured proposals based on job requirements and templates.
+\item The system will provide recommendations to freelancers when deciding whether to apply for a job.
+\item The system will allow users to manage and reuse proposal templates.
+\item The system will track proposal outcomes and provide basic performance insights.
+\end{itemize}
+
+
+
+
+\section{System Boundaries}
+
+This section defines what the system  will not handle to clarify the scope and limitations.
+
+
+
+\subsection{What the System Will Not Do}
+
+\begin{itemize}
+\item The system will not integrate directly with Upwork's official API it integrate with the Upwork Proposal Assitant.
+\item The system will not automatically submit proposals to Upwork on behalf of users.
+\item The system will not store Upwork account passwords or login credentials.
+\item The system will not verify client information through external background checks.
+\item The system will not support freelancing platforms other than Upwork.
+\item The system will not work on browsers other than Chrome.
+\item The system will not provide real-time notifications about new job postings.
+\item The system will not handle payment processing or financial transactions.
+\item The system will not share private user data between different user accounts.
+\end{itemize}
+
+\subsection{Platform and Technology Limitations}
+
+\begin{itemize}
+\item The system operates exclusively on the Upwork platform.
+\item The system functions as a Chrome browser extension only.
+\item The system requires manual user interaction to view job postings and generate proposals.
+\item The system relies on web scraping to extract publicly visible information from Upwork pages.
+\item The system operates in English language only.
+\item The system requires an active internet connection to function.
+\end{itemize}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Included in Scope} & \textbf{Not Included in Scope} \\
+\hline
+Freelancer profile management & Direct Upwork API integration \\
+\hline
+Client data extraction and analysis & Automatic proposal submission \\
+\hline
+Client reliability scoring & Upwork password storage \\
+\hline
+Proposal template management & External client verification \\
+\hline
+Automated proposal generation & Support for other platforms \\
+\hline
+Application recommendations & Multi-browser support \\
+\hline
+Proposal tracking and analytics & Real-time job notifications \\
+\hline
+Admin configuration controls & Payment processing \\
+\hline
+\end{tabular}
+\end{table}
+
+%------------------------------------------------
+
+\section{Data Collection}
+
+\subsection{Data Sources}
+
+The system collects and stores different types of data to function properly. Below are the main categories of data along with their details:
+
+\subsubsection{1. User Data (Freelancer Information)}
+
+This data contains information about the freelancers who use the system.
+
+\textbf{Basic Profile Information:}
+User ID is a unique number assigned to each user. The system stores the user's full name, email address, and encrypted password for security. Phone number is optional and can be provided if the user wishes.
+
+\textbf{Professional Information:}
+The system stores the user's skills and areas of expertise such as Web Development or Data Science. It also keeps track of their hourly or project rate, years of experience in their field, and their Upwork profile URL.
+
+\subsubsection{2. Client Data (Upwork Clients Information)}
+
+This data contains information about Upwork clients whose jobs freelancers want to apply for.
+
+\textbf{Basic Client Information:}
+Each client gets a unique Client ID in the system. The system stores the client's name, their company name if available, and their location or country.
+
+\textbf{Performance Metrics:}
+The system collects the client's Job Success Rate which shows what percentage of their projects were completed successfully. It also stores how many total jobs they have posted, the total amount of money they have spent on Upwork, their hire rate which shows how often they actually hire someone, and the average rating they give to freelancers.
+
+\textbf{Reviews and History:}
+The system keeps track of how many reviews the client has received and their average review rating on a scale of 1 to 5 stars.
+
+\textbf{Calculated Data:}
+Based on the collected information, the system calculates a reliability score for each client. It also determines their risk level as Low, Medium, or High, and generates a recommendation such as Strong Apply, Apply with Caution, or Skip.
+
+\subsubsection{3. Job Posting Data}
+
+This data contains details about specific job for which freelancer apply on Upwork.
+
+\textbf{Job Details:}
+Each job gets a unique Job ID. The system stores the job title, complete job description, required skills needed for the job, experience level required such as Entry, Intermediate, or Expert, job type which can be Fixed Price or Hourly, and estimated project duration.
+
+\textbf{Budget Information:}
+The system records the budget amount for the job, which can be either a single fixed amount or a budget range.
+
+\textbf{Job Metadata:}
+Additional information includes when the job was posted, the deadline or expiry date if any, and the number of proposals already submitted which shows the competition level.
+
+\subsubsection{4. Proposal Template Data}
+
+This data contains information about the proposal templates used to generate proposals.
+
+\textbf{Template Information:}
+Each template has a unique Template ID. The system stores the template title or name such as Web Dev Template or Data Analysis Pitch, the full template text which is the actual proposal content, the category or type such as Web Development or Graphic Design, when the template was created, and when it was last modified.
+
+\textbf{Performance Metrics:}
+The system tracks how many times each template has been used, its success rate which is the percentage of accepted proposals using that template, the average response time showing how fast clients respond to proposals made with this template, and the acceptance count showing how many times it led to getting a job.
+
+\subsubsection{5. Generated Proposal Data}
+
+This data contains information about proposals that have been generated by the system.
+
+\textbf{Proposal Details:}
+Each generated proposal gets a unique Proposal ID. The system links it to the User ID of who generated it, the Job ID showing which job it was for, the Client ID showing which client it was sent to, and the Template ID showing which template was used. It stores the actual generated proposal content, the submission date when the proposal was sent, and the current status which can be Draft, Submitted, Accepted, Rejected, or No Response.
+
+\subsubsection{6. Configuration Data (System Settings)}
+
+This data contains the rules and settings used by the system to calculate scores and make recommendations.
+
+\textbf{Scoring Rules for Client Reliability:}
+The system uses weighted parameters to calculate client reliability. Job Success Rate has 40\% weight, Client Reviews and Rating has 25\% weight, Hire Rate has 15\% weight, Total Amount Spent has 10\% weight, and Total Jobs Posted has 10\% weight.
+
+\textbf{Recommendation Thresholds:}
+The system recommends Strong Apply when the reliability score is 75\% or higher. It recommends Apply with Caution when the score is between 50\% and 74\%. It recommends Skip when the score is below 50\%.
+
+\subsection{Methods Used to Gather Data}
+
+The system uses different methods to collect the required data. Below are the six main methods explained in simple terms:
+
+\subsubsection{Method 1: User Registration Form}
+
+\textbf{What data is collected:} User Data (Freelancer Information)
+
+\textbf{How it works:}
+
+When a freelancer uses the browser extension for the first time, they are asked to fill out a simple registration form. In this form, they enter their name, email address, password, skills, and hourly rate. After filling out all the required information, they click the Register button. The system then saves all this information securely in the database for future use.
+
+\subsubsection{Method 2: Web Scraping from Upwork Pages}
+
+\textbf{What data is collected:} Client Data and Job Posting Data
+
+\textbf{How it works:}
+
+When a freelancer opens any job posting page on Upwork on which he want to apply, the browser extension automatically starts reading the content displayed on that page. It extracts important information such as the client's name, job title, budget, reviews, and Job Success Rate. All this extracted information is then saved to the database.
+
+\textbf{Continuous Data Updates:}
+
+The system keeps the data fresh and up to date. For client information, every time a user views a job posting from the same client, the system re-reads the page and updates the client's data such as Job success rate, reviews, and total amount spent. This ensures the latest information is always stored. For job postings, if a user revisits the same job, the system updates details like the number of proposals submitted or any deadline changes. The system is smart about updates. It compares the new data with what is already stored in the database. If something has changed, it updates the record. If nothing has changed, it skips the update to save processing time.
+
+
+
+\subsubsection{Method 3: Admin Template Input}
+
+\textbf{What data is collected:} Proposal Template Data
+
+\textbf{How it works:}
+
+System administrators can create proposal templates through a special admin panel. They type or paste the proposal text into a text box provided in the panel. They then add a name for the template and select which category it belongs to such as Web Development or Graphic Design. After filling in all details, they click the Save Template button. The template is then stored in the database and becomes available for all users to use when generating proposals.
+
+\subsubsection{Method 4: Automatic Proposal Generation}
+
+\textbf{What data is collected:} Generated Proposal Data
+
+\textbf{How it works:}
+
+When a user finds a job they want to apply for, they simply click the Generate Proposal button. The system then automatically creates a personalized proposal by using the job details and selecting the best matching template from the database. While creating the proposal, the system records important information such as when it was created, which job it was for, and which template was used. The final generated proposal along with all this information is saved in the database.
+
+\subsubsection{Method 5: Automatic Calculation}
+
+\textbf{What data is collected:} Client Reliability Score and Template Success Rate
+
+\textbf{How it works:}
+
+The system performs calculations automatically using data that is already stored in the database. For calculating the client reliability score, it uses the formula with weights: Job Success Rate gets 40\% weight, reviews get 25\% weight, hire rate gets 15\% weight, total amount spent gets 10\% weight, and total jobs posted gets 10\% weight. For template success rate, the system calculates how many times each template was used and how many of those led to accepted proposals. All these calculated scores are automatically updated and stored in the database.
+
+\subsubsection{Method 6: System Configuration}
+
+\textbf{What data is collected:} Configuration Data (Scoring Rules)
+
+\textbf{How it works:}
+
+The system administrator sets up the scoring rules and thresholds that the system will use for calculations. These include the weight values for each factor like JSR weight equals 40\% and reviews weight equals 25\%, and the threshold values like Strong Apply threshold equals 75\%. All these configuration values are stored in the database. Whenever the system needs to calculate scores or make recommendations, it uses these stored settings.%------------------------------------------------
+
+\section{Technology Stack}
+
+The system uses a combination of database, server-side, and client-side technologies to provide a complete solution. Below are the key technologies and their purposes:
+
+\subsection{Database}
+
+\begin{itemize}
+\item \textbf{MySQL} — MySQL is a relational database management system that will store all the data required by the system. This includes user accounts, freelancer profiles, client information extracted from Upwork, proposal templates, generated proposals, reliability scores, and system configuration settings. MySQL is chosen because it is reliable, widely used, free to use, and provides strong support for structured data with relationships between different tables.
+\end{itemize}
+
+\subsection{Backend (Server)}
+
+\begin{itemize}
+\item \textbf{Node.js} — Node.js is a JavaScript-based server platform that handles the communication between the browser extension and the MySQL database. When a user performs an action such as generating a proposal or viewing client information, Node.js processes the request, retrieves or stores data in the database, and sends the response back to the browser extension. Node.js is selected because it is fast, handles multiple requests efficiently, and works well with JavaScript which is also used in the browser extension.
+\end{itemize}
+
+\subsection{Frontend (User Interface)}
+
+\begin{itemize}
+\item \textbf{HTML, CSS, JavaScript} — These are the core web technologies used to create the user interface of the browser extension. HTML is used to structure the content and forms that users see. CSS is used to style the interface and make it visually appealing and easy to use. JavaScript is used to make the interface interactive, handle user clicks and inputs, and communicate with the Node.js backend. Together, these technologies create a responsive and user-friendly experience for freelancers.
+\end{itemize}
+
+\subsection{Browser Extension}
+
+\begin{itemize}
+\item \textbf{Chrome Extension} — The main application is built as a Chrome browser extension that runs directly in the user's browser. When a freelancer visits an Upwork job posting page, the extension automatically reads the page content, extracts client and job information, and displays analysis results and recommendations. The extension provides popup windows for user interactions and integrates seamlessly with the Upwork website without requiring users to switch between different applications.
+\end{itemize}
+
+\subsection{Development and Management Tools}
+
+\begin{itemize}
+\item \textbf{phpMyAdmin} — phpMyAdmin is a web-based tool for managing MySQL databases. It provides a graphical interface where developers and administrators can create database tables, view stored data, run queries, modify records, and perform backups. This tool makes database management easier without requiring manual SQL commands for every operation.
+
+\item \textbf{Visual Studio Code} — Visual Studio Code is a modern code editor used for writing and organizing all the source code of the project. It supports syntax highlighting for HTML, CSS, JavaScript, and Node.js, making it easier to write clean and error-free code. It also includes debugging tools, version control integration, and extensions that improve developer productivity.
+\end{itemize}
+
+%------------------------------------------------
+
+\section{System Functionality}
+
+\subsection{1. User Profile Management}
+
+Users can create their account by providing an email address and password. After registration, they can login to the system anytime. Users can also update their personal information such as their skills and hourly rate whenever needed.
+
+\subsection{2. Client Profile Analysis}
+
+The system automatically reads and collects client information from Upwork job pages during proposal generation. It then calculates a reliability score for each client based on their Job Success Rate, reviews, and hire rate. This score is displayed as a simple percentage to help users understand client quality.
+
+\subsection{3. Application Recommendation}
+
+Based on the calculated reliability score, the system gives clear recommendations to users. It suggests whether to "Strong Apply," "Apply with Caution," or "Skip" the job opportunity. The system also explains why it made that particular recommendation.
+
+\subsection{4. Automated Proposal Generation}
+
+When a user wants to apply for a job, they simply click the "Generate Proposal" button. The system automatically creates a personalized proposal by matching the job requirements with the most suitable template. It fills in the client name and job details automatically.
+
+\subsection{5. Proposal Customization}
+
+Users are not stuck with the generated proposal. They can edit and modify the proposal text according to their preferences before submitting it. Users can also view the complete proposal content to review it.
+
+\subsection{6. User Analytics Dashboard}
+
+The system provides users with useful statistics about their activity. Users can see how many proposals they have generated in total, which templates work best for them, and track how many proposals were accepted by clients.
+
+\subsection{7. Proposal Template Management (Admin)}
+
+System administrators can create new proposal templates and save them for all users to use. They can edit existing templates to improve them, delete outdated templates, and view all available templates in the system.
+
+\subsection{8. User Account Management (Admin)}
+
+Administrators have control over user accounts. They can view a list of all registered users in the system and can activate or deactivate user accounts when necessary.
+
+\subsection{9. Scoring Configuration (Admin)}
+
+Administrators can adjust how the system calculates client reliability scores by changing the importance weights for different factors like JSR and reviews. They can also modify the score thresholds that determine when to recommend "Strong Apply" or "Skip."
+
+
+\section{User Classes}
+
+The system supports two main types of users, each with specific roles and access permissions to ensure proper functionality and data security.
+
+\subsection{Overview of User Classes}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{3cm}|p{5cm}|p{6cm}|}
+\hline
+\textbf{User Type} & \textbf{Primary Responsibilities} & \textbf{Access Level} \\
+\hline
+Freelancer & Uses the system to analyze clients and generate proposals & Read and write access to their own data only \\
+\hline
+System Administrator & Manages templates, users, and system configuration & Full access to all system data and settings \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Detailed Description of User Classes}
+
+\subsubsection{Freelancer (Primary User)}
+
+Freelancers are the main users of the system. They register on the platform to get assistance with analyzing Upwork clients and generating professional proposals.
+
+\textbf{What freelancers can do:}
+
+\begin{itemize}
+\item Create an account by providing name, email, password, skills, and hourly rate
+\item Login to the system using their credentials
+\item Update their profile information such as skills, experience, and rates
+\item View Upwork job postings and have the system automatically extract client information
+\item See calculated client reliability scores and application recommendations
+\item Generate personalized proposals using system templates
+\item Edit and customize generated proposals before use
+\item View their own analytics including total proposals generated, success rate, and best performing templates
+\end{itemize}
+
+\textbf{Data access restrictions:}
+
+\begin{itemize}
+\item Freelancers can only view and modify their own profile data
+\item They can only see their own generated proposals and analytics
+\item They cannot access other users' data or system configuration settings
+\item They can view proposal templates but cannot create, edit, or delete them
+\end{itemize}
+
+\subsubsection{System Administrator}
+
+System administrators are responsible for managing the overall system including user accounts, proposal templates, and configuration settings.
+
+\textbf{What administrators can do:}
+
+\begin{itemize}
+\item View a complete list of all registered freelancers in the system
+\item Activate or deactivate user accounts when necessary
+\item Create new proposal templates for all users to use
+\item Edit existing proposal templates to improve their quality
+\item Delete outdated or underperforming templates
+\item View all templates and their performance metrics
+\item Configure client reliability scoring weights for Job Success Rate, reviews, hire rate, total spent, and total jobs posted
+\item Modify recommendation thresholds that determine Strong Apply, Apply with Caution, and Skip decisions
+\item Update system settings and configuration parameters
+\end{itemize}
+
+\textbf{Data access permissions:}
+
+\begin{itemize}
+\item Administrators have full access to all user accounts and profiles
+\item They can view and modify all proposal templates in the system
+\item They have complete control over system configuration data
+\item They can access system-wide statistics and performance data
+\end{itemize}
+
+
+\section{Task Division}
+
+The work for this database system project is divided among team members as follows:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\textbf{Team Member} & \textbf{Responsibilities} \\
+\hline
+Kashif Ali & Database schema design, ER diagrams, Normalization \\
+\hline
+Tayyab Shahzad & SQL queries, Table creation, Database implementation \\
+\hline
+Najeeba & Documentation, Testing, Report writing \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Detailed Responsibilities}
+
+\subsubsection{Kashif Ali}
+
+\begin{itemize}
+
+\item Create Entity-Relationship (ER) diagrams
+\item Apply normalization techniques to eliminate data redundancy
+\item Define primary keys, foreign keys, and constraints
+\item Write queries for data retrieval and manipulation
+\end{itemize}
+
+\subsubsection{Tayyab Shahzad}
+
+\begin{itemize}
+
+\item Write SQL commands to create all database tables
+\item Implement relationships between tables using foreign keys
+\item Insert sample data for testing purposes
+\item Write queries for data retrieval and manipulation
+\end{itemize}
+
+\subsubsection{Najeeba}
+
+\begin{itemize}
+\item Prepare the complete project proposal and documentation
+\item Write all report sections including introduction, objectives, and scope
+\item Test database queries and verify data integrity
+\item Prepare presentation materials for project submission
+\end{itemize}
+\section{Conclusion}
+
+The Upwork Proposal Assistant is designed to help freelancers work more efficiently on the Upwork platform. The system addresses common challenges such as difficulty in analyzing client reliability, time-consuming proposal writing, and lack of organized templates.
+
+By implementing a database system that stores user profiles, client information, proposal templates, and generated proposals, the system enables freelancers to make better decisions about job applications. The automated client reliability scoring helps users identify trustworthy clients and avoid risky opportunities. The proposal generation feature saves significant time by automatically creating personalized proposals using pre-designed templates.
+
+The system benefits freelancers by reducing proposal preparation time, improving application quality, and increasing their chances of success. Administrators can manage templates and configure system settings to ensure optimal performance for all users.
+
+Using MySQL for data storage, Node.js for backend processing, and Chrome Extension for user interaction, the system provides a practical and accessible solution. The Upwork Proposal Assistant has the potential to significantly improve the freelancing experience and help users achieve better results on the platform.
+
+%------------------------------------------------
+\newpage
+
+\appendix
+
+\section{AI Tools Used}
+
+The following artificial intelligence tools were used during the development of this proposal for understanding concepts, generating ideas, and improving documentation quality.
+
+\subsection{Claude AI}
+
+\begin{itemize}
+\item \textbf{Purpose:} Understanding database concepts, structuring proposal sections, refining technical explanations, and formatting documentation
+\item \textbf{Version:} Claude (accessed via claude.ai)
+\item \textbf{Date of Use:} March 2026
+\item \textbf{URL:} https://claude.ai
+\end{itemize}
+
+\subsection{Example Prompts Used}
+
+Below are sample prompts that were used to interact with the AI tool:
+
+\begin{itemize}
+\item "Help me understand what should be included in a database proposal for a freelancing assistant system"
+\item "Explain the difference between Introduction and Problem Statement sections in simple words"
+\item "What types of data should we store for a system that helps freelancers write proposals?"
+\item "How can we calculate a reliability score for clients using their job success rate and reviews?"
+\item "Write the Technology Stack section in simple language that non-technical people can understand"
+\item "Check if my User Classes section matches with the functionalities I described earlier"
+\item "Convert this content into proper LaTeX format for my report"
+\item "Make this section shorter and simpler to read"
+\item "What are the problems in my Scope section and how can I fix them?"
+\item "Help me organize the team responsibilities for database, frontend, and documentation work"
+\end{itemize}
+
+\subsection{Declaration of AI Usage}
+
+All content generated with AI assistance was carefully reviewed, verified, and modified by team members to ensure accuracy and relevance to the project requirements. The AI tools were used as learning aids and writing assistants to improve our understanding and documentation quality. All final decisions regarding system design, scope, features, and technical specifications were made independently by the project team based on our own analysis and requirements gathering.
+\end{document}
