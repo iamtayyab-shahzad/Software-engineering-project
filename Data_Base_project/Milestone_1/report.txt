@@ -570,4 +570,16 @@ Below are sample prompts that were used to interact with the AI tool:
 \subsection{Declaration of AI Usage}
 
 All content generated with AI assistance was carefully reviewed, verified, and modified by team members to ensure accuracy and relevance to the project requirements. The AI tools were used as learning aids and writing assistants to improve our understanding and documentation quality. All final decisions regarding system design, scope, features, and technical specifications were made independently by the project team based on our own analysis and requirements gathering.
+
+\section{References}
+
+\begin{enumerate}
+
+\item Project GitHub Repository. (2026). \textit{Upwork Proposal Assistant - Database Project}. Retrieved from \url{https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Data_Base_project/Milestone_1}
+
+\item Silberschatz, A., Korth, H. F., \& Sudarshan, S. (2019). \textit{Database System Concepts} (7th ed.). McGraw-Hill Education.
+
+\item Elmasri, R., \& Navathe, S. B. (2015). \textit{Fundamentals of Database Systems} (7th ed.). Pearson.
+
+\end{enumerate}
 \end{document}
