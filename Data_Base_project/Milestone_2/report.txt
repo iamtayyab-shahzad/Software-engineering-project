@@ -1,0 +1,659 @@
+\documentclass[12pt,a4paper]{report}
+
+% ─── Packages ───────────────────────────────────────────────────────────────
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{times}           % Times New Roman
+\usepackage{titlesec}        % custom headings
+\usepackage{titletoc}        % TOC styling
+\usepackage{tocloft}
+\usepackage{parskip}         % space between paragraphs
+\usepackage{setspace}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{multirow}
+
+% ─── Hyperref setup ─────────────────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+% ─── Heading styles (matching template) ─────────────────────────────────────
+% Level 1: Times New Roman 18pt, Bold, ALL CAPS, Right-aligned, CHAPTER X
+\titleformat{\chapter}[block]
+  {\fontsize{18}{22}\selectfont\bfseries\centering}
+  {CHAPTER \thechapter:}{0.5em}{\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+% Level 2: Times New Roman 16pt, Bold, ALL CAPS, Left-aligned, X.X
+\titleformat{\section}[block]
+  {\fontsize{16}{20}\selectfont\bfseries\raggedright}
+  {\thesection.}{0.5em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{16pt}{8pt}
+
+% Level 3: Times New Roman 14pt, Bold, Title Case, Left-aligned, X.X.X
+\titleformat{\subsection}[block]
+  {\fontsize{14}{18}\selectfont\bfseries\raggedright}
+  {\thesubsection.}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+% ─── Paragraph style ────────────────────────────────────────────────────────
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\justifying
+
+% ─── Table column type ──────────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+
+% ─── Header / Footer ────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Upwork Proposal Assistant}
+\fancyhead[R]{\small Database Design Document}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── Title Page ─────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+
+{\fontsize{18}{22}\selectfont\bfseries UPWORK PROPOSAL ASSISTANT}\\[0.4cm]
+{\fontsize{16}{20}\selectfont\bfseries Database Design Document}\\[0.2cm]
+{\fontsize{14}{18}\selectfont V 1.0}\\[0.6cm]
+{\fontsize{12}{16}\selectfont\bfseries By}\\[0.4cm]
+
+\begin{tabular}{|c|l|l|}
+\hline
+\textbf{1} & Kashif Ali    & bscs24f29 \\
+\hline
+\textbf{2} & Tayyab Shahzad & bscs24f77 \\
+\hline
+\textbf{3} & Najeeba        & bscs24f61 \\
+\hline
+\end{tabular}
+\vspace{0.8cm}
+
+\includegraphics[width=5cm]{namal .png}
+
+\vspace{0.8cm}
+
+\vspace{0.8cm}
+{\fontsize{14}{18}\selectfont\bfseries Department of Computer Sciences}\\[0.2cm]
+{\fontsize{14}{18}\selectfont\bfseries Namal University}\\[0.2cm]
+{\fontsize{14}{18}\selectfont\bfseries Mianwali, Pakistan}\\[0.6cm]
+{\fontsize{12}{16}\selectfont Submission Date: 15th May, 2026}
+\end{titlepage}
+
+% ─── Revision History ───────────────────────────────────────────────────────
+\thispagestyle{fancy}
+\begin{center}
+{\fontsize{14}{18}\selectfont\bfseries REVISION HISTORY}\\[0.1cm]
+\begin{tabular}{|L{2.5cm}|L{2cm}|L{6cm}|L{3cm}|}
+\hline
+\textbf{Date} & \textbf{Version} & \textbf{Description} & \textbf{Approved by} \\
+\hline
+15/05/2026 & V 1.0 & Final review completed. All sections proofread and Milestone 2 report submitted. & Asiya Batool \\
+\hline
+10/05/2026 & V 0.3 & Business rules drafted and EERD finalized. Relationships and cardinalities verified. & Tayyab Shahzad \\
+\hline
+05/05/2026 & V 0.2 & Data dictionary completed. Attributes, data types, and constraints defined for all entities. & Tayyab Shahzad \\
+\hline
+01/05/2026 & V 0.1 & Initial draft of Milestone 2 started. Entities identified from system requirements. & Tayyab Shahzad \\
+\hline
+\end{tabular}
+\end{center}
+\newpage
+
+
+% ─── Table of Contents ──────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 1: PROJECT OVERVIEW
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{PROJECT OVERVIEW}
+
+% ─── 1.1 Introduction ───────────────────────────────────────────────────────
+
+
+\section{INTRODUCTION}
+
+\subsection{Overview}
+In recent years, freelancing has become one of the most popular ways for professionals 
+to offer their skills and services online. Many freelancing platforms allow individuals 
+to connect with clients from around the world and work on various projects remotely. 
+These platforms provide opportunities for developers, designers, writers, and many other 
+professionals to earn income and build their careers. However, competition on freelancing 
+platforms is very high, and freelancers must present themselves professionally in order 
+to secure projects.
+
+\subsection{System Domain and Real-World Scenario}
+The Upwork Proposal Assistant is a software system developed for the freelancing industry, 
+The system is designed exclusively for freelancers 
+operating on the Upwork platform. It supports three key processes within this domain: 
+analyzing client reliability before applying for a job, automatically generating 
+professional proposals based on job requirements, and managing reusable proposal 
+templates for different project categories.
+
+\subsection{The Proposal Writing Challenge}
+One of the most important steps in winning a freelance project is writing a strong and 
+convincing proposal. A proposal is usually the first communication between a freelancer 
+and a client, and it plays a very important role in creating a positive impression. A 
+well-written proposal explains how the freelancer understands the client's requirements 
+and how they can provide an effective solution. Unfortunately, many freelancers find it 
+difficult to write professional proposals because it requires good communication skills, 
+proper understanding of client requirements, and experience in presenting solutions in 
+a structured and convincing way.
+
+\subsection{Client Analysis Challenge}
+Another challenge faced by freelancers is analyzing the client's job description and 
+profile before applying for a project. Many freelancers quickly apply for jobs without 
+properly understanding the client's needs, which leads to irrelevant or weak proposals. 
+As a result, clients often ignore such proposals and select freelancers who clearly 
+address their requirements.
+
+To address this challenge, the Upwork Proposal Assistant provides freelancers with a 
+smart client analysis feature. Before applying for any job, the system helps the 
+freelancer determine whether the job matches their skills and expertise, whether the 
+client is reliable based on their Job Success Rate, payment history, and reviews, and 
+whether they should apply, apply with caution, or skip the opportunity entirely. This 
+saves freelancers from wasting time and effort on fake jobs, unreliable clients, or 
+projects that do not match their profile. By making this analysis available instantly 
+through the browser extension, the system empowers freelancers to make smarter and 
+more informed application decisions.
+
+\subsection{Purpose of the System}
+The Upwork Proposal Assistant is designed to solve these challenges by helping 
+freelancers analyze client job descriptions and generate professional proposals 
+efficiently. The system analyzes the job description provided by the client, identifies 
+important requirements, and generates a structured proposal using intelligent templates 
+and automated suggestions. The system operates through a Chrome browser extension that 
+extracts client and job information directly from Upwork pages and presents analysis 
+results to the user. By simplifying the proposal writing process and helping freelancers 
+better understand client needs, the system aims to save time, improve productivity, and 
+increase freelancers' chances of getting selected for projects.
+
+% ─── 1.2 Problem Statement ──────────────────────────────────────────────────
+\newpage
+\section{PROBLEM STATEMENT}
+
+Freelancers working on online platforms face specific challenges that reduce their effectiveness and success rate when applying for projects.
+
+\textbf{Difficulty in Assessing Job details and Client Reliability:} Freelancers often struggle to analyze job descriptions and extract key requirements from lengthy postings. Moreover, they rarely examine the client's profile, Job Success Rate, or payment history before applying. This leads to wasted effort on fake jobs, unreliable clients, or irrelevant projects that do not match their expertise.
+
+\textbf{Lack of Professional Proposal Writing Skills:} Writing an effective proposal requires clear communication skills and the ability to present solutions in a structured manner. Many freelancers, particularly beginners, do not know how to format their proposals properly or how to highlight their relevant experience. This results in weak proposals that fail to convince clients.
+
+\textbf{Generic and Irrelevant Proposals:} Due to time constraints or lack of understanding, freelancers often submit generic proposals that do not specifically address the client's requirements. Since clients receive numerous applications for each job posting, these non-personalized proposals are quickly rejected.
+
+\textbf{Time-Consuming Proposal Writing Process:} Freelancers must apply to multiple jobs to increase their chances of getting hired. Writing individual proposals for each job posting is extremely time-consuming and reduces overall productivity. This repetitive task discourages freelancers from applying to more opportunities.
+
+\textbf{No Systematic Approach for Proposal Management:} Freelancers do not have an organized way to store, reuse, or track their proposal templates. They often rewrite similar content repeatedly instead of using proven templates that have worked successfully in the past.
+
+Currently, there is no integrated system that helps freelancers analyze job descriptions, generate personalized proposals automatically, and manage their proposal templates efficiently. The Upwork Proposal Assistant addresses this gap by providing a database-driven system that automates proposal generation, extracts key requirements from job postings, and helps freelancers submit more relevant and professional applications.
+
+% ─── 1.3 Project Objectives ─────────────────────────────────────────────────
+\newpage
+\newpage
+\section{PROJECT OBJECTIVES}
+
+\textbf{General Objective:} The general objective of the Upwork Proposal Assistant 
+is to develop a database-driven system that helps freelancers analyze Upwork job 
+opportunities, evaluate client reliability, and automatically generate professional 
+proposals to improve their chances of being selected for projects.
+
+\textbf{Specific Objectives:}
+
+\begin{itemize}[leftmargin=1.5cm]
+
+    \item \textbf{Evaluate Client Reliability Before Applying:} The system will 
+    analyze client information including their Job Success Rate, payment history, 
+    and reviews to calculate a reliability score for each client. By the time of 
+    final deployment, the system will correctly classify at least 90\% of clients 
+    into one of three recommendation levels: Strong Apply, Apply with Caution, 
+    or Skip, helping freelancers avoid unreliable clients and focus on quality 
+    opportunities.
+
+    \item \textbf{Automate Proposal Generation:} The system will automatically 
+    generate a personalized professional proposal within seconds of a freelancer 
+    clicking the Generate Proposal button, based on the client's job description 
+    and the best matching template stored in the database. This will eliminate the 
+    need for freelancers to write proposals entirely from scratch.
+
+    \item \textbf{Reduce Time and Effort for Freelancers:} The system will reduce 
+    the time required to prepare and submit a proposal by at least 60\% compared 
+    to manual writing, by generating automated drafts and extracting key information 
+    from job descriptions automatically, allowing freelancers to apply to more jobs 
+    within the same time period.
+
+    \item \textbf{Manage Proposal Templates Efficiently:} The system will maintain 
+    a database of reusable proposal templates categorized by project type. 
+    Administrators will be able to create, update, and delete templates through 
+    an admin panel, ensuring that all freelancers always have access to 
+    up-to-date and relevant templates for their proposals.
+
+    \item \textbf{Increase Freelancers' Success Rate:} By generating more relevant 
+    and targeted proposals that directly address client needs, the system aims to 
+    improve the proposal acceptance rate of freelancers by providing data-driven 
+    recommendations and personalized content, measurable through the proposal 
+    outcome tracking feature available in the freelancer analytics dashboard.
+
+\end{itemize}
+\textbf{GitHub Repository Link:}\\
+\url{https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Data_Base_project/Milestone_1}
+
+\newpage
+
+% ════════════════════════════════════════════════════════════════════════════
+%  CHAPTER 2: DETAILED DATABASE DESIGN
+% ════════════════════════════════════════════════════════════════════════════
+\chapter{DETAILED DATABASE DESIGN}
+
+% ─── 2.1 Entity ─────────────────────────────────────────────────────────────
+\section{ENTITY}
+
+The following entities are identified in the Upwork Proposal Assistant system. These entities represent the core objects that the system needs to store and manage. The system uses an Enhanced Entity-Relationship (EERD) model where \textbf{Person} is a supertype with \textbf{Freelancer}, \textbf{Client}, and \textbf{Admin} as its subtypes connected through a disjoint specialization.
+
+\begin{longtable}{|c|L{3.5cm}|L{8cm}|}
+\hline
+\textbf{Sr. No} & \textbf{Entity Name} & \textbf{Description} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Sr. No} & \textbf{Entity Name} & \textbf{Description} \\
+\hline
+\endhead
+
+01 & Person & Supertype entity containing common attributes of all users (Freelancer, Client, Admin). \\
+\hline
+02 & Freelancer & Subtype of Person representing users who create proposals and apply for jobs. \\
+\hline
+03 & Client & Subtype of Person representing Upwork clients whose jobs are analyzed. \\
+\hline
+04 & Admin & Subtype of Person managing templates and system configuration. \\
+\hline
+05 & Job\_Posting & Stores Upwork job listings including description, budget, and requirements. \\
+\hline
+06 & Proposal\_Template & Stores reusable templates used for generating proposals. \\
+\hline
+07 & Generated\_Proposals & Stores system-generated proposals for job postings. \\
+\hline
+08 & Reliability\_Score & Stores current computed reliability score of a client. \\
+\hline
+09 & Freelancer\_Analytics & Stores performance metrics of freelancers. \\
+\hline
+10 & Skills & Master table of all available skills in the system. \\
+\hline
+11 & Freelancer\_Skill\_Map & Associative entity mapping freelancers to skills (many-to-many). \\
+\hline
+12 & Job\_Skill\_Map & Associative entity mapping jobs to required skills (many-to-many). \\
+\hline
+
+\end{longtable}
+
+\textit{Note: Freelancer\_Skill\_Map and Job\_Skill\_Map are associative entities and not standalone entities.}
+
+% ─── 2.2 Data Dictionary ────────────────────────────────────────────────────
+\newpage
+\section{DATA DICTIONARY}
+
+This section defines all attributes for each entity identified in the system. Foreign keys are included only where necessary to reflect correct relational structure.
+
+% ── Person ──────────────────────────────────────────────────────────────────
+\subsection{Person}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & person\_id (PK) & INT & NOT NULL, UNIQUE & Unique identifier for each person. \\
+\hline
+02 & f\_name & VARCHAR(50) & NOT NULL & First name. \\
+\hline
+03 & l\_name & VARCHAR(50) & NOT NULL & Last name. \\
+\hline
+04 & email & VARCHAR(100) & NOT NULL, UNIQUE & Email address. \\
+\hline
+05 & country & VARCHAR(60) & NULL & Country of residence. \\
+\hline
+06 & upwork\_profile\_url & VARCHAR(255) & NULL & Link to Upwork profile. \\
+\hline
+\end{longtable}
+
+% ── Freelancer ───────────────────────────────────────────────────────────────
+\subsection{Freelancer}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & freelancer\_id (PK, FK) & INT & NOT NULL, UNIQUE & References person\_id from Person. \\
+\hline
+02 & password & VARCHAR(255) & NOT NULL & Encrypted password. \\
+\hline
+03 & hourly\_rate & DECIMAL(10,2) & NULL & Freelancer hourly rate. \\
+\hline
+04 & experience\_years & INT & NULL & Total professional experience in years. \\
+\hline
+\end{longtable}
+
+% ── Client ───────────────────────────────────────────────────────────────────
+\subsection{Client}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & client\_id (PK, FK) & INT & NOT NULL, UNIQUE & References person\_id from Person. \\
+\hline
+02 & company\_name & VARCHAR(100) & NULL & Client company name. \\
+\hline
+03 & success\_rate & DECIMAL(5,2) & NULL & Job success percentage. \\
+\hline
+04 & feedback & TEXT & NULL & Client feedback or reviews. \\
+\hline
+\end{longtable}
+
+% ── Admin ────────────────────────────────────────────────────────────────────
+\subsection{Admin}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & admin\_id (PK, FK) & INT & NOT NULL, UNIQUE & References person\_id from Person. \\
+\hline
+02 & role & VARCHAR(50) & NOT NULL & Admin role. \\
+\hline
+03 & joined\_date & DATE & NOT NULL & Account creation date. \\
+\hline
+04 & status & VARCHAR(20) & NOT NULL & Active / Inactive status. \\
+\hline
+\end{longtable}
+
+% ── Job_Posting ──────────────────────────────────────────────────────────────
+\subsection{Job\_Posting}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & job\_id (PK) & INT & NOT NULL, UNIQUE & Job identifier. \\
+\hline
+02 & job\_title & VARCHAR(150) & NOT NULL & Title of job posting. \\
+\hline
+03 & job\_description & TEXT & NOT NULL & Full job details. \\
+\hline
+04 & experience\_level & VARCHAR(30) & NOT NULL & Entry / Intermediate / Expert. \\
+\hline
+05 & job\_type & VARCHAR(20) & NOT NULL & Fixed or Hourly. \\
+\hline
+06 & project\_duration & VARCHAR(50) & NULL & Project duration. \\
+\hline
+07 & budget\_amount & DECIMAL(12,2) & NULL & Budget value. \\
+\hline
+08 & posted\_date & DATE & NOT NULL & Date posted. \\
+\hline
+09 & proposal\_count & INT & DEFAULT 0 & Number of proposals. \\
+\hline
+\end{longtable}
+
+% ── Proposal_Template ────────────────────────────────────────────────────────
+\subsection{Proposal\_Template}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & template\_id (PK) & INT & NOT NULL, UNIQUE & Template ID. \\
+\hline
+02 & template\_name & VARCHAR(100) & NOT NULL & Template name. \\
+\hline
+03 & category & VARCHAR(60) & NOT NULL & Template category. \\
+\hline
+04 & template\_content & TEXT & NOT NULL & Template text. \\
+\hline
+05 & usage\_count & INT & DEFAULT 0 & Times used. \\
+\hline
+06 & success\_rate & DECIMAL(5,2) & DEFAULT 0.00 & Percentage success rate. \\
+\hline
+\end{longtable}
+
+% ── Generated_Proposals ──────────────────────────────────────────────────────
+\subsection{Generated\_Proposals}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & proposal\_id (PK) & INT & NOT NULL, UNIQUE & Proposal ID. \\
+\hline
+02 & proposal\_content & TEXT & NOT NULL & Generated proposal text. \\
+\hline
+03 & generated\_date & DATETIME & NOT NULL & Generation timestamp. \\
+\hline
+04 & proposal\_status & VARCHAR(20) & NOT NULL & Draft / Submitted / Accepted / Rejected. \\
+\hline
+05 & submission\_date & DATE & NULL & Submission date. \\
+\hline
+\end{longtable}
+
+% ── Reliability_Score ────────────────────────────────────────────────────────
+\subsection{Reliability\_Score}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & score\_id (PK) & INT & NOT NULL, UNIQUE & Score ID. \\
+\hline
+02 & score & DECIMAL(5,2) & NOT NULL & Current reliability score percentage. \\
+\hline
+03 & risk\_level & VARCHAR(20) & NOT NULL & Low / Medium / High. \\
+\hline
+04 & recommendation\_level & VARCHAR(30) & NOT NULL & Strong Apply / Caution / Skip. \\
+\hline
+05 & calculated\_date & DATETIME & NOT NULL & Calculation time. \\
+\hline
+\end{longtable}
+
+% ── Freelancer_Analytics ─────────────────────────────────────────────────────
+\subsection{Freelancer\_Analytics}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & analytics\_id (PK) & INT & NOT NULL, UNIQUE & Analytics record ID. \\
+\hline
+02 & total\_proposals & INT & DEFAULT 0 & Total proposals generated. \\
+\hline
+03 & accepted\_proposals & INT & DEFAULT 0 & Accepted proposals. \\
+\hline
+04 & rejected\_proposals & INT & DEFAULT 0 & Rejected proposals. \\
+\hline
+05 & success\_rate & DECIMAL(5,2) & DEFAULT 0.00 & Success percentage. \\
+\hline
+\end{longtable}
+
+% ── Skills ─────────────────────────────────────────────────────────────
+\subsection{Skills}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & skill\_id (PK) & INT & NOT NULL, UNIQUE & Skill identifier. \\
+\hline
+02 & skill\_name & VARCHAR(80) & NOT NULL & Skill name. \\
+\hline
+03 & skill\_level & VARCHAR(20) & NULL & Beginner / Intermediate / Expert. \\
+\hline
+\end{longtable}
+
+% ── Freelancer_Skill_Map ─────────────────────────────────────────────
+\subsection{Freelancer\_Skill\_Map}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & freelancer\_id & INT & NOT NULL & FK to Freelancer. \\
+\hline
+02 & skill\_id & INT & NOT NULL & FK to Skills. \\
+\hline
+\end{longtable}
+
+% ── Job_Skill_Map ─────────────────────────────────────────────────────
+\subsection{Job\_Skill\_Map}
+
+\begin{longtable}{|c|L{3cm}|L{3cm}|L{3cm}|L{5cm}|}
+\hline
+\textbf{Sr.} & \textbf{Name} & \textbf{Data Type} & \textbf{Constraint} & \textbf{Description} \\
+\hline
+01 & job\_id & INT & NOT NULL & FK to Job\_Posting. \\
+\hline
+02 & skill\_id & INT & NOT NULL & FK to Skills. \\
+\hline
+\end{longtable}
+
+% ─── 2.3 Business Rules ─────────────────────────────────────────────────────
+\newpage
+\section{BUSINESS RULES}
+
+The following business rules define how data is managed, related, and constrained within the Upwork Proposal Assistant system. These rules ensure data integrity, consistency, and correct system behavior.
+
+\begin{itemize}[leftmargin=1.5cm]
+
+    \item A Person must be classified as exactly one of the following subtypes: Freelancer, Client, or Admin. The specialization is disjoint, meaning a person cannot belong to more than one subtype at the same time.
+
+    \item A Freelancer must have a registered account before they can generate any proposals. A Freelancer can generate zero or many proposals over time.
+
+    \item A Freelancer can have one or many Skills associated with their profile through the \textbf{Freelancer\_Skill\_Map (FSM)} associative entity.
+
+    \item A Skill is a global master entity and can be associated with zero or many Freelancers through FSM.
+
+    \item A Freelancer can have exactly one Freelancer\_Analytics record that tracks their overall performance statistics within the system.
+
+    \item A Client can advertise one or many Job Postings. A Job Posting must belong to exactly one Client.
+
+    \item Each Client has exactly one Reliability\_Score record representing the \textbf{current snapshot score}. A Reliability\_Score must be associated with exactly one Client.
+
+    \item The Reliability\_Score is calculated using a weighted formula where:
+    Job Success Rate contributes 40\%, Client Reviews and Rating contribute 25\%, Hire Rate contributes 15\%, Total Amount Spent contributes 10\%, and Total Jobs Posted contributes 10\%.
+
+    \item Based on the calculated Reliability\_Score, the system assigns one of three recommendation levels:
+    \textit{Strong Apply} for scores $\geq 75\%$, 
+    \textit{Apply with Caution} for scores between $50\%$ and $74\%$, and 
+    \textit{Skip} for scores below $50\%$.
+
+    \item A Job Posting can require zero or many Skills through the \textbf{Job\_Skill\_Map (JSM)} associative entity. A Skill can be required by zero or many Job Postings.
+
+    \item An Admin governs one or many Proposal Templates. A Proposal Template must be managed by exactly one Admin.
+
+    \item A Proposal Template can be used to generate zero or many Generated Proposals. A Generated Proposal must be based on exactly one Proposal Template.
+
+    \item A Generated Proposal must be linked to exactly one Freelancer, one Job Posting, and one Client. A Freelancer can own zero or many Generated Proposals. A Job Posting can receive zero or many Generated Proposals.
+
+    \item A Generated Proposal must have a status of one of the following values:
+    Draft, Submitted, Accepted, Rejected, or No Response.
+
+    \item A Freelancer can only view and modify their own profile data and their own generated proposals. They cannot access other freelancers' data or system configuration settings.
+
+    \item An Admin has full access to all user accounts, proposal templates, and system configuration settings.
+
+    \item A Freelancer's Analytics record is automatically updated each time a proposal generated by that freelancer changes its status.
+
+    \item A Proposal Template's usage\_count and success\_rate (percentage of accepted proposals) are automatically updated each time a proposal generated from it changes its status.
+
+\end{itemize}
+
+
+
+% <--- PASTE THE CODE BELOW THIS LINE --->
+
+\section{ENTITY RELATIONSHIP DIAGRAM (ERD)}
+The Entity Relationship Diagram (ERD) for the Upwork Proposal Assistant system illustrates the logical structure of the database. It defines the relationships between the core entities, including the \textbf{Person} supertype and its specialized subtypes: \textbf{Admin}, \textbf{Freelancer}, and \textbf{Client}. 
+
+The diagram follows the Crow's Foot notation to show cardinality, ensuring that the business logic—such as a freelancer managing multiple templates or a client posting various job listings—is accurately represented.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{final3.png}
+    \caption{Entity Relationship Diagram for Upwork Proposal Assistant}
+    \label{fig:erd_diagram}
+\end{figure}
+
+As shown in Figure \ref{fig:erd_diagram}, the system maintains data integrity by linking proposals to both the specific job postings and the templates used for generation, while centralized user data is managed within the Person entity.
+
+% <--- PASTE THE CODE ABOVE THIS LINE --->
+
+%  REFERENCES
+% ════════════════════════════════════════════════════════════════════════════
+\chapter*{REFERENCES}
+\addcontentsline{toc}{chapter}{REFERENCES}
+\vspace{8\baselineskip}
+\begin{enumerate}[leftmargin=1.5cm]
+    \item Project GitHub Repository. (2026). \textit{Upwork Proposal Assistant - Database Project}. Retrieved from \url{https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Data_Base_project/Milestone_1}
+    \item Silberschatz, A., Korth, H. F., \& Sudarshan, S. (2019). \textit{Database System Concepts} (7th ed.). McGraw-Hill Education.
+    \item Elmasri, R., \& Navathe, S. B. (2015). \textit{Fundamentals of Database Systems} (7th ed.). Pearson.
+\end{enumerate}
+
+\newpage
+
+% ════════════════════════════════════════════════════════════════════════════
+%  APPENDIX: AI USAGE AND PROMPTS
+% ════════════════════════════════════════════════════════════════════════════
+\chapter*{APPENDIX: AI USAGE AND PROMPTS}
+\addcontentsline{toc}{chapter}{APPENDIX: AI USAGE AND PROMPTS}
+\subsection*{A.1 Claude AI}
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{Purpose:} Understanding database concepts, identifying entities and attributes from system requirements, structuring the data dictionary, writing business rules, and formatting documentation in LaTeX.
+    \item \textbf{Version:} Claude Sonnet 4.6 (accessed via claude.ai)
+    \item \textbf{Date of Use:} May 2026
+    \item \textbf{URL:} \url{https://claude.ai/share/1c12bea7-a9b8-4e0c-999a-468ec5fa3417}
+\end{itemize}
+\subsection*{A.2 ChatGPT}
+\begin{itemize}[leftmargin=1.5cm]
+    \item \textbf{Purpose:} Brainstorming system features, refining functional requirements, understanding normalization concepts, and verifying database design decisions.
+    \item \textbf{Version:} GPT-4o (accessed via chatgpt.com)
+    \item \textbf{Date of Use:} May 2026
+    \item \textbf{URL:} \url{https://chatgpt.com/share/6a073fc1-c198-8323-b090-4199d30c4055}
+\end{itemize}
+\subsection*{A.3 Prompts Used}
+\begin{itemize}[leftmargin=1.5cm]
+    \item ``Help me identify entities and relationships for my freelancing assistant system.''
+    \item ``What is the difference between a primary key and a foreign key with an example?''
+    \item ``Explain how to design ERD cardinalities.''
+    \item ``I am going to make the DBMS and now I had to first write the data source and methods. Tell me if some data from it is redundant and I should not store it.''
+    \item ``I had to write a report for Milestone 2. Here is the template for how the report should be written and here is the detail of the milestone.''
+    \item ``Here is the ERD diagram to clear any doubts. I had the ERD diagram so keep a portion for it, I will upload it in Overleaf. Now give me the LaTeX code which I can paste.''
+    \item ``No, not use those sections in the report of Milestone 2 and follow the template for the report which I shared.''
+    \item ``I have these tables, tell me if my relationships between them are correct.''
+    \item ``How do I write a business rule for a many-to-many relationship?''
+\end{itemize}
+
+\subsection*{A.3 Declaration of AI Usage}
+
+All content generated with AI assistance was carefully reviewed, verified, and modified by team members to ensure accuracy and relevance to the project requirements. The AI tools were used as learning aids and writing assistants to improve understanding and documentation quality. All final decisions regarding system design, entities, attributes, relationships, and business rules were made based on the project proposal and ERD diagram created independently by the project team.
+
+
+
+
+
+\end{document}
