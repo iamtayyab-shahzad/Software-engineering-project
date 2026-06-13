@@ -1,93 +1,243 @@
-# Software Engineering Project
 # Upwork Proposal Assistant
 
-## Course Information
-Course Code: CSC-225 – Software Engineering  
-Department: Computer Science  
-University: Namal University Mianwali  
+An intelligent platform designed to help freelancers evaluate job opportunities, analyze client reliability, and generate professional proposals efficiently.
 
 ---
 
-## Project Team
-- Team Leader: Tayyab Shahzad  
-- Team Member: Najeeba  
-- Team Member: Kashif Ali  
+## Overview
+
+**Upwork Proposal Assistant** is a database-driven software system developed for freelancers working on the Upwork platform. The system assists users in analyzing client profiles, evaluating job requirements, generating personalized proposal drafts, and tracking proposal performance.
+
+The objective of the project is to reduce the effort involved in proposal writing and improve freelancers' chances of winning projects by providing data-driven recommendations and reusable templates.
 
 ---
 
-## Requirement Provider (RP)
-Name: Faisal Shahzad  
-Industry Experience: 3 Years  
-Role: Freelancer and Requirement Provider  
+## Features
+
+### Freelancer Features
+- Analyze client reliability before applying.
+- View job posting requirements.
+- Generate customized proposal drafts.
+- Maintain personal skill profiles.
+- Track proposal statistics and success rates.
+
+### Client Analysis
+- Reliability score calculation.
+- Risk level assessment.
+- Hiring history evaluation.
+- Recommendation generation.
+
+### Admin Features
+- Manage proposal templates.
+- Monitor system activities.
+- Track template usage statistics.
+- Maintain system configuration.
 
 ---
 
-## Project Description
-Upwork Proposal Assistant is a software system developed to assist freelancers in analyzing Upwork job postings and client profiles before submitting proposals. The system evaluates client-related factors such as hiring history, feedback records, job success rate, and budget behavior to assess client reliability.
+## System Modules
 
-Based on this analysis, the system generates structured and customizable proposal drafts using predefined templates and historical success data. It also provides decision-support recommendations to help freelancers decide whether applying for a specific job is worthwhile. The main goal of the system is to reduce proposal writing time, improve decision-making, and increase proposal success rates.
-
-The project follows standard software engineering practices and is documented according to IEEE Software Requirements Specification (SRS) guidelines.
-
----
-
-## System Scope
-The system focuses on:
-- Client profile analysis
-- Proposal template generation
-- Freelancer decision support
-- Administrative management of templates and system data
-
-The system does not automatically submit proposals. Final submission remains the responsibility of the freelancer.
+- Client Profile Analysis
+- Job Posting Management
+- Proposal Template Management
+- Automated Proposal Generation
+- Reliability Score Evaluation
+- Freelancer Analytics Dashboard
+- Administrative Control Panel
 
 ---
 
-## UI Prototypes (Figma)
-The user interface of the system has been designed using Figma. The prototypes represent the workflow and interactions for both user roles.
+## Database Architecture
 
-Freelancer Side Prototype:  
-https://output-badger-16575296.figma.site/
+The system follows a specialization hierarchy:
 
-Admin Side Prototype:  
-https://omen-easel-40982277.figma.site/
+```
+Person
+│
+├── Freelancer
+├── Client
+└── Admin
+```
+
+### Core Entities
+
+1. Person
+2. Freelancer
+3. Client
+4. Admin
+5. Skills
+6. Freelancer Skill Map
+7. Job Posting
+8. Job Skill Map
+9. Proposal Template
+10. Reliability Score
+11. Freelancer Analytics
+12. Generated Proposals
 
 ---
 
-## Project Duration
-Start Date: 4 November 2025  
-End Date: 17 January 2026  
+## Database Characteristics
+
+- Third Normal Form (3NF)
+- Primary Key Constraints
+- Foreign Key Constraints
+- Unique Attribute Constraints
+- Data Integrity Enforcement
+- Scalable Relational Structure
+
+---
+
+## Database Programmability Objects
+
+### Stored Procedures
+
+#### `CalculateReliability()`
+Calculates client reliability scores and assigns risk levels and recommendation categories.
+
+#### `SyncFreelancerMetrics()`
+Updates freelancer analytics including proposal counts and success rates.
+
+### Trigger
+
+#### `IncrementTemplateUsage`
+Automatically increments the template usage count whenever a new proposal is generated.
+
+---
+
+## Analytics Module
+
+The system maintains:
+
+- Total Proposals
+- Accepted Proposals
+- Rejected Proposals
+- Success Rate
+
+These analytics help freelancers improve proposal effectiveness and monitor performance.
+
+---
+
+## Reliability Evaluation
+
+Clients are evaluated based on:
+
+- Job Success Rate
+- Historical Feedback
+- Budget Behavior
+- Reliability Score
+
+Generated recommendations include:
+
+- Highly Recommended
+- Recommended
+- Medium Risk
+- Avoid
+
+---
+
+## Technologies Used
+
+| Category | Technology |
+|------------|------------|
+| Database | MySQL 9.0 |
+| Modeling | ERD & Relational Schema |
+| Documentation | LaTeX |
+| Design Standards | 3NF |
+| Version Control | Git & GitHub |
 
 ---
 
 ## Repository Structure
+
+```text
 Software-engineering-project/
+│
 ├── README.md
 ├── Proposal_document/
 ├── Milestone_1_work/
 │   ├── Meetingvideo/
 │   └── Meetingminutes/
+│
+├── Milestone_2_work/
+│   ├── SRS/
+│   ├── UseCases/
+│   └── Diagrams/
+│
+├── Milestone_3_work/
+│   ├── DatabaseDesign/
+│   ├── ERD/
+│   ├── RelationalSchema/
+│   ├── SQLScripts/
+│   └── Reports/
+│
 └── Documents/
+```
 
 ---
 
-## Project Documentation
-- Proposal documents and SRS are available in the Documents folder
-- Requirement Provider meetings are recorded and stored for validation
-- Meeting minutes are maintained for requirement clarification and progress tracking
+## Project Milestones
 
----
+### Milestone 1
+- Requirement Gathering
+- Stakeholder Meetings
+- Problem Identification
+- Project Proposal
 
-## Important Links
-Meeting Videos:  
-https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Milestone_1_work/Meetingvideo
+### Milestone 2
+- Software Requirements Specification (SRS)
+- Use Cases
+- Functional Requirements
+- Non-Functional Requirements
 
-Meeting Minutes:  
-https://github.com/iamtayyab-shahzad/Software-engineering-project/tree/master/Milestone_1_work/Meetingminutes
+### Milestone 3
+- Conceptual Database Design
+- Data Dictionary
+- Relational Schema
+- Normalization (3NF)
+- Stored Procedures
+- Triggers
+- Database Implementation
 
 ---
 
 ## Standards Followed
-- IEEE Std 830 – Software Requirements Specification  
-- IEEE Std 729 – Software Engineering Terminology  
-- ISO/IEC/IEEE 29148 – Requirements Engineering  
 
+- IEEE Std 830 – Software Requirements Specification
+- IEEE Std 729 – Software Engineering Terminology
+- ISO/IEC/IEEE 29148 – Requirements Engineering
+- Relational Database Design Standards
+- Third Normal Form (3NF)
+
+---
+
+## Future Enhancements
+
+- AI-powered proposal generation
+- Proposal success prediction
+- Upwork API integration
+- Freelancer recommendation engine
+- Advanced analytics dashboard
+
+---
+
+## Team Members
+
+- **Tayyab Shahzad**
+- **Kashif Ali**
+- **Najeeba**
+
+### Requirement Provider
+**Faisal Shahzad**  
+Freelancer with 3+ years of industry experience.
+
+---
+
+## Conclusion
+
+Upwork Proposal Assistant combines Software Engineering and Database Management principles to provide freelancers with intelligent client evaluation, automated proposal generation, and performance analytics. The system aims to improve proposal quality, reduce manual effort, and help freelancers make better decisions before applying to projects.
+
+---
+
+## License
+
+This project is developed for academic purposes at **Namal University, Mianwali, Pakistan**.
