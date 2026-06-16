@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Reliability – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main</p>
+      <a href="dashboard.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard</a>
+      <a href="proposals.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Proposals</a>
+      <p class="nav-section-label">Browse</p>
+      <a href="jobs.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Job Listings</a>
+      <a href="templates.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/></svg>
+        Templates</a>
+      <a href="reliability.html" class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Client Reliability</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Freelancer</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar"><span class="topbar-title">Client Reliability</span></div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Client Reliability Scores</h1>
+        <p>Trust ratings calculated for each client. Read-only.</p>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>All Reliability Scores</h3>
+          <small class="text-muted">Sourced from Reliability_Score table via sp_get_reliability_scores</small>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Score ID</th>
+                <th>Client ID</th>
+                <th>Company</th>
+                <th>Score</th>
+                <th>Risk Level</th>
+                <th>Recommendation</th>
+                <th>Calculated Date</th>
+              </tr>
+            </thead>
+            <tbody id="reliabilityTableBody">
+              <tr><td colspan="7" class="loading">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const riskColors = {
+  'Low Risk'    : 'badge-green',
+  'Medium Risk' : 'badge-yellow',
+  'High Risk'   : 'badge-red',
+};
+const recColors = {
+  'Strong Apply'        : 'badge-green',
+  'Apply with Caution'  : 'badge-yellow',
+  'Skip'                : 'badge-red',
+};
+
+async function init() {
+  const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success) { window.location.href = 'login.html'; return; }
+  const f = me.freelancer;
+  document.getElementById('sidebarName').textContent     = f.f_name + ' ' + f.Lname;
+  document.getElementById('sidebarInitials').textContent = (f.f_name[0] + f.Lname[0]).toUpperCase();
+
+  const data = await fetch('/api/reliability').then(r => r.json()).catch(() => ({}));
+  const tbody = document.getElementById('reliabilityTableBody');
+  if (!data.success) { tbody.innerHTML = '<tr><td colspan="7" class="loading">Failed to load.</td></tr>'; return; }
+
+  tbody.innerHTML = data.scores.map(s => `
+    <tr>
+      <td>#${s.score_id}</td>
+      <td>#${s.client_id}</td>
+      <td>${s.company_name}</td>
+      <td>
+        <span class="badge ${s.score >= 80 ? 'badge-green' : s.score >= 50 ? 'badge-yellow' : 'badge-red'}">
+          ${parseFloat(s.score).toFixed(1)}
+        </span>
+      </td>
+      <td><span class="badge ${riskColors[s.risk_level] || 'badge-gray'}">${s.risk_level}</span></td>
+      <td><span class="badge ${recColors[s.recommendation_level] || 'badge-gray'}">${s.recommendation_level}</span></td>
+      <td>${s.calculated_date ? String(s.calculated_date).slice(0,16) : '–'}</td>
+    </tr>`).join('');
+}
+
+async function doLogout() { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'login.html'; }
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up – Upwork Proposal Generator</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+<div class="auth-card">
+  <div class="auth-logo">
+    <div class="logo-icon">U</div>
+    <span>ProposalGen</span>
+  </div>
+
+  <h2>Create an account</h2>
+  <p class="subtitle">Join as a freelancer today</p>
+
+  <div class="form-group">
+    <label for="f_name">First name</label>
+    <input type="text" id="f_name" placeholder="John">
+  </div>
+
+  <div class="form-group">
+    <label for="lname">Last name</label>
+    <input type="text" id="lname" placeholder="Doe">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input type="email" id="email" placeholder="you@example.com">
+  </div>
+
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Choose a password">
+  </div>
+
+  <p class="error-msg" id="errorMsg"></p>
+
+  <button class="btn btn-primary" id="signupBtn" onclick="doSignup()">Create Account</button>
+
+  <p class="auth-footer">Already have an account? <a href="login.html">Sign in</a></p>
+</div>
+
+<script>
+async function doSignup() {
+  const f_name   = document.getElementById('f_name').value.trim();
+  const lname    = document.getElementById('lname').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errEl    = document.getElementById('errorMsg');
+  const btn      = document.getElementById('signupBtn');
+
+  errEl.classList.remove('show');
+
+  if (!f_name || !lname || !email || !password) {
+    errEl.textContent = 'All fields are required.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled    = true;
+  btn.textContent = 'Creating account…';
+
+  try {
+    const res  = await fetch('/api/auth/signup', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ f_name, lname, email, password })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      window.location.href = 'dashboard.html';
+    } else {
+      errEl.textContent = data.message || 'Signup failed.';
+      errEl.classList.add('show');
+    }
+  } catch {
+    errEl.textContent = 'Server error. Is the backend running?';
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Create Account';
+  }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
+</script>
+</body>
+</html>

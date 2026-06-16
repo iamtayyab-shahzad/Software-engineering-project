@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Listings – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main</p>
+      <a href="dashboard.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard</a>
+      <a href="proposals.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Proposals</a>
+      <p class="nav-section-label">Browse</p>
+      <a href="jobs.html" class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Job Listings</a>
+      <a href="templates.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/></svg>
+        Templates</a>
+      <a href="reliability.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Client Reliability</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Freelancer</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar"><span class="topbar-title">Job Listings</span></div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Available Jobs</h1>
+        <p>Browse open positions. Use the Job ID when creating a proposal.</p>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>All Job Postings</h3>
+          <small class="text-muted">Sourced from Job_Posting table via sp_get_jobs</small>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Job ID</th>
+                <th>Job Title</th>
+                <th>Experience Level</th>
+                <th>Job Type</th>
+                <th>Budget</th>
+                <th>Duration</th>
+                <th>Posted Date</th>
+                <th>Required Skills</th>
+              </tr>
+            </thead>
+            <tbody id="jobTableBody">
+              <tr><td colspan="7" class="loading">Loading jobs…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const expColors  = { Expert: 'badge-red', Intermediate: 'badge-yellow', Entry: 'badge-green' };
+const typeColors = { 'Fixed Price': 'badge-blue', Hourly: 'badge-purple' };
+
+async function init() {
+  const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success) { window.location.href = 'login.html'; return; }
+  const f = me.freelancer;
+  document.getElementById('sidebarName').textContent     = f.f_name + ' ' + f.Lname;
+  document.getElementById('sidebarInitials').textContent = (f.f_name[0] + f.Lname[0]).toUpperCase();
+
+  const data = await fetch('/api/jobs').then(r => r.json()).catch(() => ({}));
+  const tbody = document.getElementById('jobTableBody');
+  if (!data.success) { tbody.innerHTML = '<tr><td colspan="8" class="loading">Failed to load.</td></tr>'; return; }
+
+  tbody.innerHTML = data.jobs.map(j => `
+    <tr>
+      <td><strong>#${j.job_id}</strong></td>
+      <td>${j.job_title}</td>
+      <td><span class="badge ${expColors[j.experience_level] || 'badge-gray'}">${j.experience_level}</span></td>
+      <td><span class="badge ${typeColors[j.job_type] || 'badge-gray'}">${j.job_type}</span></td>
+      <td>${j.budget_amount ? '$' + parseFloat(j.budget_amount).toLocaleString() : '–'}</td>
+      <td>${j.project_duration || '–'}</td>
+      <td>${j.posted_date ? j.posted_date.slice(0,10) : '–'}</td>
+      <td id="skills-${j.job_id}"><span class="text-muted" style="font-size:12px;">loading…</span></td>
+    </tr>`).join('');
+
+  // Fetch required skills per job (small dataset, fine to do individually)
+  data.jobs.forEach(async (j) => {
+    const sData = await fetch('/api/skills/job/' + j.job_id).then(r => r.json()).catch(() => ({}));
+    const cell  = document.getElementById('skills-' + j.job_id);
+    if (!cell) return;
+    if (sData.success && sData.skills.length) {
+      cell.innerHTML = sData.skills.map(s => `<span class="badge badge-purple" style="margin:1px;">${s.skill_name}</span>`).join('');
+    } else {
+      cell.innerHTML = '<span class="text-muted" style="font-size:12px;">–</span>';
+    }
+  });
+}
+
+async function doLogout() { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'login.html'; }
+init();
+</script>
+</body>
+</html>

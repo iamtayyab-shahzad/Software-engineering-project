@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Proposals – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main</p>
+      <a href="dashboard.html"   class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard</a>
+      <a href="proposals.html"   class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Proposals</a>
+      <p class="nav-section-label">Browse</p>
+      <a href="jobs.html"        class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Job Listings</a>
+      <a href="templates.html"   class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/></svg>
+        Templates</a>
+      <a href="reliability.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Client Reliability</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Freelancer</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <div class="topbar">
+      <span class="topbar-title">My Proposals</span>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="openCreate()">+ New Proposal</button>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>Generated Proposals</h3>
+          <small class="text-muted">CRUD via stored procedures</small>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Job</th>
+                <th>Template</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th>Apply?</th>
+                <th>Generated</th>
+                <th>Submitted</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="proposalTableBody">
+              <tr><td colspan="9" class="loading">Loading proposals…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Create / Edit Modal ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="proposalModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">New Proposal</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <input type="hidden" id="editProposalId">
+
+    <div class="form-group">
+      <label>Client</label>
+      <select id="clientSelect" onchange="onClientChange()"><option value="">— select client —</option></select>
+    </div>
+
+    <!-- Live reliability / apply recommendation -->
+    <div id="reliabilityBox" style="display:none; margin-bottom:16px; padding:12px 14px; border-radius:8px; border:1px solid var(--border); background:var(--bg);">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div>
+          <div style="font-size:12px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em;">Reliability Score</div>
+          <div style="font-size:20px; font-weight:800;" id="relScore">–</div>
+          <div style="font-size:12px; color:var(--text-muted);" id="relRisk"></div>
+        </div>
+        <span class="badge" id="relRecommendation" style="font-size:13px; padding:6px 14px;">–</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Job</label>
+      <select id="jobSelect"><option value="">— select client first —</option></select>
+    </div>
+    <div class="form-group">
+      <label>Template</label>
+      <select id="templateSelect"><option value="">— select template —</option></select>
+    </div>
+    <div class="form-group">
+      <label>Proposal Status</label>
+      <select id="proposalStatus">
+        <option value="Draft">Draft</option>
+        <option value="Submitted">Submitted</option>
+        <option value="Accepted">Accepted</option>
+        <option value="Rejected">Rejected</option>
+        <option value="No Response">No Response</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Submission Date <span class="text-muted">(optional)</span></label>
+      <input type="date" id="submissionDate">
+    </div>
+    <div class="form-group">
+      <label>Proposal Content</label>
+      <textarea id="proposalContent" rows="5" placeholder="Write your proposal here…"></textarea>
+    </div>
+
+    <p class="error-msg" id="modalError"></p>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary"   id="saveBtn" onclick="saveProposal()">Save Proposal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete Confirm Modal ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <h3>Delete Proposal</h3>
+      <button class="modal-close" onclick="closeDelete()">×</button>
+    </div>
+    <p>Are you sure you want to delete proposal <strong id="deleteId"></strong>? This cannot be undone.</p>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeDelete()">Cancel</button>
+      <button class="btn btn-danger"    onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Job / Template Detail Modal ─────────────────────────────────────── -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="detailTitle">Details</h3>
+      <button class="modal-close" onclick="closeDetail()">×</button>
+    </div>
+    <div id="detailBody"><p class="loading">Loading…</p></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeDetail()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const statusBadgeClass = {
+  Accepted: 'badge-green', Submitted: 'badge-blue',
+  Draft: 'badge-gray', Rejected: 'badge-red', 'No Response': 'badge-yellow'
+};
+const recBadgeClass = {
+  'Strong Apply': 'badge-green', 'Apply': 'badge-blue',
+  'Consider': 'badge-yellow', 'Skip': 'badge-red', 'Unknown': 'badge-gray'
+};
+
+let allProposals = [];
+let allTemplates = [];
+let deleteTargetId = null;
+
+async function init() {
+  const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success) { window.location.href = 'login.html'; return; }
+  const f = me.freelancer;
+  document.getElementById('sidebarName').textContent     = f.f_name + ' ' + f.Lname;
+  document.getElementById('sidebarInitials').textContent = (f.f_name[0] + f.Lname[0]).toUpperCase();
+
+  await loadClients();
+  await loadTemplateOptions();
+  await loadProposals();
+}
+
+async function loadClients() {
+  const data = await fetch('/api/proposals/clients').then(r => r.json()).catch(() => ({}));
+  if (data.success) {
+    const sel = document.getElementById('clientSelect');
+    sel.innerHTML = '<option value="">— select client —</option>' +
+      data.clients.map(c => `<option value="${c.client_id}">${c.company_name} (${c.f_name} ${c.Lname})</option>`).join('');
+  }
+}
+
+async function loadTemplateOptions() {
+  const data = await fetch('/api/templates').then(r => r.json()).catch(() => ({}));
+  if (data.success) {
+    allTemplates = data.templates;
+    const sel = document.getElementById('templateSelect');
+    sel.innerHTML = '<option value="">— select template —</option>' +
+      allTemplates.map(t => `<option value="${t.template_id}">${t.template_name} (${t.category})</option>`).join('');
+  }
+}
+
+// When a client is selected: load that client's jobs into the Job dropdown
+// and show the live reliability / apply recommendation.
+async function onClientChange() {
+  const clientId = document.getElementById('clientSelect').value;
+  const jobSel   = document.getElementById('jobSelect');
+  const relBox   = document.getElementById('reliabilityBox');
+
+  if (!clientId) {
+    jobSel.innerHTML = '<option value="">— select client first —</option>';
+    relBox.style.display = 'none';
+    return;
+  }
+
+  // Jobs for this client
+  const jobData = await fetch('/api/proposals/jobs-by-client/' + clientId).then(r => r.json()).catch(() => ({}));
+  if (jobData.success) {
+    if (!jobData.jobs.length) {
+      jobSel.innerHTML = '<option value="">— no jobs posted by this client —</option>';
+    } else {
+      jobSel.innerHTML = '<option value="">— select job —</option>' +
+        jobData.jobs.map(j => `<option value="${j.job_id}">${j.job_title} (${j.job_type}, ${j.experience_level})</option>`).join('');
+    }
+  }
+
+  // Reliability + recommendation
+  const relData = await fetch('/api/proposals/client-reliability/' + clientId).then(r => r.json()).catch(() => ({}));
+  if (relData.success && relData.reliability) {
+    const r = relData.reliability;
+    document.getElementById('relScore').textContent = parseFloat(r.score).toFixed(1);
+    document.getElementById('relRisk').textContent  = r.risk_level + ' Risk Level';
+    const recEl = document.getElementById('relRecommendation');
+    recEl.textContent = r.recommendation_level;
+    recEl.className   = 'badge ' + (recBadgeClass[r.recommendation_level] || 'badge-gray');
+    relBox.style.display = 'block';
+  } else {
+    relBox.style.display = 'none';
+  }
+}
+
+async function loadProposals() {
+  const data = await fetch('/api/proposals').then(r => r.json()).catch(() => ({}));
+  const tbody = document.getElementById('proposalTableBody');
+  if (!data.success) { tbody.innerHTML = '<tr><td colspan="9" class="loading">Failed to load.</td></tr>'; return; }
+  allProposals = data.proposals;
+  if (!allProposals.length) {
+    tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No proposals yet. Click "+ New Proposal" to get started.</p></td></tr>';
+    return;
+  }
+  tbody.innerHTML = allProposals.map(p => `
+    <tr>
+      <td><strong>#${p.proposal_id}</strong></td>
+      <td><a href="javascript:void(0)" onclick="openJobDetail(${p.job_id})" style="color:var(--accent); font-weight:600; text-decoration:underline;">${p.job_title}</a></td>
+      <td><a href="javascript:void(0)" onclick="openTemplateDetail(${p.template_id})" style="color:var(--accent); font-weight:600; text-decoration:underline;">${p.template_name}</a></td>
+      <td>${p.company_name}</td>
+      <td><span class="badge ${statusBadgeClass[p.proposal_status] || 'badge-gray'}">${p.proposal_status}</span></td>
+      <td><span class="badge ${recBadgeClass[p.recommendation_level] || 'badge-gray'}">${p.recommendation_level}</span></td>
+      <td>${p.generated_date ? p.generated_date.slice(0,10) : '–'}</td>
+      <td>${p.submission_date || '–'}</td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-secondary btn-sm" onclick="openEdit(${p.proposal_id})">Edit</button>
+        <button class="btn btn-danger    btn-sm" onclick="openDelete(${p.proposal_id})" style="margin-left:4px">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+// ── Detail modal (Job / Template) ──────────────────────────────────────────
+async function openJobDetail(jobId) {
+  document.getElementById('detailTitle').textContent = 'Job Details';
+  document.getElementById('detailBody').innerHTML    = '<p class="loading">Loading…</p>';
+  document.getElementById('detailModal').classList.add('open');
+
+  const data = await fetch('/api/proposals/job-details/' + jobId).then(r => r.json()).catch(() => ({}));
+  if (!data.success) { document.getElementById('detailBody').innerHTML = '<p>Failed to load job.</p>'; return; }
+  const j = data.job;
+
+  // Also load required skills for this job
+  const skillData = await fetch('/api/skills/job/' + jobId).then(r => r.json()).catch(() => ({}));
+  const skillsHtml = (skillData.success && skillData.skills.length)
+    ? skillData.skills.map(s => `<span class="badge badge-purple" style="margin:2px;">${s.skill_name}</span>`).join('')
+    : '<span class="text-muted" style="font-size:13px;">No specific skills listed</span>';
+
+  document.getElementById('detailBody').innerHTML = `
+    <h3 style="margin-bottom:6px;">${j.job_title}</h3>
+    <p class="text-muted" style="font-size:13px; margin-bottom:14px;">Posted by <strong>${j.company_name}</strong> on ${j.posted_date ? j.posted_date.slice(0,10) : '–'}</p>
+    <div class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+      <div><strong>Experience:</strong> ${j.experience_level}</div>
+      <div><strong>Type:</strong> ${j.job_type}</div>
+      <div><strong>Budget:</strong> ${j.budget_amount ? '$' + parseFloat(j.budget_amount).toLocaleString() : '–'}</div>
+      <div><strong>Duration:</strong> ${j.project_duration || '–'}</div>
+      <div><strong>Proposals so far:</strong> ${j.proposal_count}</div>
+    </div>
+    <p style="margin-bottom:10px;">${escHtml(j.job_description)}</p>
+    <div><strong>Required Skills:</strong><br>${skillsHtml}</div>
+  `;
+}
+
+async function openTemplateDetail(templateId) {
+  document.getElementById('detailTitle').textContent = 'Template Details';
+  document.getElementById('detailBody').innerHTML    = '<p class="loading">Loading…</p>';
+  document.getElementById('detailModal').classList.add('open');
+
+  const data = await fetch('/api/proposals/template-details/' + templateId).then(r => r.json()).catch(() => ({}));
+  if (!data.success) { document.getElementById('detailBody').innerHTML = '<p>Failed to load template.</p>'; return; }
+  const t = data.template;
+
+  document.getElementById('detailBody').innerHTML = `
+    <h3 style="margin-bottom:6px;">${t.template_name}</h3>
+    <p class="mt-1"><span class="badge badge-blue">${t.category}</span>
+       <span class="badge ${t.success_rate >= 80 ? 'badge-green' : t.success_rate >= 60 ? 'badge-yellow' : 'badge-red'}">${parseFloat(t.success_rate).toFixed(1)}% success</span>
+       <span class="badge badge-gray">Used ${t.usage_count}x</span>
+    </p>
+    <div class="mt-3" style="background:var(--bg); border-radius:8px; padding:14px; white-space:pre-wrap; font-size:13px;">${escHtml(t.template_content)}</div>
+  `;
+}
+
+function closeDetail() { document.getElementById('detailModal').classList.remove('open'); }
+
+// ── Create / Edit ────────────────────────────────────────────────────────────
+async function openCreate() {
+  clearForm();
+  document.getElementById('modalTitle').textContent = 'New Proposal';
+  document.getElementById('editProposalId').value    = '';
+  document.getElementById('proposalModal').classList.add('open');
+}
+
+async function openEdit(id) {
+  const p = allProposals.find(x => x.proposal_id === id);
+  if (!p) return;
+  clearForm();
+  document.getElementById('modalTitle').textContent = 'Edit Proposal #' + id;
+  document.getElementById('editProposalId').value    = id;
+  document.getElementById('clientSelect').value      = p.client_id;
+  await onClientChange();
+  document.getElementById('jobSelect').value         = p.job_id;
+  document.getElementById('templateSelect').value    = p.template_id;
+  document.getElementById('proposalStatus').value    = p.proposal_status;
+  document.getElementById('submissionDate').value    = p.submission_date || '';
+  document.getElementById('proposalContent').value   = p.proposal_content;
+  document.getElementById('proposalModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('proposalModal').classList.remove('open'); }
+
+function openDelete(id) {
+  deleteTargetId = id;
+  document.getElementById('deleteId').textContent = '#' + id;
+  document.getElementById('deleteModal').classList.add('open');
+}
+function closeDelete() { document.getElementById('deleteModal').classList.remove('open'); deleteTargetId = null; }
+
+async function confirmDelete() {
+  if (!deleteTargetId) return;
+  const res  = await fetch('/api/proposals/' + deleteTargetId, { method: 'DELETE' });
+  const data = await res.json();
+  closeDelete();
+  if (data.success) await loadProposals();
+  else alert(data.message);
+}
+
+async function saveProposal() {
+  const editId   = document.getElementById('editProposalId').value;
+  const clientId = document.getElementById('clientSelect').value;
+  const jobId    = document.getElementById('jobSelect').value;
+  const tplId    = document.getElementById('templateSelect').value;
+  const status   = document.getElementById('proposalStatus').value;
+  const subDate  = document.getElementById('submissionDate').value;
+  const content  = document.getElementById('proposalContent').value.trim();
+  const errEl    = document.getElementById('modalError');
+
+  errEl.classList.remove('show');
+
+  if (!clientId || !jobId || !tplId || !content) {
+    errEl.textContent = 'Client, Job, Template, and Content are required.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled    = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    let res, data;
+    if (editId) {
+      res  = await fetch('/api/proposals/' + editId, {
+        method : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ proposal_content: content, proposal_status: status, submission_date: subDate || null })
+      });
+    } else {
+      res  = await fetch('/api/proposals', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ client_id: clientId, job_id: jobId, template_id: tplId, proposal_content: content, proposal_status: status, submission_date: subDate || null })
+      });
+    }
+    data = await res.json();
+    if (data.success) {
+      closeModal();
+      await loadProposals();
+    } else {
+      errEl.textContent = data.message || 'Failed to save.';
+      errEl.classList.add('show');
+    }
+  } catch {
+    errEl.textContent = 'Network error.';
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Save Proposal';
+  }
+}
+
+function clearForm() {
+  document.getElementById('clientSelect').value   = '';
+  document.getElementById('jobSelect').innerHTML   = '<option value="">— select client first —</option>';
+  document.getElementById('templateSelect').value = '';
+  document.getElementById('proposalContent').value = '';
+  document.getElementById('submissionDate').value  = '';
+  document.getElementById('proposalStatus').value  = 'Draft';
+  document.getElementById('reliabilityBox').style.display = 'none';
+  document.getElementById('modalError').classList.remove('show');
+}
+
+function escHtml(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function doLogout() { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'login.html'; }
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Admin – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Super Admin</p>
+      <a href="admin-super.html" class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Reliability Config
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Super Admin</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar"><span class="topbar-title">Reliability Scoring Configuration</span></div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Recommendation Engine Settings</h1>
+        <p>Controls how client Reliability_Score values are weighted and how the
+           "Apply / Strong Apply / Consider / Skip" recommendation is calculated for freelancers.</p>
+      </div>
+
+      <div class="card" style="background:var(--white); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px; max-width:640px;">
+
+        <h3 style="font-size:14px; margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted);">Scoring Weights</h3>
+        <p class="text-muted mt-1" style="font-size:12px; margin-bottom:14px;">Conceptual weighting of factors that contribute to a client's overall reliability score.</p>
+
+        <div class="form-group">
+          <label>Job Success Rate (JSR) Weight (%)</label>
+          <input type="number" id="weight_jsr" step="0.01" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Client Reviews / Feedback Weight (%)</label>
+          <input type="number" id="weight_reviews" step="0.01" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Payment Verification Weight (%)</label>
+          <input type="number" id="weight_payment" step="0.01" min="0" max="100">
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
+
+        <h3 style="font-size:14px; margin-bottom:14px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted);">Recommendation Thresholds</h3>
+        <p class="text-muted mt-1" style="font-size:12px; margin-bottom:14px;">Minimum Reliability_Score required for each recommendation label. Anything below "Consider" is labeled "Skip".</p>
+
+        <div class="form-group">
+          <label>Strong Apply — minimum score</label>
+          <input type="number" id="threshold_strong_apply" step="0.01" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Apply — minimum score</label>
+          <input type="number" id="threshold_apply" step="0.01" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>Consider — minimum score</label>
+          <input type="number" id="threshold_consider" step="0.01" min="0" max="100">
+        </div>
+
+        <p class="error-msg" id="errorMsg"></p>
+        <p class="text-muted mt-2" id="successMsg" style="display:none; color:#0d7a00; font-size:13px;">Configuration saved successfully.</p>
+
+        <button class="btn btn-primary mt-3" id="saveBtn" onclick="saveConfig()">Save Configuration</button>
+      </div>
+
+      <p class="text-muted mt-3" style="font-size:12px; max-width:640px;">
+        Changes here immediately affect the recommendation shown to freelancers on the
+        <strong>Client Reliability</strong> page and in the <strong>Create Proposal</strong> form
+        (via <code>sp_get_reliability_scores</code> and <code>sp_get_client_reliability</code>).
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+async function init() {
+  const me = await fetch('/api/admin-auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success || me.admin.admin_type !== 'super_admin') {
+    window.location.href = 'admin-login.html';
+    return;
+  }
+  const a = me.admin;
+  document.getElementById('sidebarName').textContent     = a.f_name + ' ' + a.Lname;
+  document.getElementById('sidebarInitials').textContent = (a.f_name[0] + a.Lname[0]).toUpperCase();
+
+  const data = await fetch('/api/admin/reliability-config').then(r => r.json()).catch(() => ({}));
+  if (data.success) {
+    const c = data.config;
+    document.getElementById('weight_jsr').value             = c.weight_jsr;
+    document.getElementById('weight_reviews').value          = c.weight_reviews;
+    document.getElementById('weight_payment').value          = c.weight_payment;
+    document.getElementById('threshold_strong_apply').value = c.threshold_strong_apply;
+    document.getElementById('threshold_apply').value        = c.threshold_apply;
+    document.getElementById('threshold_consider').value     = c.threshold_consider;
+  }
+}
+
+async function saveConfig() {
+  const errEl = document.getElementById('errorMsg');
+  const okEl  = document.getElementById('successMsg');
+  errEl.classList.remove('show');
+  okEl.style.display = 'none';
+
+  const payload = {
+    weight_jsr:             document.getElementById('weight_jsr').value,
+    weight_reviews:          document.getElementById('weight_reviews').value,
+    weight_payment:          document.getElementById('weight_payment').value,
+    threshold_strong_apply: document.getElementById('threshold_strong_apply').value,
+    threshold_apply:        document.getElementById('threshold_apply').value,
+    threshold_consider:      document.getElementById('threshold_consider').value,
+  };
+
+  for (const key in payload) {
+    if (payload[key] === '' || isNaN(payload[key])) {
+      errEl.textContent = 'All fields must be valid numbers.';
+      errEl.classList.add('show');
+      return;
+    }
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    const res  = await fetch('/api/admin/reliability-config', {
+      method : 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      okEl.style.display = 'block';
+      setTimeout(() => okEl.style.display = 'none', 2500);
+    } else {
+      errEl.textContent = data.message || 'Failed to save.';
+      errEl.classList.add('show');
+    }
+  } catch {
+    errEl.textContent = 'Network error.';
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save Configuration';
+  }
+}
+
+async function doLogout() { await fetch('/api/admin-auth/logout', { method: 'POST' }); window.location.href = 'admin-login.html'; }
+
+init();
+</script>
+</body>
+</html>

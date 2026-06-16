@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Manager – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Template Manager</p>
+      <a href="admin-templates.html" class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/><path d="M16 12h4v4h-4z"/><path d="M16 19h4"/></svg>
+        Proposal Templates
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Template Manager</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar">
+      <span class="topbar-title">Proposal Templates</span>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" onclick="openCreate()">+ New Template</button>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Manage Templates</h1>
+        <p>Create, edit, and delete proposal templates. Freelancers can view these but not modify them.</p>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>All Templates</h3>
+          <small class="text-muted">Full CRUD via sp_create_template / sp_update_template / sp_delete_template</small>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Usage</th>
+                <th>Success Rate</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="templateTableBody">
+              <tr><td colspan="6" class="loading">Loading templates…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Create / Edit Modal ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="templateModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">New Template</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <input type="hidden" id="editTemplateId">
+
+    <div class="form-group">
+      <label>Template Name</label>
+      <input type="text" id="templateName" placeholder="e.g. React SPA Framework">
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <input type="text" id="templateCategory" placeholder="e.g. Frontend Engineering">
+    </div>
+    <div class="form-group">
+      <label>Template Content</label>
+      <textarea id="templateContent" rows="6" placeholder="Write the proposal template text…"></textarea>
+    </div>
+
+    <p class="error-msg" id="modalError"></p>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary"   id="saveBtn" onclick="saveTemplate()">Save Template</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete Confirm Modal ──────────────────────────────────────────── -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <h3>Delete Template</h3>
+      <button class="modal-close" onclick="closeDelete()">×</button>
+    </div>
+    <p>Are you sure you want to delete template <strong id="deleteName"></strong>? This cannot be undone.</p>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeDelete()">Cancel</button>
+      <button class="btn btn-danger"    onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let allTemplates = [];
+let deleteTargetId = null;
+
+async function init() {
+  const me = await fetch('/api/admin-auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success || me.admin.admin_type !== 'template_manager') {
+    window.location.href = 'admin-login.html';
+    return;
+  }
+  const a = me.admin;
+  document.getElementById('sidebarName').textContent     = a.f_name + ' ' + a.Lname;
+  document.getElementById('sidebarInitials').textContent = (a.f_name[0] + a.Lname[0]).toUpperCase();
+
+  await loadTemplates();
+}
+
+async function loadTemplates() {
+  const data = await fetch('/api/admin/templates').then(r => r.json()).catch(() => ({}));
+  const tbody = document.getElementById('templateTableBody');
+  if (!data.success) { tbody.innerHTML = '<tr><td colspan="6" class="loading">Failed to load.</td></tr>'; return; }
+  allTemplates = data.templates;
+  if (!allTemplates.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><p>No templates yet.</p></td></tr>';
+    return;
+  }
+  tbody.innerHTML = allTemplates.map(t => `
+    <tr>
+      <td><strong>#${t.template_id}</strong></td>
+      <td>${t.template_name}</td>
+      <td><span class="badge badge-blue">${t.category}</span></td>
+      <td>${t.usage_count}</td>
+      <td><span class="badge ${t.success_rate >= 80 ? 'badge-green' : t.success_rate >= 60 ? 'badge-yellow' : 'badge-red'}">${parseFloat(t.success_rate).toFixed(1)}%</span></td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-secondary btn-sm" onclick="openEdit(${t.template_id})">Edit</button>
+        <button class="btn btn-danger    btn-sm" onclick="openDelete(${t.template_id})" style="margin-left:4px">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openCreate() {
+  document.getElementById('modalTitle').textContent  = 'New Template';
+  document.getElementById('editTemplateId').value     = '';
+  document.getElementById('templateName').value       = '';
+  document.getElementById('templateCategory').value   = '';
+  document.getElementById('templateContent').value    = '';
+  document.getElementById('modalError').classList.remove('show');
+  document.getElementById('templateModal').classList.add('open');
+}
+
+function openEdit(id) {
+  const t = allTemplates.find(x => x.template_id === id);
+  if (!t) return;
+  document.getElementById('modalTitle').textContent  = 'Edit Template #' + id;
+  document.getElementById('editTemplateId').value     = id;
+  document.getElementById('templateName').value       = t.template_name;
+  document.getElementById('templateCategory').value   = t.category;
+  document.getElementById('templateContent').value    = t.template_content;
+  document.getElementById('modalError').classList.remove('show');
+  document.getElementById('templateModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('templateModal').classList.remove('open'); }
+
+function openDelete(id) {
+  const t = allTemplates.find(x => x.template_id === id);
+  deleteTargetId = id;
+  document.getElementById('deleteName').textContent = '"' + (t ? t.template_name : '#' + id) + '"';
+  document.getElementById('deleteModal').classList.add('open');
+}
+function closeDelete() { document.getElementById('deleteModal').classList.remove('open'); deleteTargetId = null; }
+
+async function confirmDelete() {
+  if (!deleteTargetId) return;
+  const res  = await fetch('/api/admin/templates/' + deleteTargetId, { method: 'DELETE' });
+  const data = await res.json();
+  closeDelete();
+  if (data.success) await loadTemplates();
+  else alert(data.message);
+}
+
+async function saveTemplate() {
+  const editId = document.getElementById('editTemplateId').value;
+  const name   = document.getElementById('templateName').value.trim();
+  const cat    = document.getElementById('templateCategory').value.trim();
+  const content= document.getElementById('templateContent').value.trim();
+  const errEl  = document.getElementById('modalError');
+
+  errEl.classList.remove('show');
+  if (!name || !cat || !content) {
+    errEl.textContent = 'All fields are required.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    let res;
+    if (editId) {
+      res = await fetch('/api/admin/templates/' + editId, {
+        method : 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ template_name: name, category: cat, template_content: content })
+      });
+    } else {
+      res = await fetch('/api/admin/templates', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ template_name: name, category: cat, template_content: content })
+      });
+    }
+    const data = await res.json();
+    if (data.success) {
+      closeModal();
+      await loadTemplates();
+    } else {
+      errEl.textContent = data.message || 'Failed to save.';
+      errEl.classList.add('show');
+    }
+  } catch {
+    errEl.textContent = 'Network error.';
+    errEl.classList.add('show');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save Template';
+  }
+}
+
+async function doLogout() { await fetch('/api/admin-auth/logout', { method: 'POST' }); window.location.href = 'admin-login.html'; }
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Templates – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><div class="logo-icon">U</div><span class="logo-text">ProposalGen</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main</p>
+      <a href="dashboard.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard</a>
+      <a href="proposals.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        My Proposals</a>
+      <p class="nav-section-label">Browse</p>
+      <a href="jobs.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Job Listings</a>
+      <a href="templates.html" class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/></svg>
+        Templates</a>
+      <a href="reliability.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Client Reliability</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div><div class="user-name" id="sidebarName">…</div><div class="user-role">Freelancer</div></div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="topbar"><span class="topbar-title">Proposal Templates</span></div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Proposal Templates</h1>
+        <p>Browse all available templates — managed by admins. Read-only.</p>
+      </div>
+
+      <div class="table-card">
+        <div class="table-card-header">
+          <h3>All Templates</h3>
+          <small class="text-muted">Sourced from Proposal_Template table via sp_get_templates</small>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Template Name</th>
+                <th>Category</th>
+                <th>Usage Count</th>
+                <th>Success Rate</th>
+              </tr>
+            </thead>
+            <tbody id="templateTableBody">
+              <tr><td colspan="5" class="loading">Loading templates…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const catColors = {
+  'Backend Engineering':  'badge-blue',
+  'Frontend Engineering': 'badge-purple',
+  'DevOps Infrastructure':'badge-yellow',
+  'API Architecture':     'badge-green',
+  'Data Automation':      'badge-gray',
+  'Cloud Operations':     'badge-blue',
+  'Database Operations':  'badge-gray',
+  'Technical Writing':    'badge-gray',
+  'UI/UX Design':         'badge-purple',
+  'Cybersecurity':        'badge-red',
+  'Artificial Intelligence':'badge-green',
+  'Mobile Engineering':   'badge-blue',
+  'NoSQL Architectures':  'badge-yellow',
+  'Web Platforms':        'badge-purple',
+  'Systems Engineering':  'badge-blue',
+  'API Development':      'badge-green',
+  'Data Operations':      'badge-gray',
+};
+
+async function init() {
+  const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success) { window.location.href = 'login.html'; return; }
+  const f = me.freelancer;
+  document.getElementById('sidebarName').textContent     = f.f_name + ' ' + f.Lname;
+  document.getElementById('sidebarInitials').textContent = (f.f_name[0] + f.Lname[0]).toUpperCase();
+
+  const data = await fetch('/api/templates').then(r => r.json()).catch(() => ({}));
+  const tbody = document.getElementById('templateTableBody');
+  if (!data.success) { tbody.innerHTML = '<tr><td colspan="5" class="loading">Failed to load.</td></tr>'; return; }
+
+  tbody.innerHTML = data.templates.map(t => `
+    <tr>
+      <td><strong>#${t.template_id}</strong></td>
+      <td>${t.template_name}</td>
+      <td><span class="badge ${catColors[t.category] || 'badge-gray'}">${t.category}</span></td>
+      <td>${t.usage_count}</td>
+      <td>
+        <span class="badge ${t.success_rate >= 80 ? 'badge-green' : t.success_rate >= 60 ? 'badge-yellow' : 'badge-red'}">
+          ${parseFloat(t.success_rate).toFixed(1)}%
+        </span>
+      </td>
+    </tr>`).join('');
+}
+
+async function doLogout() { await fetch('/api/auth/logout', { method: 'POST' }); window.location.href = 'login.html'; }
+init();
+</script>
+</body>
+</html>

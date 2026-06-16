@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard – ProposalGen</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon">U</div>
+        <span class="logo-text">ProposalGen</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-section-label">Main</p>
+      <a href="dashboard.html"   class="nav-link active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="proposals.html"   class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        My Proposals
+      </a>
+      <p class="nav-section-label">Browse</p>
+      <a href="jobs.html"        class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Job Listings
+      </a>
+      <a href="templates.html"   class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4z"/><path d="M4 12h8v8H4z"/><path d="M16 12h4v4h-4z"/><path d="M16 19h4"/></svg>
+        Templates
+      </a>
+      <a href="reliability.html" class="nav-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Client Reliability
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarInitials">?</div>
+        <div>
+          <div class="user-name"  id="sidebarName">Loading…</div>
+          <div class="user-role">Freelancer</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- ── Main ─────────────────────────────────────────────────────────── -->
+  <div class="main-content">
+    <div class="topbar">
+      <span class="topbar-title">Dashboard</span>
+    </div>
+
+    <div class="page-body">
+      <div class="page-header">
+        <h1>Overview</h1>
+        <p>Your proposal performance at a glance</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Proposals</div>
+          <div class="stat-value" id="totalProposals">–</div>
+          <div class="stat-icon">📄</div>
+        </div>
+        <div class="stat-card accent-blue">
+          <div class="stat-label">Accepted</div>
+          <div class="stat-value" id="acceptedProposals">–</div>
+          <div class="stat-icon">✅</div>
+        </div>
+        <div class="stat-card accent-danger">
+          <div class="stat-label">Rejected</div>
+          <div class="stat-value" id="rejectedProposals">–</div>
+          <div class="stat-icon">❌</div>
+        </div>
+        <div class="stat-card accent-warn">
+          <div class="stat-label">Success Rate</div>
+          <div class="stat-value" id="successRate">–</div>
+          <div class="stat-icon">📈</div>
+        </div>
+      </div>
+
+      <p class="text-muted mt-1" style="font-size:12px;">
+        Stats sourced from <strong>Freelancer_Analytics</strong> table · refreshes on page load.
+      </p>
+
+      <div class="table-card mt-4">
+        <div class="table-card-header">
+          <h3>My Skills</h3>
+          <small class="text-muted">Sourced from Skills + Freelancer_Skill_Map</small>
+        </div>
+        <div style="padding:18px 20px;" id="skillsContainer">
+          <p class="loading" style="padding:0;">Loading skills…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(async () => {
+  // Guard: must be logged in
+  const me = await fetch('/api/auth/me').then(r => r.json()).catch(() => ({}));
+  if (!me.success) { window.location.href = 'login.html'; return; }
+
+  const f = me.freelancer;
+  document.getElementById('sidebarName').textContent     = f.f_name + ' ' + f.Lname;
+  document.getElementById('sidebarInitials').textContent = (f.f_name[0] + f.Lname[0]).toUpperCase();
+
+  // Load stats
+  const data = await fetch('/api/dashboard/stats').then(r => r.json()).catch(() => ({}));
+  if (data.success) {
+    const s = data.stats;
+    document.getElementById('totalProposals').textContent    = s.total_proposals    ?? 0;
+    document.getElementById('acceptedProposals').textContent = s.accepted_proposals ?? 0;
+    document.getElementById('rejectedProposals').textContent = s.rejected_proposals ?? 0;
+    // success_rate comes back from MySQL as a DECIMAL string (e.g. "33.33") — parse before formatting
+    const rate = parseFloat(s.success_rate ?? 0);
+    document.getElementById('successRate').textContent = (isNaN(rate) ? 0 : rate).toFixed(1) + '%';
+  } else {
+    document.getElementById('totalProposals').textContent    = 0;
+    document.getElementById('acceptedProposals').textContent = 0;
+    document.getElementById('rejectedProposals').textContent = 0;
+    document.getElementById('successRate').textContent       = '0.0%';
+  }
+
+  // Load skills
+  const skillData = await fetch('/api/skills/mine').then(r => r.json()).catch(() => ({}));
+  const skillBox  = document.getElementById('skillsContainer');
+  if (skillData.success && skillData.skills.length) {
+    skillBox.innerHTML = skillData.skills.map(s =>
+      `<span class="badge ${s.skill_level === 'Expert' ? 'badge-purple' : 'badge-blue'}" style="margin:3px;font-size:12.5px;padding:5px 11px;">${s.skill_name} <span class="text-muted">(${s.skill_level || 'N/A'})</span></span>`
+    ).join('');
+  } else {
+    skillBox.innerHTML = '<p class="text-muted" style="font-size:13px;">No skills added yet. Skills are assigned by an administrator via the Freelancer_Skill_Map table.</p>';
+  }
+})();
+
+async function doLogout() {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>
